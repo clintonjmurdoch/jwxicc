@@ -7,8 +7,15 @@
 
 # Eclipse #
 target
+<<<<<<< HEAD
 .settings
 .settings/*
 !.settings/.jsdtscope
 .project
 .classpath
+=======
+.settings/*
+!.settings/.jsdtscope
+.project
+.classpath
+>>>>>>> 3d1ab3c566a9b4909aa50d5a4772135d400540f9
