@@ -1,0 +1,138 @@
+@CHARSET "ISO-8859-1";
+
+html {
+	height: 100%;
+	margin-bottom: 1px;
+	overflow-y: scroll;
+}
+
+#body {
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: white;
+}
+
+#header {
+	height: 80px;
+}
+
+#topnav {
+	height: 20px;
+	background-color: red;
+	text-align: center;
+	color: white;
+	border-top: thin solid black
+}
+
+#topnav a {
+	color: white;
+}
+
+#menulist {
+	float: left;
+	width: 150px;
+	padding: 5px;
+}
+
+div#login {
+	margin-left: auto;
+	margin-right: auto;
+	width: 320px;
+	height: 100px;
+	border: medium solid red;
+	padding: 15px;
+}
+
+div#loginerr {
+	margin-left: auto;
+	margin-right: auto;
+	width: 320px;
+	height: 100px;
+	padding: 15px;
+}
+
+#homepage_blurb {
+	overflow: auto;
+	padding: 10px;
+	clear: left
+}
+
+#links {
+	width: 600px;
+	border: thin solid red;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: hidden;
+	margin-top: 10px;
+}
+
+#login_links {
+	width: 300px;
+	border-left: thin solid black;
+	padding-left: 20px;
+	float: right;
+}
+
+#adminstats {
+	width: 200px;
+	border-left: thin solid black;
+	border-bottom: thin solid black;
+	padding-left: 20px;
+	float: right;
+	height: 100%
+}
+
+.smallheader {
+	font-weight: bold;
+	font-size: medium;
+}
+
+.inputText {
+	float: left;
+	width: 280px;
+	padding: 3px;
+}
+
+.inputText input {
+	float: right;
+	margin-right: 5px;
+}
+
+.inputText label {
+	width: 100px;
+	float: left;
+}
+
+td,th {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#table1,#table2 {
+	float: left;
+	width: 45%;
+	position: relative;
+	left: 20px
+}
+
+.iddisplay {
+	position: relative;
+	left: 10px
+}
+
+.formh {
+	margin-bottom: 2px;
+	padding-bottom: 2px;
+	font-size: small;
+}
+
+.formd {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-size: small;
+}
+
+.rf-dg,.rf-dg-c {
+	border: none;
+}

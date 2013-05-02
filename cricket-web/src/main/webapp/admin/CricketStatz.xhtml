@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+<ui:composition template="/resources/templates/template.xhtml">
+	<f:metadata>
+		<f:viewParam name="compId" value="#{parseBean.selectedCompId}" />
+	</f:metadata>
+	<ui:define name="title">Parse Cricket Statz Text - Johnnie Walker XI</ui:define>
+	<ui:define name="rightside">
+
+	</ui:define>
+	<ui:define name="main">
+		<div>
+			<h:form>
+				<h2>Parse Cricket Statz exported text</h2>
+				<p>Paste exported Cricket Statz data here. Matches can be added
+					in bulk for a competition. Do not leave out any elements or lines
+					as this may cause data to be missing or the parse operation to
+					fail.</p>
+				<h:messages />
+				<h:outputLabel for="selectedComp" value="Competition"></h:outputLabel>
+				<h:selectOneMenu id="selectedComp"
+					value="#{parseBean.selectedCompId}">
+					<f:selectItems value="#{parseBean.competitionsSelectItems}" />
+				</h:selectOneMenu>
+				<h:inputTextarea value="#{parseBean.cricketStatzText}" cols="120"
+					rows="20" id="CSInputArea" />
+				<h:commandButton action="#{parseBean.parseText}" value="Parse text" />
+			</h:form>
+		
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

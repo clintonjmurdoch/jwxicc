@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<rich:column sortBy="#{game.round}" sortOrder="ascending">
+		<f:facet name="header">
+			<h:outputText value="Round"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{game.round}"></h:outputText>
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">
+			<h:outputText value="Home Team"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{game.team2.teamName}"></h:outputText>
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">
+			<h:outputText value="Away Team"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{game.team1.teamName}"></h:outputText>
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">
+			<h:outputText value="Ground"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{game.ground.groundName}"></h:outputText>
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">
+			<h:outputText value="Date"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{game.date}">
+			<f:convertDateTime pattern="dd/MM/yyyy" />
+		</h:outputText>
+	</rich:column>
+
+</ui:composition>

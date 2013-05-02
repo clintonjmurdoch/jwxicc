@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+<ui:composition template="/resources/templates/template.xhtml">
+	<ui:define name="title">Manage Competitions - Johnnie Walker XI</ui:define>
+	<ui:define name="rightside">
+	</ui:define>
+	<ui:define name="main">
+		<div class="centreAlign">
+			<rich:messages />
+			<a4j:outputPanel id="outPanel">
+				<h:form>
+					<a4j:outputPanel id="tablePanel"
+						rendered="#{compBean.pageCompId == 0}">
+						<rich:dataTable id="compTable" binding="#{compBean.compTable}"
+							styleClass="objectTable" value="#{compBean.compList}" var="comp">
+							<f:facet name="header">
+								<rich:column colspan="3">
+									<h:outputText styleClass="tblhdrctr" value="Competitions" />
+								</rich:column>
+							</f:facet>
+							<rich:column>
+								<h:outputText value="#{comp.associationName}"
+									rendered="#{not comp.editable}" />
+								<h:inputText value="#{comp.associationName}"
+									rendered="#{comp.editable}" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="#{comp.grade}"
+									rendered="#{not comp.editable}" />
+								<h:inputText value="#{comp.grade}" rendered="#{comp.editable}" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="#{comp.season}"
+									rendered="#{not comp.editable}" />
+								<h:inputText value="#{comp.season}" rendered="#{comp.editable}" />
+							</rich:column>
+							<rich:column>
+								<a4j:commandLink type="submit" action="#{compBean.editRow}"
+									rendered="#{comp.competitionId != 0}" execute="tablePanel"
+									render="compTable" value="Edit">
+									<f:setPropertyActionListener target="#{compBean.currentRowId}"
+										value="#{comp.competitionId}" />
+								</a4j:commandLink>
+								<a4j:commandLink type="submit" action="#{compBean.expandComp}"
+									rendered="#{comp.competitionId != 0}" execute="tablePanel"
+									render="outPanel" value="More">
+									<f:setPropertyActionListener target="#{compBean.pageCompId}"
+										value="#{comp.competitionId}" />
+								</a4j:commandLink>
+							</rich:column>
+						</rich:dataTable>
+						<a4j:commandButton type="submit" action="#{compBean.addRow}"
+							execute="@this" render="tablePanel" value="Add new Competition" />
+						<a4j:commandButton type="submit" action="#{compBean.saveAll}"
+							execute="outPanel" render="tablePanel" value="Save changes" />
+						<a4j:commandButton type="submit" action="#{compBean.resetAll}"
+							execute="@this" render="tablePanel" value="Reset changes" />
+					</a4j:outputPanel>
+					<a4j:outputPanel id="objectPanel"
+						rendered="#{compBean.pageCompId gt 0}">
+						<a4j:commandLink type="submit" render="outPanel" value="Back"
+							action="#{compBean.showTable}">
+							<f:setPropertyActionListener target="#{compBean.pageCompId}"
+								value="0" />
+						</a4j:commandLink>
+						<br />
+						<h:outputText
+							value="Competition #{compBean.pageCompId}: #{compBean.pageComp.associationName} #{compBean.pageComp.grade} #{compBean.pageComp.season}" />
+						<br />
+						<a4j:outputPanel>
+							<a4j:region>
+								<h:inputTextarea value="#{compBean.pageComp.review}"
+									styleClass="reviewEntry">
+									<f:converter converterId="ReviewConverter" />
+								</h:inputTextarea>
+								<br />
+								<a4j:commandButton execute="@region" type="submit"
+									value="Save Review" action="#{compBean.addReview}"
+									render="objectPanel" />
+							</a4j:region>
+						</a4j:outputPanel>
+						<a4j:outputPanel rendered="#{not empty compBean.pageComp.games}">
+							<rich:dataTable onrowclick="showGame('#{game.gameId}')"
+								styleClass="clickTable objectTable" var="game"
+								value="#{compBean.pageComp.games.setToList}">
+								<ui:include src="/resources/include/gamestablecolumns.xhtml" />
+							</rich:dataTable>
+						</a4j:outputPanel>
+						<a4j:jsFunction limitRender="true" name="showGame"
+							action="#{compBean.goToMatch}">
+							<a4j:param name="param1" assignTo="#{compBean.selectedMatchToView}"></a4j:param>
+						</a4j:jsFunction>
+						<p>
+							Other Actions:
+							<h:link outcome="CricketStatz.xhtml" value="Add games">
+								<f:param name="compId" value="#{compBean.pageCompId}" />
+							</h:link>
+						</p>
+					</a4j:outputPanel>
+				</h:form>
+			</a4j:outputPanel>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

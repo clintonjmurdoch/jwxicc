@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+<ui:composition template="/resources/templates/template.xhtml">
+	<ui:define name="title">Home - Johnnie Walker XI</ui:define>
+	<ui:define name="head"><h:outputScript library="js" name="fb.js" /></ui:define>
+	<ui:define name="rightside">
+		<!-- Facebook -->
+		<div id="fb-root"></div>
+		<div class="fb-like-box"
+			data-href="http://www.facebook.com/pages/Johnnie-Walker-XI/143138622462934"
+			data-width="296" data-show-faces="true" data-stream="false"
+			data-header="false"></div>
+	</ui:define>
+	<ui:define name="main">
+		<div id="nextmatch" class="note">
+			<h3>Next Match</h3>
+			<p>December 27, 2013 - Willowfest 2013, match to be determined</p>
+		</div>
+		<a4j:ajax event="load" render="newspanel" onbegin="loadnews()">
+			<a4j:jsFunction name="loadnews">
+				<f:setPropertyActionListener target="#{fbBean.renderNews}"
+					value="true" />
+			</a4j:jsFunction>
+		</a4j:ajax>
+		<rich:messages />
+		<a4j:outputPanel id="newspanel" >
+			<ui:repeat var="post" value="#{fbBean.feed.posts}">
+				<div class="newsbox">
+					<h:outputText escape="false" value="#{post.message}">
+						<f:converter converterId="PostConverter" />
+					</h:outputText>
+					<h:outputText rendered="#{not empty post.link}" escape="false"
+						value="&lt;br/&gt;&lt;a href=#{post.link}&gt;#{post.name}&lt;/a&gt;" />
+				</div>
+			</ui:repeat>
+		</a4j:outputPanel>
+	</ui:define>
+</ui:composition>
+</html>

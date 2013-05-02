@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+<ui:composition template="/resources/templates/template.xhtml">
+	<ui:define name="title">Match #<h:outputText
+			value="#{param.matchId}" /> - Johnnie Walker XI
+	</ui:define>
+	<f:metadata>
+		<f:viewParam name="matchId" value="#{matchBean.matchId}"></f:viewParam>
+		<!-- <f:event listener="#{matchBean.loadMatch}" type="preRenderView"></f:event> -->
+	</f:metadata>
+
+	<ui:define name="rightside">
+
+	</ui:define>
+	<ui:define name="main">
+		<div>
+			<ui:include src="/scorecard.xhtml" />
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

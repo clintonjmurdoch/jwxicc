@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+<ui:composition template="/resources/templates/template.xhtml">
+	<ui:define name="head">
+		<h:outputScript library="js" name="floating-1.12.js" />
+		<script type="text/javascript">
+			floatingMenu.add('floatdiv', {
+				// Represents distance from left or right browser window  
+				// border depending upon property used. Only one should be  
+				// specified.  
+				// targetLeft: 0,  
+				// targetRight : 10,
+
+				// Represents distance from top or bottom browser window  
+				// border depending upon property used. Only one should be  
+				// specified.  
+				targetTop : 10,
+				// targetBottom: 0,  
+
+				// Uncomment one of those if you need centering on  
+				// X- or Y- axis.  
+				// centerX: true,  
+				// centerY: true,  
+
+				// Remove this one if you don't want snap effect  
+				// snap : true
+			});
+		</script>
+	</ui:define>
+	<ui:define name="title">Batting Records - Johnnie Walker XI</ui:define>
+	<ui:define name="floatingrightside">
+		<div class="contentbox floatingnav">
+			<ul>
+				<li><a href="#">Return to Top</a></li>
+			</ul>
+			<h4>Innings Records</h4>
+			<ul>
+				<li><a href="#innsscore">Highest Score in an Innings</a></li>
+			</ul>
+			<h4>Career Records</h4>
+			<ul>
+				<li><a href="#careerruns">Most Career Runs</a></li>
+				<li><a href="#careeravg">Best Career Average</a></li>
+			</ul>
+		</div>
+	</ui:define>
+	<ui:define name="main">
+		<div class="contentbox">
+			<h2>Batting Records</h2>
+			<h4>
+				<a id="innsscore" />Highest score in an innings
+			</h4>
+			<rich:dataTable styleClass="objectTable" var="bat"
+				value="#{batRecordsBean.runsInInnings}">
+				<rich:column>
+					<f:facet name="header">Score</f:facet>
+					<h:outputText value="#{bat.score}" />
+					<h:outputText value=" (#{bat.balls})" rendered="#{bat.balls != 0}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Player</f:facet>
+					<h:link styleClass="sc-highlight" outcome="player"
+						value="#{bat.player.scorecardName}">
+						<f:param name="playerId" value="#{bat.player.playerId}" />
+					</h:link>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Opposition</f:facet>
+				#{bat.inning.game.team1.teamId != 2 ? bat.inning.game.team1.teamName : bat.inning.game.team2.teamName}
+			</rich:column>
+				<rich:column>
+					<f:facet name="header">Ground</f:facet>
+				#{bat.inning.game.ground.groundName}
+			</rich:column>
+				<rich:column>
+					<f:facet name="header">Date</f:facet>
+					<h:outputText value="#{bat.inning.game.date}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</rich:column>
+			</rich:dataTable>
+
+			<h4>
+				<a id="careerruns" />Most Career Runs
+			</h4>
+			<rich:dataTable styleClass="objectTable" var="bat"
+				value="#{batRecordsBean.aggregateRuns}">
+				<ui:include
+					src="/resources/include/careerbattingrecordcolumns.xhtml" />
+			</rich:dataTable>
+
+			<h4>
+				<a id="careeravg" />Best Career Average
+			</h4>
+			<rich:dataTable styleClass="objectTable" var="bat"
+				value="#{batRecordsBean.averageRuns}">
+				<ui:include
+					src="/resources/include/careerbattingrecordcolumns.xhtml" />
+			</rich:dataTable>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

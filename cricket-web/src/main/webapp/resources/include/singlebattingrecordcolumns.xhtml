@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<rich:column>
+		<f:facet name="header">Mts</f:facet>
+		<h:outputText value="#{bat.matchesPlayed}" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">Inns</f:facet>
+		<h:outputText value="#{bat.innings}" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">NO</f:facet>
+		<h:outputText value="#{bat.notOuts}" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">Runs</f:facet>
+		<h:outputText value="#{bat.aggregate}" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">Balls</f:facet>
+		<h:outputText value="#{bat.ballsFaced}" />
+
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">Avg</f:facet>
+		<h:outputText value="#{bat.average}">
+			<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+		</h:outputText>
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">HS</f:facet>
+		<h:outputText value="#{bat.highestScore}" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">50s</f:facet>
+		<h:outputText value="#{bat.fifties - bat.hundreds}" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">100s</f:facet>
+		<h:outputText value="#{bat.hundreds}" />
+
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">SR</f:facet>
+		<h:outputText value="#{bat.strikeRate}">
+			<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+		</h:outputText>
+	</rich:column>
+</ui:composition>

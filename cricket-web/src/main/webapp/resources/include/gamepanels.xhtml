@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+<ui:composition>
+	<!-- Game panels -->
+	<!-- Edit -->
+	<rich:popupPanel autosized="true" width="600" modal="true"
+		id="editgamepanel"
+		onmaskclick="#{rich:component('editgamepanel')}.hide(); document.getElementById('Game').reset()">
+		<f:facet name="header">
+			<h:outputText value="Edit Game" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<a4j:commandLink id="closeegplink"
+					oncomplete="#{rich:component('editgamepanel')}.hide(); document.getElementById('Game').reset()">
+					<h:graphicImage value="/resources/images/close.png"
+						styleClass="hidelink" />
+				</a4j:commandLink>
+			</h:panelGroup>
+		</f:facet>
+		<h:form id="Game">
+			<a4j:outputPanel id="outpanel" ajaxRendered="true">
+				<h:panelGrid columns="3">
+					<h:outputLabel for="gameid" value="Game ID: " />
+					<h:outputText id="gameid" value="#{gameUpdater.gameId}">
+						<f:converter converterId="IdConverter" />
+					</h:outputText>
+					<rich:message for="gameid" />
+
+					<h:outputLabel for="compid" value="Competition ID: " />
+					<h:inputText id="compid" value="#{gameUpdater.competitionId}"
+						readonly="true" />
+					<rich:message for="compid" />
+
+					<h:outputLabel for="date" value="Date: " />
+					<rich:calendar id="date" value="#{gameUpdater.game.date}"
+						datePattern="dd/MM/yyyy" cellWidth="24px" cellHeight="22px"
+						style="width:200px">
+						<f:validateRequired />
+						<rich:validator />
+					</rich:calendar>
+					<rich:message for="date" />
+
+					<h:outputLabel for="round" value="Round: " />
+					<h:inputText value="#{gameUpdater.game.round}" required="true"
+						id="round">
+						<f:validateRequired />
+						<f:validateLongRange minimum="1" maximum="99" />
+						<rich:validator />
+						<f:converter converterId="IdConverter" />
+					</h:inputText>
+					<rich:message for="round" />
+
+					<h:outputLabel for="hometeam" value="Home Team: " />
+					<h:selectOneMenu id="hometeam" value="#{gameUpdater.homeTeamId}">
+						<f:selectItems value="#{gameUpdater.teamList}" />
+						<f:validateRequired />
+						<rich:validator />
+					</h:selectOneMenu>
+					<rich:message for="hometeam" />
+
+					<h:outputLabel for="awayteam" value="Away Team: " />
+					<h:selectOneMenu id="awayteam" value="#{gameUpdater.awayTeamId}"
+						required="true">
+						<f:selectItems value="#{gameUpdater.teamList}" />
+						<f:validateRequired />
+						<rich:validator />
+					</h:selectOneMenu>
+					<rich:message for="awayteam" />
+
+					<h:outputLabel for="ground" value="Ground: " />
+					<h:selectOneMenu id="ground" value="#{gameUpdater.groundId}"
+						required="true">
+						<f:selectItems value="#{gameUpdater.groundList}" />
+						<f:validateRequired />
+						<rich:validator />
+					</h:selectOneMenu>
+					<rich:message for="ground" />
+
+					<h:outputLabel for="matchstate" value="Match State: " />
+					<h:selectOneMenu id="matchstate"
+						valueChangeListener="#{gameUpdater.matchStateChanged }"
+						value="#{gameUpdater.game.gameState}" required="true">
+						<f:selectItems value="#{gameUpdater.stateList}" />
+						<a4j:ajax event="valueChange" execute="@this" render="ifcompleted" />
+					</h:selectOneMenu>
+					<rich:message for="matchstate" />
+
+				</h:panelGrid>
+				<a4j:outputPanel id="ifcompleted" rendered="#{gameUpdater.matchComplete }">
+					<rich:panel>
+						<h:panelGrid columns="3">
+
+							<h:outputLabel for="winner" value="Winner: " />
+							<h:selectOneMenu value="#{gameUpdater.game.winner}" id="winner">
+								<f:selectItem itemValue="HOME" itemLabel="Home Team" />
+								<f:selectItem itemValue="AWAY" itemLabel="Away Team" />
+							</h:selectOneMenu>
+							<rich:message for="winner" />
+
+							<h:outputLabel for="winmargin" value="Win Margin: " />
+							<h:panelGroup>
+								<h:inputText value="#{gameUpdater.game.winMargin}"
+									id="winmargin">
+									<f:converter converterId="IdConverter" />
+									<f:validateRequired/>
+									<rich:validator/>
+								</h:inputText>
+								<h:selectOneMenu id="margintype"
+									value="#{gameUpdater.game.marginType}">
+									<f:selectItem itemValue="runs" itemLabel="Runs" />
+									<f:selectItem itemValue="wickets" itemLabel="Wickets" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+							<h:panelGroup>
+								<rich:message for="winmargin" />
+								<rich:message for="margintype" />
+							</h:panelGroup>
+
+							<h:outputLabel for="wintype" value="Win Type: " />
+							<h:selectOneMenu id="wintype" value="#{gameUpdater.wintypeId}">
+								<f:selectItems value="#{gameUpdater.wintypeList}" />
+							</h:selectOneMenu>
+							<rich:message for="wintype" />
+
+							<h:outputLabel for="gamereview" value="Review: " />
+							<h:inputTextarea rows="5" cols="25" value="#{gameUpdater.review}"
+								id="gamereview">
+								<f:converter converterId="ReviewConverter" />
+							</h:inputTextarea>
+							<rich:message for="gamereview" />
+
+						</h:panelGrid>
+					</rich:panel>
+				</a4j:outputPanel>
+				<h:panelGrid columns="3">
+
+					<a4j:commandButton value="Cancel" type="button"
+						onclick="#{rich:component('editgamepanel')}.hide(); document.getElementById('Game').reset()" />
+					<a4j:commandButton render="gametable, gamemsg" value="Update"
+						action="#{gameUpdater.store}"
+						oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('editgamepanel')}.hide(); return false;">
+					</a4j:commandButton>
+				</h:panelGrid>
+			</a4j:outputPanel>
+		</h:form>
+	</rich:popupPanel>
+
+	<!-- Delete -->
+	<rich:popupPanel autosized="true" width="400" modal="true"
+		id="deletegamepanel"
+		onmaskclick="#{rich:component('deletegamepanel')}.hide()">
+		<f:facet name="header">
+			<h:outputText value="Delete Game" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<a4j:commandLink id="closedgplink"
+					oncomplete="#{rich:component('deletegamepanel')}.hide()">
+					<h:graphicImage value="/resources/images/close.png"
+						styleClass="hidelink" />
+				</a4j:commandLink>
+			</h:panelGroup>
+		</f:facet>
+		<h:panelGrid columns="2">
+			<h:outputText value="Delete this game?" />
+			<h:outputText />
+			<a4j:region>
+				<a4j:commandButton value="Cancel"
+					onclick="#{rich:component('deletegamepanel')}.hide()" />
+			</a4j:region>
+			<a4j:region>
+				<a4j:commandButton value="Delete" action="#{gameUpdater.delete}"
+					oncomplete="#{rich:component('deletegamepanel')}.hide()"
+					render="gametable, gamemsg" />
+			</a4j:region>
+		</h:panelGrid>
+	</rich:popupPanel>
+</ui:composition>
+</h:html>

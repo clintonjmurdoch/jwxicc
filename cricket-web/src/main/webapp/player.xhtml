@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+<ui:composition template="/resources/templates/template.xhtml">
+	<ui:define name="title">#{playerBean.player.scorecardName} - Johnnie Walker XI</ui:define>
+	<f:metadata>
+		<f:viewParam name="playerId" value="#{playerBean.playerId}"
+			required="true"
+			requiredMessage="Player ID must be supplied in the request"></f:viewParam>
+		<f:event listener="#{playerBean.loadPlayer}" type="preRenderView" />
+	</f:metadata>
+
+	<ui:define name="body">
+		<div style="padding: 0 20px;">
+			<div>
+				<h3>#{empty playerBean.player.playerName ?
+					playerBean.player.scorecardName : playerBean.player.playerName}</h3>
+			</div>
+			<a4j:outputPanel layout="block"
+				rendered="#{playerBean.player.jwplayer != null}">
+				<h:outputText styleClass="singleline"
+					value="Full name: #{playerBean.player.jwplayer.fullname}" />
+				<br />
+				<span class="singleline">
+					<h:outputText value="Born: " />
+					<h:outputText value="#{playerBean.player.jwplayer.birthdate}">
+						<f:convertDateTime pattern="MMMMM d yyyy" />
+					</h:outputText>
+					<h:outputText value=", #{playerBean.player.jwplayer.birthplace}" />
+				</span>
+				<br />
+				<h:outputText styleClass="singleline"
+					value="Nicknames: #{playerBean.player.jwplayer.nicknames}" />
+				<br />
+				<h:outputText styleClass="singleline"
+					value="Batting Style: #{playerBean.player.jwplayer.battingStyle}" />
+				<br />
+				<h:outputText styleClass="singleline"
+					value="Bowling Style: #{playerBean.player.jwplayer.bowlingStyle}" />
+				<br />
+				<h:outputText styleClass="singleline"
+					value="Fielding Position: #{playerBean.player.jwplayer.fieldingPositions}" />
+				<br />
+				<h:outputText styleClass="singleline"
+					value="Teams: #{playerBean.player.jwplayer.teams}" />
+				<br />
+				<h:outputText styleClass="singleline"
+					value="Cap Number: #{playerBean.player.jwplayer.capNumber}" />
+				<br />
+				<h:outputText styleClass="singleline"
+					value="Shirt Number: #{playerBean.player.jwplayer.shirtNumber}" />
+
+				<a4j:outputPanel styleClass="reviewText" layout="block"
+					rendered="#{not empty playerBean.player.jwplayer.profile}">
+					<h:outputText value="#{playerBean.player.jwplayer.profile}"></h:outputText>
+				</a4j:outputPanel>
+			</a4j:outputPanel>
+
+			<h4>
+				<a id="battingcareer" />Batting career
+			</h4>
+			<rich:dataTable styleClass="objectTable" var="bat"
+				value="#{playerBean.careerBatting}">
+				<ui:include
+					src="/resources/include/singlebattingrecordcolumns.xhtml" />
+			</rich:dataTable>
+
+			<h4>
+				<a id="battingcareer" />Bowling career
+			</h4>
+			<rich:dataTable styleClass="objectTable" var="bowl"
+				value="#{playerBean.careerBowling}">
+				<ui:include
+					src="/resources/include/singlebowlingrecordcolumns.xhtml" />
+			</rich:dataTable>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

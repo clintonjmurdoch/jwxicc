@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="template.xhtml">
+	<ui:define name="title">Willowfest #{WFBean.comp.season} - Johnnie Walker XI</ui:define>
+	<h:outputScript>
+
+	</h:outputScript>
+	<ui:define name="rightside">
+
+	</ui:define>
+	<ui:define name="main">
+		<div class="contentbox">
+			<div style="text-align: center;">
+				<h2>Willowfest #{WFBean.comp.season}</h2>
+				<p>Mildura — December 27-30, #{WFBean.comp.season}</p>
+			</div>
+			<div>
+				<h:outputText value="#{WFBean.comp.review}">
+					<f:converter converterId="ReviewConverter" />
+				</h:outputText>
+			</div>
+			<h:form>
+				<a4j:jsFunction limitRender="true" name="showGame"
+					action="#{WFBean.goToMatch}">
+					<a4j:param name="param1" assignTo="#{WFBean.selectedMatchToView}"></a4j:param>
+				</a4j:jsFunction>
+				<a4j:outputPanel rendered="#{not empty WFBean.comp.games}">
+					<rich:dataTable onrowclick="showGame('#{game.gameId}')"
+						styleClass="clickTable objectTable" var="game"
+						value="#{WFBean.comp.games.setToList}">
+						<ui:include src="/resources/include/gamestablecolumns.xhtml" />
+					</rich:dataTable>
+				</a4j:outputPanel>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+
+</html>

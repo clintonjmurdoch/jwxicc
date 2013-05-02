@@ -1,0 +1,187 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div id="matchheader">
+		<p>
+			<h:outputText
+				value="#{matchBean.match.competition.associationName} #{matchBean.match.competition.grade}, " />
+			<h:outputText value="Round #{matchBean.match.round}: " />
+			<h:outputText
+				value="#{matchBean.match.team2.teamName} v #{matchBean.match.team1.teamName} " />
+			<h:outputText value="at #{matchBean.match.ground.groundName}, " />
+			<h:outputText value="#{matchBean.match.date}">
+				<f:convertDateTime pattern="MMM dd, yyyy" />
+			</h:outputText>
+		</p>
+		<p>
+			<h:outputText
+				value="#{matchBean.match.winner == 'HOME' ? matchBean.match.team2.teamName : matchBean.match.team1.teamName} won by " />
+			<h:outputText
+				value="#{matchBean.match.winMargin} #{matchBean.match.winType.winTypeName}" />
+		</p>
+	</div>
+
+	<rich:tabPanel switchType="client">
+		<rich:tab header="Match Review"
+			rendered="#{matchBean.match.review != null}">
+			<h:outputText value="#{matchBean.match.review.reviewText}"
+				styleClass="reviewText" />
+		</rich:tab>
+		<c:forEach var="inns" items="#{matchBean.match.innings.setToList}">
+			<rich:tab header="#{inns.team.teamName} innings">
+				<rich:dataTable var="batter" value="#{inns.battings.setToList}"
+					styleClass="scorecard">
+					<f:facet name="header">
+						<rich:columnGroup>
+							<rich:column colspan="2" style="text-align: left">
+							</rich:column>
+							<rich:column styleClass="sc-numbers">R</rich:column>
+							<rich:column styleClass="sc-numbers">B</rich:column>
+							<rich:column styleClass="sc-numbers">4s</rich:column>
+							<rich:column styleClass="sc-numbers">6s</rich:column>
+							<rich:column styleClass="sc-numbers">SR</rich:column>
+						</rich:columnGroup>
+					</f:facet>
+					<rich:column styleClass="sc-name" sortBy="#{batter.battingPos}"
+						sortOrder="ascending">
+						<h:link styleClass="sc-highlight" outcome="player"
+							value="#{matchBean.allPlayerMap[batter.player.playerId].scorecardName}">
+							<f:param name="playerId" value="#{batter.player.playerId}" />
+						</h:link>
+						<h:outputText
+							rendered="#{matchBean.allPlayerMap[batter.player.playerId].captain}"
+							value="*" />
+						<h:outputText
+							rendered="#{matchBean.allPlayerMap[batter.player.playerId].keeper}"
+							value="†" escape="false" />
+					</rich:column>
+					<rich:column styleClass="sc-howout">
+						<h:outputText value="#{batter}">
+							<f:converter converterId="howoutDisplay"></f:converter>
+						</h:outputText>
+					</rich:column>
+					<rich:column styleClass="sc-numbers sc-highlight">
+						<h:outputText value="#{batter.score}"
+							rendered="#{batter.howout.howOutid != 0}"></h:outputText>
+					</rich:column>
+					<rich:column styleClass="sc-numbers">
+						<h:outputText value="#{batter.balls}"
+							rendered="#{batter.howout.howOutid != 0}"></h:outputText>
+					</rich:column>
+					<rich:column styleClass="sc-numbers">
+						<h:outputText value="#{batter.fours}"
+							rendered="#{batter.howout.howOutid != 0}"></h:outputText>
+					</rich:column>
+					<rich:column styleClass="sc-numbers">
+						<h:outputText value="#{batter.sixes}"
+							rendered="#{batter.howout.howOutid != 0}"></h:outputText>
+					</rich:column>
+					<rich:column styleClass="sc-decimal">
+						<h:outputText value="#{(batter.score/batter.balls)*100}"
+							rendered="#{batter.balls != 0}">
+							<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+						</h:outputText>
+					</rich:column>
+					<f:facet name="footer">
+						<rich:columnGroup>
+							<rich:column styleClass="sc-innsDetail">Extras</rich:column>
+							<rich:column styleClass="sc-howout">
+								<h:outputText value="#{inns.byes}b "
+									rendered="#{inns.byes gt 0}" />
+								<h:outputText value="#{inns.legByes}lb "
+									rendered="#{inns.legByes gt 0}" />
+								<h:outputText value="#{inns.wides}w "
+									rendered="#{inns.wides gt 0}" />
+								<h:outputText value="#{inns.noBalls}nb "
+									rendered="#{inns.noBalls gt 0}" />
+							</rich:column>
+							<rich:column styleClass="sc-numbers">
+								<h:outputText
+									value="#{inns.byes + inns.legByes + inns.wides + inns.noBalls}"></h:outputText>
+							</rich:column>
+							<rich:column colspan="3"></rich:column>
+							<rich:column breakRowBefore="true"
+								styleClass="sc-innsDetail sc-highlight">Total</rich:column>
+							<rich:column styleClass="sc-howout">
+								<h:outputText value="#{inns}">
+									<f:converter converterId="wicketDisplay"></f:converter>
+								</h:outputText>
+								<h:outputText value="#{inns.oversFaced} overs)">
+									<f:convertNumber maxFractionDigits="1" />
+								</h:outputText>
+							</rich:column>
+							<rich:column styleClass="sc-numbers">
+								<h:outputText value="#{inns.runsScored}"></h:outputText>
+							</rich:column>
+							<rich:column colspan="3"></rich:column>
+							<rich:column breakRowBefore="true" colspan="7"
+								styleClass="sc-innsDetail">
+								<h:outputText value="Fall of wickets: "></h:outputText>
+								<ui:repeat var="fow" value="#{inns.fows.setToList}"
+									varStatus="c">
+									<h:outputText value="#{fow.wicket}-#{fow.score} " />
+									<h:outputText
+										value="(#{matchBean.allPlayerMap[fow.fowWickets.setToList[0].player.playerId].scorecardName})"></h:outputText>
+									<h:outputText value="#{c.last ? '' : ', '}" />
+								</ui:repeat>
+							</rich:column>
+						</rich:columnGroup>
+					</f:facet>
+				</rich:dataTable>
+				<rich:dataTable var="bowler" value="#{inns.bowlings.setToList}"
+					styleClass="scorecard" style="width: auto;">
+					<f:facet name="header">
+						<rich:columnGroup>
+							<rich:column style="text-align: left">Bowling</rich:column>
+							<rich:column styleClass="sc-numbers">O</rich:column>
+							<rich:column styleClass="sc-numbers">M</rich:column>
+							<rich:column styleClass="sc-numbers">R</rich:column>
+							<rich:column styleClass="sc-numbers">W</rich:column>
+							<rich:column styleClass="sc-numbers">NB</rich:column>
+							<rich:column styleClass="sc-numbers">Wd</rich:column>
+							<rich:column styleClass="sc-numbers">Econ</rich:column>
+						</rich:columnGroup>
+					</f:facet>
+					<rich:column styleClass="sc-name" sortBy="#{bowler.bowlingPos}"
+						sortOrder="ascending">
+						<h:link styleClass="sc-highlight" outcome="player"
+							value="#{bowler.player.scorecardName}">
+							<f:param name="playerId" value="#{bowler.player.playerId}" />
+						</h:link>
+					</rich:column>
+					<rich:column styleClass="sc-numbers">
+						<h:outputText value="#{bowler.overs}">
+							<f:convertNumber maxFractionDigits="1" />
+						</h:outputText>
+					</rich:column>
+					<rich:column styleClass="sc-numbers">
+						<h:outputText value="#{bowler.maidens}" />
+					</rich:column>
+					<rich:column styleClass="sc-numbers">
+						<h:outputText value="#{bowler.runs}" />
+					</rich:column>
+					<rich:column styleClass="sc-numbers">
+						<h:outputText value="#{bowler.wickets}" />
+					</rich:column>
+					<rich:column styleClass="sc-numbers">
+						<h:outputText value="#{bowler.noBalls}" />
+					</rich:column>
+					<rich:column styleClass="sc-numbers">
+						<h:outputText value="#{bowler.wides}" />
+					</rich:column>
+					<rich:column styleClass="sc-numbers">
+						<h:outputText value="#{bowler.economy}">
+							<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+						</h:outputText>
+						<h:outputText rendered="#{bowler.economy == null}" value="-" />
+					</rich:column>
+				</rich:dataTable>
+			</rich:tab>
+		</c:forEach>
+	</rich:tabPanel>
+</ui:composition>

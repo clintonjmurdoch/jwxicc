@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<meta charset="utf-8" />
+	<!-- CSS -->
+	<h:outputStylesheet library="css" name="yaml/forms/gray-theme.css" />
+	<h:outputStylesheet library="css" name="yaml/core/base.css" />
+	<h:outputStylesheet library="css" name="yaml/core/iehacks.css" />
+	<h:outputStylesheet library="css" name="my_layout.css" />
+	<ui:insert name="head"></ui:insert>
+	<title><ui:insert name="title">Johnnie Walker XI</ui:insert></title>
+	<script type="text/javascript">
+	function doFocus() {
+		if ($('.firstfield') != null) {
+			$('.firstfield').focus();
+		}
+	}
+	</script>
+</h:head>
+<h:body>
+	<div class="ym-wrapper">
+		<div class="ym-wbox">
+			<ui:insert name="header">
+				<ui:include src="header.xhtml" />
+			</ui:insert>
+			<!-- Content Section -->
+			<div id="main">
+				<ui:insert name="body">
+					<div class="ym-column">
+						<div class="ym-col1">
+							<div class="ym-cbox">
+								<!-- Main content pane -->
+								<ui:insert name="main">Main pane</ui:insert>
+							</div>
+						</div>
+						<div class="ym-col3">
+							<div class="ym-cbox">
+								<!-- Right side pane -->
+								<ui:insert name="rightside">
+								</ui:insert>
+							</div>
+						</div>
+						<div id="floatdiv">
+							<div class="ym-cbox">
+								<ui:insert name="floatingrightside"></ui:insert>
+							</div>
+						</div>
+					</div>
+				</ui:insert>
+				<br style="clear: both"/>
+			</div>
+			<!-- End of Content Section -->
+
+			<ui:insert name="footer">
+				<ui:include src="footer.xhtml" />
+			</ui:insert>
+		</div>
+	</div>
+</h:body>
+</html>

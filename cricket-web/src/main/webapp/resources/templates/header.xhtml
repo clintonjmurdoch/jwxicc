@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+<ui:composition>
+	<div class="header">
+		<div style="display: inline">
+			<h:graphicImage library="images" name="favicon.ico" height="89" />
+			<h:graphicImage library="images" name="bannertext.gif"
+				alt="Johnnie Walker XI" height="85" />
+		</div>
+	</div>
+	<rich:toolbar styleClass="ddmenu">
+		<!-- Home button -->
+		<rich:menuItem submitMode="client">
+			<h:outputLink value="#{request.contextPath}/home.xhtml">
+				<h:outputText value="Home" />
+			</h:outputLink>
+		</rich:menuItem>
+		<rich:dropDownMenu>
+			<f:facet name="label">
+				<h:outputText value="Willowfest" />
+			</f:facet>
+			<rich:menuItem submitMode="client">
+				<h:outputLink
+					value="#{request.contextPath}/Willowfest/2012/home.xhtml">
+					<h:outputText value="2012" />
+				</h:outputLink>
+				<h:outputLink
+					value="#{request.contextPath}/Willowfest/2011/home.xhtml">
+					<h:outputText value="2011" />
+				</h:outputLink>
+				<h:outputLink
+					value="#{request.contextPath}/Willowfest/2010/home.xhtml">
+					<h:outputText value="2010" />
+				</h:outputLink>
+				<h:outputLink
+					value="#{request.contextPath}/Willowfest/2009/home.xhtml">
+					<h:outputText value="2009" />
+				</h:outputLink>
+			</rich:menuItem>
+		</rich:dropDownMenu>
+		<rich:dropDownMenu>
+			<f:facet name="label">
+				<h:outputText value="Keep On Walking" />
+			</f:facet>
+			<rich:menuItem submitMode="client">
+				<h:outputLink value="#{request.contextPath}/history.xhtml">
+					<h:outputText value="History" />
+				</h:outputLink>
+				<h:outputLink value="#{request.contextPath}/definingevents.xhtml">
+					<h:outputText value="Defining Events" />
+				</h:outputLink>
+				<h:outputLink value="#{request.contextPath}/rules.xhtml">
+					<h:outputText value="Team Rules" />
+				</h:outputLink>
+			</rich:menuItem>
+		</rich:dropDownMenu>
+		<rich:dropDownMenu>
+			<f:facet name="label">
+				<h:outputText value="Records" />
+			</f:facet>
+			<rich:menuItem submitMode="client">
+				<h:outputLink
+					value="#{request.contextPath}/records/teamrecords.xhtml">
+					<h:outputText value="Team Records" />
+				</h:outputLink>
+				<h:outputLink
+					value="#{request.contextPath}/records/battingrecords.xhtml">
+					<h:outputText value="Batting Records" />
+				</h:outputLink>
+				<h:outputLink
+					value="#{request.contextPath}/records/bowlingrecords.xhtml">
+					<h:outputText value="Bowling Records" />
+				</h:outputLink>
+			</rich:menuItem>
+		</rich:dropDownMenu>
+		<rich:toolbarGroup location="right">
+			<rich:dropDownMenu direction="bottomLeft" jointPoint="bottomRight" >
+				<f:facet name="label">
+					<h:outputText value="Admin" />
+				</f:facet>
+				<rich:menuItem submitMode="client">
+					<h:outputLink
+						value="#{request.contextPath}/admin/CompetitionManagement.xhtml">
+						<h:outputText value="Manage Competitions" />
+					</h:outputLink>
+					<h:outputLink
+						value="#{request.contextPath}/admin/CricketStatz.xhtml">
+						<h:outputText value="Manage Games" />
+					</h:outputLink>
+					<h:outputLink
+						value="#{request.contextPath}/admin/PlayerManagement.xhtml">
+						<h:outputText value="Manage Players" />
+					</h:outputLink>
+				</rich:menuItem>
+			</rich:dropDownMenu>
+			<!-- Spacer -->
+		</rich:toolbarGroup>
+	</rich:toolbar>
+	<!-- 
+	<ul id="jMenu">
+		<li><a class="fNiv" href="index.php">Home</a></li>
+		<li><a class="fNiv">Willowfest</a>
+			<ul>
+				<li><a href="Willowfest/2012/squad.php">2012 Squad</a></li>
+				<li><a href="http://www.willowfest.com.au/results/">Results</a></li>
+				<li><a href="Willowfest/2011">2011</a></li>
+				<li><a href="Willowfest/2010">2010</a></li>
+				<li><a href="Willowfest/2009">2009</a></li>
+			</ul></li>
+		<li><a class="fNiv">Season Reports</a>
+			<ul>
+				<li><a href="2011-12.php">2011/12</a></li>
+				<li><a href="2010-11.php">2010/11</a></li>
+				<li><a href="2009-10.php">2009/10</a></li>
+				<li><a href="2008-09.php">2008/09</a></li>
+				<li><a href="2006-07.php">2006/07</a></li>
+			</ul></li>
+		<li><a class="fNiv">Players</a>
+			<ul>
+				<li><a href="playerprofiles.php">Player Profiles/Cap
+						Numbers</a></li>
+				<li><a href="shirtnumbers.php">Shirt Numbers</a></li>
+			</ul></li>
+		<li><a class="fNiv">Keep On Walking</a>
+			<ul>
+				<li><a href="history.php">History</a></li>
+				<li><a href="events.php">Defining Events</a></li>
+				<li><a href="teamrules.php">Team Rules</a></li>
+			</ul></li>
+		<li><a class="fNiv">Stats</a>
+			<ul>
+				<li><a href="seasonstats.php">Season Statistics</a></li>
+				<li><a href="records.php">Records</a></li>
+			</ul></li>
+		<li><a class="fNiv" href="halloffame.php">Hall of Fame</a></li>
+		<li>
+			<form id="searchform" class="ym-searchform" method="get"
+				action="http://www.google.com.au/search">
+				<input class="ym-searchfield" type="search" name="q"
+					placeholder="Search..." /> 
+				<input type="hidden" name="sitesearch"
+					value="jwxicc.com"/>
+				<input class="ym-searchbutton"
+					type="submit" value="Go" />
+
+			</form>
+		</li>
+	</ul>
+	-->
+</ui:composition>
+</html>

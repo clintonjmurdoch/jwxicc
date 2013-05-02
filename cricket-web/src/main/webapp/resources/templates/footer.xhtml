@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition>
+	<footer>
+		<div class="footer-content">
+			<div style="display: inline-block;" id="links">
+				<a href="http://yaml.de">Layout based on YAML</a> |
+				<h:outputLink value="#{request.contextPath}/contact.xhtml">
+					<h:outputText value="Contact Us" />
+				</h:outputLink>
+				|
+				<h:outputLink value="#{request.contextPath}/suggestions.xhtml">
+					<h:outputText value="Suggestions" />
+				</h:outputLink>
+			</div>
+			<!-- <div class="fb-subscribe"
+				data-href="http://www.facebook.com/pages/Johnnie-Walker-XI/143138622462934"
+				data-show-faces="false" data-font="verdana" data-width="200"></div>
+				-->
+		</div>
+	</footer>
+</ui:composition>
+</html>

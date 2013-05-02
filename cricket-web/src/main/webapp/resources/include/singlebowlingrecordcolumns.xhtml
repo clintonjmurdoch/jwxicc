@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<rich:column>
+		<f:facet name="header">Mts</f:facet>
+		<h:outputText value="#{bowl.matchesPlayed}" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">O</f:facet>
+		<h:outputText value="#{bowl.overs}" >
+			<f:convertNumber maxFractionDigits="1"></f:convertNumber>
+		</h:outputText>
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">M</f:facet>
+		<h:outputText value="#{bowl.maidens}" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">R</f:facet>
+		<h:outputText value="#{bowl.runsConceded}" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">W</f:facet>
+		<h:outputText value="#{bowl.wickets}" />
+
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">Avg</f:facet>
+		<h:outputText value="#{bowl.average}">
+			<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+		</h:outputText>
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">Best</f:facet>
+		<h:outputText value="#{bowl.bestBowlingWickets}/#{bowl.bestBowlingRuns}" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">5I</f:facet>
+		<h:outputText value="#{bowl.fiveWktInns}" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">Econ</f:facet>
+		<h:outputText value="#{bowl.economy}">
+			<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+		</h:outputText>
+	</rich:column>
+
+</ui:composition>
