@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<rich:column>
+		<f:facet name="header">Date</f:facet>
+		<h:outputText value="#{inns.game.date}">
+			<f:convertDateTime pattern="dd/MM/yyyy" />
+		</h:outputText>
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">Opposition</f:facet>
+		<h:outputText value="#{inns.game.team2.teamId == teamRecordsBean.jwTeamId ? inns.game.team1.teamName : inns.game.team2.teamName }" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">Ground</f:facet>
+		<h:outputText value="#{inns.game.ground.groundName}" />
+		<h:outputText rendered="#{not empty inns.game.ground.suburb}" value=", #{inns.game.ground.suburb}" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">Score</f:facet>
+		<h:outputText rendered="#{inns.wicketsLost lt 10}" value="#{inns.wicketsLost}/"/>
+		<h:outputText value="#{inns.runsScored}" />
+		<h:outputText rendered="#{inns.closureType == 'ALLOUT' and inns.wicketsLost gt 10}" value=" All Out" />
+		<h:outputText rendered="#{inns.closureType == 'DECLARED'}" value="dec" />
+		<h:outputText value=" (#{inns.oversFaced})" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">Innings</f:facet>
+		<h:outputText value="#{inns.inningsOfMatch}" />
+	</rich:column>
+	<rich:column>
+		<f:facet name="header">Result</f:facet>
+		<h:outputText rendered="#{inns.game.winner == 'HOME'}" value="#{inns.game.team2.teamId == teamRecordsBean.jwTeamId ? 'Won' : 'Lost' }" />
+		<h:outputText rendered="#{inns.game.winner == 'AWAY'}" value="#{inns.game.team2.teamId == teamRecordsBean.jwTeamId ? 'Lost' : 'Won' }" />
+	</rich:column>
+</ui:composition>

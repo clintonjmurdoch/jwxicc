@@ -439,7 +439,7 @@ div.rf-tab-hdr-brd {
 }
 
 /* tab content or regular content box */
-div.rf-tab-cnt,.contentbox {
+div.rf-tab-cnt,.floatingnav {
 	border: 1px solid #C4C0B9;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
@@ -560,6 +560,7 @@ div.rf-tab-cnt,.contentbox {
 .ym-wrapper .objectTable {
 	border: none;
 	width: 100%;
+	margin-bottom: 15px;
 }
 
 .ym-wrapper .objectTable th {

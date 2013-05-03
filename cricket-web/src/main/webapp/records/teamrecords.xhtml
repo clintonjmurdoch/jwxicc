@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+<ui:composition template="/resources/templates/template.xhtml">
+	<ui:define name="head">
+		<h:outputScript library="js" name="floating-1.12.js" />
+		<script type="text/javascript">
+			floatingMenu.add('floatdiv', {
+				// Represents distance from left or right browser window  
+				// border depending upon property used. Only one should be  
+				// specified.  
+				// targetLeft: 0,  
+				// targetRight : 10,
+
+				// Represents distance from top or bottom browser window  
+				// border depending upon property used. Only one should be  
+				// specified.  
+				targetTop : 10,
+			// targetBottom: 0,  
+
+			// Uncomment one of those if you need centering on  
+			// X- or Y- axis.  
+			// centerX: true,  
+			// centerY: true,  
+
+			// Remove this one if you don't want snap effect  
+			// snap : true
+			});
+		</script>
+	</ui:define>
+	<ui:define name="title">Team Records - Johnnie Walker XI</ui:define>
+	<ui:define name="floatingrightside">
+		<div class="contentbox floatingnav">
+			<ul>
+				<li><a href="#">Return to Top</a></li>
+			</ul>
+			<h4>Innings Records</h4>
+			<ul>
+				<li><a href="#highestfor">Highest Score</a></li>
+				<li><a href="#lowestfor">Lowest Score</a></li>
+				<li><a href="#highestagainst">Highest Score Conceded</a></li>
+				<li><a href="#lowestagainst">Lowest Score Conceded</a></li>
+			</ul>
+		</div>
+	</ui:define>
+	<ui:define name="main">
+		<div class="contentbox">
+			<h:form>
+				<h2>Team Records</h2>
+				<h4>
+					<a id="highestfor" />Highest Score
+				</h4>
+				<rich:dataTable styleClass="clickTable objectTable" var="inns"
+					value="#{teamRecordsBean.highestFor}"
+					onrowclick="showGame('#{inns.game.gameId}')">
+					<ui:include src="/resources/include/inningsrecordcolumns.xhtml" />
+				</rich:dataTable>
+
+				<h4>
+					<a id="lowestfor" />Lowest Score (Completed innings only)
+				</h4>
+				<rich:dataTable styleClass="clickTable objectTable" var="inns"
+					value="#{teamRecordsBean.lowestFor}"
+					onrowclick="showGame('#{inns.game.gameId}')">
+					<ui:include src="/resources/include/inningsrecordcolumns.xhtml" />
+				</rich:dataTable>
+
+				<h4>
+					<a id="highestagainst" />Highest Score Conceded
+				</h4>
+				<rich:dataTable styleClass="clickTable objectTable" var="inns"
+					value="#{teamRecordsBean.highestAgainst}"
+					onrowclick="showGame('#{inns.game.gameId}')">
+					<ui:include src="/resources/include/inningsrecordcolumns.xhtml" />
+				</rich:dataTable>
+
+				<h4>
+					<a id="lowestagainst" />Lowest Score Conceded (Completed innings
+					only)
+				</h4>
+				<rich:dataTable styleClass="clickTable objectTable" var="inns"
+					value="#{teamRecordsBean.lowestAgainst}"
+					onrowclick="showGame('#{inns.game.gameId}')">
+					<ui:include src="/resources/include/inningsrecordcolumns.xhtml" />
+				</rich:dataTable>
+				
+				<a4j:jsFunction limitRender="true" name="showGame"
+					action="#{teamRecordsBean.goToMatch}">
+					<a4j:param name="param1"
+						assignTo="#{teamRecordsBean.selectedMatchToView}"></a4j:param>
+				</a4j:jsFunction>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>
