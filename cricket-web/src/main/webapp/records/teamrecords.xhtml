@@ -51,6 +51,15 @@
 		<div class="contentbox">
 			<h:form>
 				<h2>Team Records</h2>
+				<span class="overallrecord"> <h:outputText
+						value="Total Matches: #{teamRecordsBean.overallRecord.matches} " />
+					<h:outputText value="(Won #{teamRecordsBean.overallRecord.won}, " />
+					<h:outputText value="Lost #{teamRecordsBean.overallRecord.lost}" />
+					<h:outputText
+						rendered="#{teamRecordsBean.overallRecord.noResult gt 0}"
+						value=", #{teamRecordsBean.overallRecord.noResult} No Result" />
+					<h:outputText value=")" />
+				</span>
 				<h4>
 					<a id="highestfor" />Highest Score
 				</h4>
@@ -87,7 +96,7 @@
 					onrowclick="showGame('#{inns.game.gameId}')">
 					<ui:include src="/resources/include/inningsrecordcolumns.xhtml" />
 				</rich:dataTable>
-				
+
 				<a4j:jsFunction limitRender="true" name="showGame"
 					action="#{teamRecordsBean.goToMatch}">
 					<a4j:param name="param1"

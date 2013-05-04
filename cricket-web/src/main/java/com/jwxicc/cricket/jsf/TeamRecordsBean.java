@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 
 import com.jwxicc.cricket.entity.Inning;
 import com.jwxicc.cricket.records.TeamRecordsManager;
+import com.jwxicc.cricket.records.WinLossDrawRecord;
 import com.jwxicc.cricket.util.JwxiccUtils;
 
 @ManagedBean(name = "teamRecordsBean")
@@ -26,6 +27,7 @@ public class TeamRecordsBean implements Serializable {
 	private List<Inning> lowestFor;
 	private List<Inning> highestAgainst;
 	private List<Inning> lowestAgainst;
+	private WinLossDrawRecord overallRecord;
 	private int selectedMatchToView;
 	
 	public String goToMatch() {
@@ -81,6 +83,17 @@ public class TeamRecordsBean implements Serializable {
 
 	public void setLowestAgainst(List<Inning> lowestAgainst) {
 		this.lowestAgainst = lowestAgainst;
+	}
+
+	public WinLossDrawRecord getOverallRecord() {
+		if (overallRecord == null) {
+			overallRecord = teamRecords.getOverallRecord();
+		}
+		return overallRecord;
+	}
+
+	public void setOverallRecord(WinLossDrawRecord overallRecord) {
+		this.overallRecord = overallRecord;
 	}
 
 	public int getJwTeamId() {
