@@ -43,7 +43,6 @@ public class HowoutDisplayConverter implements Converter {
 		String toReturn = null; // required by some wickets
 		
 		// if there are wicket details, save them to a map indexed by the detail type
-		// this won't work for runouts
 		if (CollectionUtils.isNotEmpty(batting.getWicketDetails())) {
 			assistList = new ArrayList<WicketDetail>(batting.getWicketDetails());
 			hasAssists = true;
@@ -67,10 +66,10 @@ public class HowoutDisplayConverter implements Converter {
 			toReturn = batting.getHowout().getDismissalType();
 			if (hasAssists) {
 				if (assistList.size() == 1) {
-					toReturn += " (" + assistList.get(0).getPlayer().getScorecardName() + ")";
+					toReturn += " (" + assisters.get(WicketDetailType.RO_1) + ")";
 				}
 				else if(assistList.size() == 2) {
-					toReturn += " (" + assistList.get(1).getPlayer().getScorecardName() + "/" + assistList.get(0).getPlayer().getScorecardName() + ")";
+					toReturn += " (" + assisters.get(WicketDetailType.RO_1) + "/" + assisters.get(WicketDetailType.RO_2) + ")";
 				}
 			}
 			return toReturn;

@@ -667,11 +667,11 @@ public class CricketStatz9Parser implements ImportedGameParser {
 			addWicketDetail(
 					batting,
 					buildWicketDetail(assist1Id, assist1Name,
-							WicketDetailType.RO, team));
+							WicketDetailType.RO_1, team));
 			addWicketDetail(
 					batting,
 					buildWicketDetail(assist2Id, assist2Name,
-							WicketDetailType.RO, team));
+							WicketDetailType.RO_2, team));
 			break;
 		// 9: stumped
 		case 9:
