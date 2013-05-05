@@ -11,7 +11,7 @@ import com.jwxicc.cricket.entity.Player;
  * @author cmurdoch
  * 
  */
-public abstract class Record {
+public class Record {
 
 	protected Player player;
 	protected int aggregate;

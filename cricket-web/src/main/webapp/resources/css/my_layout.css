@@ -571,6 +571,10 @@ div.rf-tab-cnt,.floatingnav {
 	text-align: left;
 }
 
+.ym-wrapper .indivRecords {
+	width: 50%
+}
+
 .tblhdrctr {
 	text-align: center;
 	display: block;
