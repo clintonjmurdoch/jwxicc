@@ -13,7 +13,7 @@ import javax.faces.context.FacesContext;
 
 import org.richfaces.event.FileUploadEvent;
 
-import com.jwxicc.cricket.entity.Jwplayer;
+import com.jwxicc.cricket.entity.PlayerDetail;
 import com.jwxicc.cricket.entity.Player;
 import com.jwxicc.cricket.interfaces.PlayerManager;
 import com.jwxicc.cricket.records.BattingRecord;
@@ -48,14 +48,14 @@ public class PlayerBean implements Serializable {
 	
 	public void editRow() {
 		this.player = findSelectedPlayer(currentRowId);
-		if (this.player.getJwplayer() == null) {
-			this.player.setJwplayer(new Jwplayer());
+		if (this.player.getPlayerDetail() == null) {
+			this.player.setPlayerDetail(new PlayerDetail());
 		}
 		
 	}
 	
 	public void doFileUpload(FileUploadEvent event) {
-		this.player.getJwplayer().setImage(event.getUploadedFile().getData());
+		this.player.getPlayerDetail().setImage(event.getUploadedFile().getData());
 	}
 	
 	public void paintThumbnail(OutputStream stream, Object obj) {
@@ -79,18 +79,19 @@ public class PlayerBean implements Serializable {
 		return null;
 	}
 	
-	public void saveJwPlayer() {
-		if (this.player.getJwplayer().getJwplayerId() > 0) {
-			System.out.println("Existing jwplayer info");
+	public void savePlayerDetail() {
+		if (this.player.getPlayerDetail().getPlayerDetailId() > 0) {
+			System.out.println("Existing player detail");
 		} else {
-			System.out.println("New jwplayer info");
-			this.player.getJwplayer().setPlayer(playerManager.findLazy(this.player.getPlayerId()));
+			System.out.println("New player detail");
 		}
-		playerManager.saveJWPlayerInfo(this.player.getJwplayer());
+		PlayerDetail savedPlayerDetail = playerManager.savePlayerDetail(this.player.getPlayerDetail());
+		this.player.setPlayerDetail(savedPlayerDetail);
+		playerManager.merge(this.player);
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Saved Player information for " + this.player.getScorecardName(), null));
 	}
 	
-	public void resetJwPlayer() {
+	public void resetPlayerDetail() {
 		this.player = this.allPlayers.get(this.currentRowId);
 	}
 

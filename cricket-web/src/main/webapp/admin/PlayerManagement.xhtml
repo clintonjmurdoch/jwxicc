@@ -47,61 +47,61 @@
 										<div class="ym-fbox-text">
 											<h:outputLabel for="fullname" value="Full Name" />
 											<h:inputText id="fullname" styleClass="firstfield"
-												value="#{playerBean.player.jwplayer.fullname}"></h:inputText>
+												value="#{playerBean.player.playerDetail.fullname}"></h:inputText>
 										</div>
 										<div class="ym-fbox-text">
 											<h:outputLabel for="birthdate" value="Birth Date" />
 											<h:inputText id="birthdate" styleClass="smallinput"
-												value="#{playerBean.player.jwplayer.birthdate}">
+												value="#{playerBean.player.playerDetail.birthdate}">
 												<f:convertDateTime pattern="dd/MM/yyyy" />
 											</h:inputText>
 										</div>
 										<div class="ym-fbox-text">
 											<h:outputLabel for="birthplace" value="Birth Place" />
 											<h:inputText id="birthplace"
-												value="#{playerBean.player.jwplayer.birthplace}"></h:inputText>
+												value="#{playerBean.player.playerDetail.birthplace}"></h:inputText>
 										</div>
 										<div class="ym-fbox-text">
 											<h:outputLabel for="nicknames" value="Nicknames" />
 											<h:inputText id="nicknames"
-												value="#{playerBean.player.jwplayer.nicknames}"></h:inputText>
+												value="#{playerBean.player.playerDetail.nicknames}"></h:inputText>
 										</div>
 										<div class="ym-fbox-text">
 											<h:outputLabel for="battingstyle" value="Batting Style" />
 											<h:inputText id="battingstyle"
-												value="#{playerBean.player.jwplayer.battingStyle}"></h:inputText>
+												value="#{playerBean.player.playerDetail.battingStyle}"></h:inputText>
 										</div>
 										<div class="ym-fbox-text">
 											<h:outputLabel for="bowlingstyle" value="Bowling Style" />
 											<h:inputText id="bowlingstyle"
-												value="#{playerBean.player.jwplayer.bowlingStyle}"></h:inputText>
+												value="#{playerBean.player.playerDetail.bowlingStyle}"></h:inputText>
 										</div>
 										<div class="ym-fbox-text">
 											<h:outputLabel for="fieldingpositions"
 												value="Fielding Positions" />
 											<h:inputText id="fieldingpositions"
-												value="#{playerBean.player.jwplayer.fieldingPositions}"></h:inputText>
+												value="#{playerBean.player.playerDetail.fieldingPositions}"></h:inputText>
 										</div>
 										<div class="ym-fbox-text">
 											<h:outputLabel for="teams" value="Teams" />
 											<h:inputText id="teams"
-												value="#{playerBean.player.jwplayer.teams}"></h:inputText>
+												value="#{playerBean.player.playerDetail.teams}"></h:inputText>
 										</div>
 										<div class="ym-fbox-text">
 											<h:outputLabel for="capnum" value="Cap Number" />
 											<h:inputText id="capnum" styleClass="smallinput"
-												value="#{playerBean.player.jwplayer.capNumber}"></h:inputText>
+												value="#{playerBean.player.playerDetail.capNumber}"></h:inputText>
 										</div>
 										<div class="ym-fbox-text">
 											<h:outputLabel for="shirtnum" value="Shirt Number" />
 											<h:inputText id="shirtnum" styleClass="smallinput"
-												value="#{playerBean.player.jwplayer.shirtNumber}"></h:inputText>
+												value="#{playerBean.player.playerDetail.shirtNumber}"></h:inputText>
 										</div>
 										<div class="ym-fbox-text">
 											<h:outputLabel for="uploader" value="Profile Image" />
 											<a4j:region>
 												<rich:fileUpload id="uploader"
-													addLabel="#{playerBean.player.jwplayer.image == null ? 'Add' : 'Change'}"
+													addLabel="#{playerBean.player.playerDetail.image == null ? 'Add' : 'Change'}"
 													acceptedTypes="jpg" maxFilesQuantity="1" limitRender="true"
 													fileUploadListener="#{playerBean.doFileUpload}" />
 											</a4j:region>
@@ -109,15 +109,15 @@
 										<div class="ym-fbox-text">
 											<h:outputLabel for="profile" value="Profile" />
 											<h:inputTextarea id="profile" style="height: 300px;"
-												value="#{playerBean.player.jwplayer.profile}"></h:inputTextarea>
+												value="#{playerBean.player.playerDetail.profile}"></h:inputTextarea>
 										</div>
 										<div class="ym-fbox-button">
 											<a4j:commandButton render="playerpanel"
-												action="#{playerBean.saveJwPlayer()}" id="searchButton"
+												action="#{playerBean.savePlayerDetail()}" id="searchButton"
 												execute="@region" limitRender="true" type="submit"
 												value="Save" />
 											<a4j:commandButton render="playerpanel"
-												action="#{playerBean.resetJwPlayer()}" id="resetButton"
+												action="#{playerBean.resetPlayerDetail()}" id="resetButton"
 												execute="@region" limitRender="true" immediate="true"
 												value="Reset" />
 										</div>

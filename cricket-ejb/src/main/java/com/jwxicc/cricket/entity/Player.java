@@ -2,6 +2,7 @@ package com.jwxicc.cricket.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.util.Set;
 
 
@@ -17,9 +18,6 @@ public class Player implements Serializable {
 	@Id
 	@Column(unique=true, nullable=false)
 	private int playerId;
-
-	@Column(length=45)
-	private String playerName;
 
 	@Column(length=45)
 	private String scorecardName;
@@ -58,10 +56,11 @@ public class Player implements Serializable {
 	@OneToMany(mappedBy="player")
 	private Set<WicketDetail> wicketDetails;
 
-	//bi-directional one-to-one association to Jwplayer
-	@OneToOne(mappedBy="player")
+	//bi-directional one-to-one association to PlayerDetail
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="playerDetailId")
 	//@JoinColumn(name="playerId", referencedColumnName="playerId", nullable=false, insertable=false, updatable=false)
-	private Jwplayer jwplayer;
+	private PlayerDetail playerDetail;
 	
 	@Transient
 	private boolean editable;
@@ -75,14 +74,6 @@ public class Player implements Serializable {
 
 	public void setPlayerId(int playerId) {
 		this.playerId = playerId;
-	}
-
-	public String getPlayerName() {
-		return this.playerName;
-	}
-
-	public void setPlayerName(String playerName) {
-		this.playerName = playerName;
 	}
 
 	public String getScorecardName() {
@@ -149,12 +140,12 @@ public class Player implements Serializable {
 		this.wicketDetails = wicketDetails;
 	}
 
-	public Jwplayer getJwplayer() {
-		return this.jwplayer;
+	public PlayerDetail getPlayerDetail() {
+		return this.playerDetail;
 	}
 
-	public void setJwplayer(Jwplayer jwplayer) {
-		this.jwplayer = jwplayer;
+	public void setPlayerDetail(PlayerDetail playerDetail) {
+		this.playerDetail = playerDetail;
 	}
 
 	public boolean isCaptain() {

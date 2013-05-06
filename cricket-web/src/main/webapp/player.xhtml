@@ -17,46 +17,45 @@
 	<ui:define name="body">
 		<div style="padding: 0 20px;">
 			<div>
-				<h3>#{empty playerBean.player.playerName ?
-					playerBean.player.scorecardName : playerBean.player.playerName}</h3>
+				<h3>#{playerBean.player.scorecardName}</h3>
 			</div>
 			<a4j:outputPanel layout="block"
-				rendered="#{playerBean.player.jwplayer != null}">
+				rendered="#{playerBean.player.playerDetail != null}">
 				<h:outputText styleClass="singleline"
-					value="Full name: #{playerBean.player.jwplayer.fullname}" />
+					value="Full name: #{playerBean.player.playerDetail.fullname}" />
 				<br />
 				<span class="singleline">
 					<h:outputText value="Born: " />
-					<h:outputText value="#{playerBean.player.jwplayer.birthdate}">
+					<h:outputText value="#{playerBean.player.playerDetail.birthdate}">
 						<f:convertDateTime pattern="MMMMM d yyyy" />
 					</h:outputText>
-					<h:outputText value=", #{playerBean.player.jwplayer.birthplace}" />
+					<h:outputText value=", #{playerBean.player.playerDetail.birthplace}" />
 				</span>
 				<br />
 				<h:outputText styleClass="singleline"
-					value="Nicknames: #{playerBean.player.jwplayer.nicknames}" />
+					value="Nicknames: #{playerBean.player.playerDetail.nicknames}" />
 				<br />
 				<h:outputText styleClass="singleline"
-					value="Batting Style: #{playerBean.player.jwplayer.battingStyle}" />
+					value="Batting Style: #{playerBean.player.playerDetail.battingStyle}" />
 				<br />
 				<h:outputText styleClass="singleline"
-					value="Bowling Style: #{playerBean.player.jwplayer.bowlingStyle}" />
+					value="Bowling Style: #{playerBean.player.playerDetail.bowlingStyle}" />
 				<br />
 				<h:outputText styleClass="singleline"
-					value="Fielding Position: #{playerBean.player.jwplayer.fieldingPositions}" />
+					value="Fielding Position: #{playerBean.player.playerDetail.fieldingPositions}" />
 				<br />
 				<h:outputText styleClass="singleline"
-					value="Teams: #{playerBean.player.jwplayer.teams}" />
+					value="Teams: #{playerBean.player.playerDetail.teams}" />
 				<br />
 				<h:outputText styleClass="singleline"
-					value="Cap Number: #{playerBean.player.jwplayer.capNumber}" />
+					value="Cap Number: #{playerBean.player.playerDetail.capNumber}" />
 				<br />
 				<h:outputText styleClass="singleline"
-					value="Shirt Number: #{playerBean.player.jwplayer.shirtNumber}" />
+					value="Shirt Number: #{playerBean.player.playerDetail.shirtNumber}" />
 
 				<a4j:outputPanel styleClass="reviewText" layout="block"
-					rendered="#{not empty playerBean.player.jwplayer.profile}">
-					<h:outputText value="#{playerBean.player.jwplayer.profile}"></h:outputText>
+					rendered="#{not empty playerBean.player.playerDetail.profile}">
+					<h:outputText value="#{playerBean.player.playerDetail.profile}"></h:outputText>
 				</a4j:outputPanel>
 			</a4j:outputPanel>
 

@@ -66,10 +66,10 @@ public class HowoutDisplayConverter implements Converter {
 			toReturn = batting.getHowout().getDismissalType();
 			if (hasAssists) {
 				if (assistList.size() == 1) {
-					toReturn += " (" + assisters.get(WicketDetailType.RO_1) + ")";
+					toReturn += " (" + assisters.get(WicketDetailType.RO_1).getPlayer().getScorecardName() + ")";
 				}
 				else if(assistList.size() == 2) {
-					toReturn += " (" + assisters.get(WicketDetailType.RO_1) + "/" + assisters.get(WicketDetailType.RO_2) + ")";
+					toReturn += " (" + assisters.get(WicketDetailType.RO_1).getPlayer().getScorecardName() + "/" + assisters.get(WicketDetailType.RO_2).getPlayer().getScorecardName() + ")";
 				}
 			}
 			return toReturn;

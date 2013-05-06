@@ -18,7 +18,7 @@
 		<class>com.jwxicc.cricket.entity.Ground</class>
 		<class>com.jwxicc.cricket.entity.Howout</class>
 		<class>com.jwxicc.cricket.entity.Inning</class>
-		<class>com.jwxicc.cricket.entity.Jwplayer</class>
+		<class>com.jwxicc.cricket.entity.PlayerDetail</class>
 		<class>com.jwxicc.cricket.entity.Newsitem</class>
 		<class>com.jwxicc.cricket.entity.Player</class>
 		<class>com.jwxicc.cricket.entity.Review</class>

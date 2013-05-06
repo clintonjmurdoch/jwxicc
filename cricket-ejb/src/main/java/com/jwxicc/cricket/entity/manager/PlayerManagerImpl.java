@@ -5,7 +5,7 @@ import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 
-import com.jwxicc.cricket.entity.Jwplayer;
+import com.jwxicc.cricket.entity.PlayerDetail;
 import com.jwxicc.cricket.entity.Player;
 import com.jwxicc.cricket.interfaces.PlayerManager;
 import javax.persistence.Query;
@@ -23,11 +23,11 @@ public class PlayerManagerImpl extends BaseManager<Player> implements
 
 	@Override
 	public Player getPlayerForProfile(int playerId) {
-		String queryString = "from Player p left join FETCH p.jwplayer j where p.playerId = :playerid";
+		String queryString = "from Player p left join FETCH p.playerDetail j where p.playerId = :playerid";
 		Query q = em.createQuery(queryString);
 		q.setParameter("playerid", playerId);
 		Player p = (Player) q.getSingleResult();
-		System.out.println(p.getPlayerName());
+		System.out.println(p.getScorecardName());
 		return p;
 	}
 
@@ -40,14 +40,15 @@ public class PlayerManagerImpl extends BaseManager<Player> implements
 	}
 
 	@Override
-	public void saveJWPlayerInfo(Jwplayer jwPlayer) {
-		if (jwPlayer.getJwplayerId() > 0) {
+	public PlayerDetail savePlayerDetail(PlayerDetail playerDetail) {
+		if (playerDetail.getPlayerDetailId() > 0) {
 			// merge
-			em.merge(jwPlayer);
+			playerDetail = em.merge(playerDetail);
 		} else {
 			// it is new
-			em.persist(jwPlayer);
+			em.persist(playerDetail);
 		}
+		return playerDetail;
 			
 	}
 }

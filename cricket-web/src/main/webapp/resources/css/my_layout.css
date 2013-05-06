@@ -512,9 +512,6 @@ div.rf-tab-cnt,.floatingnav {
 	white-space: pre-wrap;
 	margin-top: 10px;
 	display: block;
-	-webkit-column-count: 2;
-	-mox-column-count: 2;
-	column-count: 2;
 }
 
 /* Review entry */

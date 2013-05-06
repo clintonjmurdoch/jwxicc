@@ -5,71 +5,69 @@ import javax.persistence.*;
 
 import java.util.Date;
 
-
 /**
- * The persistent class for the jwplayer database table.
+ * The persistent class for the PlayerDetail database table.
  * 
  */
 @Entity
-@Table(name="JWPLAYER")
-public class Jwplayer implements Serializable {
+@Table(name = "PLAYER_DETAIL")
+public class PlayerDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
-	private int jwplayerId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
+	private int playerDetailId;
 
-	@Column(name="batting_style", length=45)
+	@Column(name = "batting_style", length = 45)
 	private String battingStyle;
 
 	@Temporal(TemporalType.DATE)
 	private Date birthdate;
 
-	@Column(length=45)
+	@Column(length = 45)
 	private String birthplace;
 
-	@Column(name="bowling_style", length=45)
+	@Column(name = "bowling_style", length = 45)
 	private String bowlingStyle;
 
-	@Column(name="cap_number", length=45)
+	@Column(name = "cap_number", length = 45)
 	private String capNumber;
 
-	@Column(name="fielding_positions", length=45)
+	@Column(name = "fielding_positions", length = 45)
 	private String fieldingPositions;
 
-	@Column(length=45)
+	@Column(length = 45)
 	private String fullname;
 
 	@Lob
 	private byte[] image;
 
-	@Column(length=90)
+	@Column(length = 90)
 	private String nicknames;
-	
+
 	@Lob
 	private String profile;
 
-	@Column(name="shirt_number", length=45)
+	@Column(name = "shirt_number", length = 45)
 	private String shirtNumber;
 
-	@Column(length=45)
+	@Column(length = 45)
 	private String teams;
 
-	//bi-directional one-to-one association to Player
-	@OneToOne
-	@JoinColumn(name="playerId")
+	// bi-directional one-to-one association to Player
+	@OneToOne(mappedBy = "playerDetail")
 	private Player player;
 
-	public Jwplayer() {
+	public PlayerDetail() {
 	}
 
-	public int getJwplayerId() {
-		return this.jwplayerId;
+	public int getPlayerDetailId() {
+		return this.playerDetailId;
 	}
 
-	public void setJwplayerId(int jwplayerId) {
-		this.jwplayerId = jwplayerId;
+	public void setPlayerDetailId(int playerDetailId) {
+		this.playerDetailId = playerDetailId;
 	}
 
 	public String getBattingStyle() {
