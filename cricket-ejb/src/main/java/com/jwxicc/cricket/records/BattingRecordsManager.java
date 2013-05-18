@@ -123,26 +123,31 @@ public class BattingRecordsManager extends
 		// 8: 100s
 		battingRecord.setHundreds(objToInt(rs[8]));
 		// 9: average
-		battingRecord.setAverage(BigDecimal.valueOf(Double.valueOf(rs[9]
-				.toString())));
+		if (rs[9] != null) {
+			battingRecord.setAverage(BigDecimal.valueOf(Double.valueOf(rs[9]
+					.toString())));
+		}
 		// 10: strike rate
-		battingRecord.setStrikeRate(BigDecimal.valueOf(
-				Double.valueOf(rs[10].toString())).scaleByPowerOfTen(2));
+		if (rs[10] != null) {
+			battingRecord.setStrikeRate(BigDecimal.valueOf(
+					Double.valueOf(rs[10].toString())).scaleByPowerOfTen(2));
+		}
 
 		return battingRecord;
 	}
 
 	@Override
 	public BattingRecord getPlayerCareerRecord(int playerId) {
-		String sqlQuery = CAREER_BATTING_BASE_SQL + "and p.playerId = :pid group by playerid";
-		
+		String sqlQuery = CAREER_BATTING_BASE_SQL
+				+ "and p.playerId = :pid group by playerid";
+
 		Query query = em.createNativeQuery(sqlQuery);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
 		query.setParameter("pid", playerId);
-		
+
 		// only returns 1 object[]
 		List<Object[]> results = query.getResultList();
-		
+
 		return getRecordFromResult(results.get(0));
 	}
 }
