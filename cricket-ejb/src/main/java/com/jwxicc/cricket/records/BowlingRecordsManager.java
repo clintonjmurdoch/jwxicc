@@ -98,7 +98,7 @@ public class BowlingRecordsManager extends
 		bowlingRecord.setWickets(objToInt(rs[6]));
 		// 7: average
 		// was getting null pointer for players with no wickets
-		if (StringUtils.isNotBlank(rs[7].toString())) {
+		if (rs[7] != null) {
 			bowlingRecord.setAverage(BigDecimal.valueOf(Double.valueOf(rs[7]
 					.toString())));
 		}
