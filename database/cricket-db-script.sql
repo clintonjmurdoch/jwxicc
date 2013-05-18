@@ -2,15 +2,12 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
-CREATE SCHEMA IF NOT EXISTS 'JSF' DEFAULT CHARACTER SET latin1 COLLATE latin1_general_ci ;
-USE 'JSF' ;
-
 -- -----------------------------------------------------
--- Table 'JSF'.`GROUND`
+-- Table `GROUND`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`GROUND` ;
+DROP TABLE IF EXISTS `GROUND` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`GROUND` (
+CREATE  TABLE IF NOT EXISTS `GROUND` (
   `groundId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `groundName` VARCHAR(45) NOT NULL ,
   `streetAddress` VARCHAR(45) NULL ,
@@ -21,11 +18,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`REVIEW`
+-- Table `REVIEW`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`REVIEW` ;
+DROP TABLE IF EXISTS `REVIEW` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`REVIEW` (
+CREATE  TABLE IF NOT EXISTS `REVIEW` (
   `reviewId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `review_text` TEXT NOT NULL ,
   PRIMARY KEY (`reviewId`) )
@@ -33,11 +30,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`COMPETITION`
+-- Table `COMPETITION`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`COMPETITION` ;
+DROP TABLE IF EXISTS `COMPETITION` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`COMPETITION` (
+CREATE  TABLE IF NOT EXISTS `COMPETITION` (
   `competitionId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `associationName` VARCHAR(45) NOT NULL ,
   `grade` VARCHAR(45) NOT NULL ,
@@ -47,18 +44,18 @@ CREATE  TABLE IF NOT EXISTS 'JSF'.`COMPETITION` (
   INDEX `competition_review` (`reviewId` ASC) ,
   CONSTRAINT `competition_review`
     FOREIGN KEY (`reviewId` )
-    REFERENCES 'JSF'.`REVIEW` (`reviewId` )
+    REFERENCES `REVIEW` (`reviewId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`TEAM`
+-- Table `TEAM`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`TEAM` ;
+DROP TABLE IF EXISTS `TEAM` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`TEAM` (
+CREATE  TABLE IF NOT EXISTS `TEAM` (
   `teamId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `teamName` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`teamId`) )
@@ -66,11 +63,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`WIN_TYPE`
+-- Table `WIN_TYPE`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`WIN_TYPE` ;
+DROP TABLE IF EXISTS `WIN_TYPE` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`WIN_TYPE` (
+CREATE  TABLE IF NOT EXISTS `WIN_TYPE` (
   `winTypeId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `winTypeName` VARCHAR(45) NULL ,
   PRIMARY KEY (`winTypeId`) )
@@ -78,11 +75,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`GAME`
+-- Table `GAME`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`GAME` ;
+DROP TABLE IF EXISTS `GAME` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`GAME` (
+CREATE  TABLE IF NOT EXISTS `GAME` (
   `gameId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `competitionId` INT UNSIGNED NOT NULL ,
   `round` CHAR(3) NOT NULL ,
@@ -106,43 +103,43 @@ CREATE  TABLE IF NOT EXISTS 'JSF'.`GAME` (
   INDEX `game_review` (`reviewId` ASC) ,
   CONSTRAINT `game_ground`
     FOREIGN KEY (`groundId` )
-    REFERENCES 'JSF'.`GROUND` (`groundId` )
+    REFERENCES `GROUND` (`groundId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_competition`
     FOREIGN KEY (`competitionId` )
-    REFERENCES 'JSF'.`COMPETITION` (`competitionId` )
+    REFERENCES `COMPETITION` (`competitionId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_team_home`
     FOREIGN KEY (`homeTeamId` )
-    REFERENCES 'JSF'.`TEAM` (`teamId` )
+    REFERENCES `TEAM` (`teamId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_team_away`
     FOREIGN KEY (`awayTeamId` )
-    REFERENCES 'JSF'.`TEAM` (`teamId` )
+    REFERENCES `TEAM` (`teamId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_wintype`
     FOREIGN KEY (`winTypeId` )
-    REFERENCES 'JSF'.`WIN_TYPE` (`winTypeId` )
+    REFERENCES `WIN_TYPE` (`winTypeId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_review`
     FOREIGN KEY (`reviewId` )
-    REFERENCES 'JSF'.`REVIEW` (`reviewId` )
+    REFERENCES `REVIEW` (`reviewId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`INNINGS`
+-- Table `INNINGS`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`INNINGS` ;
+DROP TABLE IF EXISTS `INNINGS` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`INNINGS` (
+CREATE  TABLE IF NOT EXISTS `INNINGS` (
   `inningsId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `gameId` INT UNSIGNED NOT NULL ,
   `teamId` INT UNSIGNED NOT NULL ,
@@ -161,23 +158,23 @@ CREATE  TABLE IF NOT EXISTS 'JSF'.`INNINGS` (
   INDEX `innings_game` (`gameId` ASC) ,
   CONSTRAINT `innings_team`
     FOREIGN KEY (`teamId` )
-    REFERENCES 'JSF'.`TEAM` (`teamId` )
+    REFERENCES `TEAM` (`teamId` )
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `innings_game`
     FOREIGN KEY (`gameId` )
-    REFERENCES 'JSF'.`GAME` (`gameId` )
+    REFERENCES `GAME` (`gameId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`PLAYER_DETAIL`
+-- Table `PLAYER_DETAIL`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`PLAYER_DETAIL` ;
+DROP TABLE IF EXISTS `PLAYER_DETAIL` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`PLAYER_DETAIL` (
+CREATE  TABLE IF NOT EXISTS `PLAYER_DETAIL` (
   `playerDetailId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `fullname` VARCHAR(45) NULL ,
   `birthdate` DATE NULL ,
@@ -196,11 +193,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`PLAYER`
+-- Table `PLAYER`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`PLAYER` ;
+DROP TABLE IF EXISTS `PLAYER` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`PLAYER` (
+CREATE  TABLE IF NOT EXISTS `PLAYER` (
   `playerId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `playerName` VARCHAR(45) NULL ,
   `scorecardName` VARCHAR(45) NULL ,
@@ -213,23 +210,23 @@ CREATE  TABLE IF NOT EXISTS 'JSF'.`PLAYER` (
   INDEX `detailed_player` (`playerDetailId` ASC) ,
   CONSTRAINT `player_team`
     FOREIGN KEY (`teamId` )
-    REFERENCES 'JSF'.`TEAM` (`teamId` )
+    REFERENCES `TEAM` (`teamId` )
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `detailed_player`
     FOREIGN KEY (`playerDetailId` )
-    REFERENCES 'JSF'.`PLAYER_DETAIL` (`playerDetailId` )
+    REFERENCES `PLAYER_DETAIL` (`playerDetailId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`HOWOUT`
+-- Table `HOWOUT`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`HOWOUT` ;
+DROP TABLE IF EXISTS `HOWOUT` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`HOWOUT` (
+CREATE  TABLE IF NOT EXISTS `HOWOUT` (
   `howOutid` INT UNSIGNED NOT NULL ,
   `dismissalShort` VARCHAR(15) NOT NULL ,
   `dismissalType` VARCHAR(45) NOT NULL ,
@@ -238,11 +235,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`BATTING`
+-- Table `BATTING`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`BATTING` ;
+DROP TABLE IF EXISTS `BATTING` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`BATTING` (
+CREATE  TABLE IF NOT EXISTS `BATTING` (
   `battingId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `playerId` INT UNSIGNED NOT NULL ,
   `battingPos` INT UNSIGNED NULL ,
@@ -258,28 +255,28 @@ CREATE  TABLE IF NOT EXISTS 'JSF'.`BATTING` (
   INDEX `batting_howout` (`howOutId` ASC) ,
   CONSTRAINT `batting_innings`
     FOREIGN KEY (`inningsId` )
-    REFERENCES 'JSF'.`INNINGS` (`inningsId` )
+    REFERENCES `INNINGS` (`inningsId` )
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `batting_player`
     FOREIGN KEY (`playerId` )
-    REFERENCES 'JSF'.`PLAYER` (`playerId` )
+    REFERENCES `PLAYER` (`playerId` )
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `batting_howout`
     FOREIGN KEY (`howOutId` )
-    REFERENCES 'JSF'.`HOWOUT` (`howOutid` )
+    REFERENCES `HOWOUT` (`howOutid` )
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`WICKET_DETAIL`
+-- Table `WICKET_DETAIL`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`WICKET_DETAIL` ;
+DROP TABLE IF EXISTS `WICKET_DETAIL` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`WICKET_DETAIL` (
+CREATE  TABLE IF NOT EXISTS `WICKET_DETAIL` (
   `wicketDetailId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `battingId` INT UNSIGNED NOT NULL ,
   `wicketType` CHAR(5) NOT NULL ,
@@ -289,23 +286,23 @@ CREATE  TABLE IF NOT EXISTS 'JSF'.`WICKET_DETAIL` (
   INDEX `wicketdetail_player` (`playerId` ASC) ,
   CONSTRAINT `wicketdetail_batting`
     FOREIGN KEY (`battingId` )
-    REFERENCES 'JSF'.`BATTING` (`battingId` )
+    REFERENCES `BATTING` (`battingId` )
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `wicketdetail_player`
     FOREIGN KEY (`playerId` )
-    REFERENCES 'JSF'.`PLAYER` (`playerId` )
+    REFERENCES `PLAYER` (`playerId` )
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`BOWLING`
+-- Table `BOWLING`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`BOWLING` ;
+DROP TABLE IF EXISTS `BOWLING` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`BOWLING` (
+CREATE  TABLE IF NOT EXISTS `BOWLING` (
   `bowlingId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `playerId` INT UNSIGNED NOT NULL ,
   `bowlingPos` INT UNSIGNED NULL ,
@@ -321,23 +318,23 @@ CREATE  TABLE IF NOT EXISTS 'JSF'.`BOWLING` (
   INDEX `bowling_innings` (`inningsId` ASC) ,
   CONSTRAINT `bowling_player`
     FOREIGN KEY (`playerId` )
-    REFERENCES 'JSF'.`PLAYER` (`playerId` )
+    REFERENCES `PLAYER` (`playerId` )
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `bowling_innings`
     FOREIGN KEY (`inningsId` )
-    REFERENCES 'JSF'.`INNINGS` (`inningsId` )
+    REFERENCES `INNINGS` (`inningsId` )
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`FOW`
+-- Table `FOW`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`FOW` ;
+DROP TABLE IF EXISTS `FOW` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`FOW` (
+CREATE  TABLE IF NOT EXISTS `FOW` (
   `fowId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `inningsId` INT UNSIGNED NOT NULL ,
   `wicket` INT UNSIGNED NOT NULL ,
@@ -347,18 +344,18 @@ CREATE  TABLE IF NOT EXISTS 'JSF'.`FOW` (
   INDEX `fow_innings` (`inningsId` ASC) ,
   CONSTRAINT `fow_innings`
     FOREIGN KEY (`inningsId` )
-    REFERENCES 'JSF'.`INNINGS` (`inningsId` )
+    REFERENCES `INNINGS` (`inningsId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`FOW_WICKET`
+-- Table `FOW_WICKET`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`FOW_WICKET` ;
+DROP TABLE IF EXISTS `FOW_WICKET` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`FOW_WICKET` (
+CREATE  TABLE IF NOT EXISTS `FOW_WICKET` (
   `fow_wicketId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `fowId` INT UNSIGNED NOT NULL ,
   `playerId` INT UNSIGNED NOT NULL ,
@@ -369,23 +366,23 @@ CREATE  TABLE IF NOT EXISTS 'JSF'.`FOW_WICKET` (
   INDEX `fow_wicket_player` (`playerId` ASC) ,
   CONSTRAINT `fow_wicket_fow`
     FOREIGN KEY (`fowId` )
-    REFERENCES 'JSF'.`FOW` (`fowId` )
+    REFERENCES `FOW` (`fowId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fow_wicket_player`
     FOREIGN KEY (`playerId` )
-    REFERENCES 'JSF'.`PLAYER` (`playerId` )
+    REFERENCES `PLAYER` (`playerId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`USER`
+-- Table `USER`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`USER` ;
+DROP TABLE IF EXISTS `USER` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`USER` (
+CREATE  TABLE IF NOT EXISTS `USER` (
   `username` VARCHAR(20) NOT NULL ,
   `password` VARCHAR(20) NOT NULL ,
   PRIMARY KEY (`username`) ,
@@ -394,11 +391,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`NEWSITEM`
+-- Table `NEWSITEM`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`NEWSITEM` ;
+DROP TABLE IF EXISTS `NEWSITEM` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`NEWSITEM` (
+CREATE  TABLE IF NOT EXISTS `NEWSITEM` (
   `newsid` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `title` VARCHAR(100) NOT NULL ,
   `content` TEXT NOT NULL ,
@@ -408,17 +405,17 @@ CREATE  TABLE IF NOT EXISTS 'JSF'.`NEWSITEM` (
   INDEX `poster` (`poster` ASC) ,
   CONSTRAINT `newsitem_user`
     FOREIGN KEY (`poster` )
-    REFERENCES 'JSF'.`USER` (`username` ))
+    REFERENCES `USER` (`username` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 45;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`GAME_PLAYER_DESIGNATION`
+-- Table `GAME_PLAYER_DESIGNATION`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`GAME_PLAYER_DESIGNATION` ;
+DROP TABLE IF EXISTS `GAME_PLAYER_DESIGNATION` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`GAME_PLAYER_DESIGNATION` (
+CREATE  TABLE IF NOT EXISTS `GAME_PLAYER_DESIGNATION` (
   `designationId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `designationType` VARCHAR(15) NOT NULL ,
   `gameId` INT UNSIGNED NOT NULL ,
@@ -428,23 +425,23 @@ CREATE  TABLE IF NOT EXISTS 'JSF'.`GAME_PLAYER_DESIGNATION` (
   INDEX `gpd_player` (`playerId` ASC) ,
   CONSTRAINT `gpd_game`
     FOREIGN KEY (`gameId` )
-    REFERENCES 'JSF'.`GAME` (`gameId` )
+    REFERENCES `GAME` (`gameId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `gpd_player`
     FOREIGN KEY (`playerId` )
-    REFERENCES 'JSF'.`PLAYER` (`playerId` )
+    REFERENCES `PLAYER` (`playerId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table 'JSF'.`PLAYER_RELATIONSHIP`
+-- Table `PLAYER_RELATIONSHIP`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS 'JSF'.`PLAYER_RELATIONSHIP` ;
+DROP TABLE IF EXISTS `PLAYER_RELATIONSHIP` ;
 
-CREATE  TABLE IF NOT EXISTS 'JSF'.`PLAYER_RELATIONSHIP` (
+CREATE  TABLE IF NOT EXISTS `PLAYER_RELATIONSHIP` (
   `relationshipId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `owningPlayer` INT UNSIGNED NOT NULL ,
   `otherPlayer` INT UNSIGNED NOT NULL ,
@@ -454,29 +451,28 @@ CREATE  TABLE IF NOT EXISTS 'JSF'.`PLAYER_RELATIONSHIP` (
   INDEX `other_player_reference` (`otherPlayer` ASC) ,
   CONSTRAINT `owning_player_relationship`
     FOREIGN KEY (`owningPlayer` )
-    REFERENCES 'JSF'.`PLAYER` (`playerId` )
+    REFERENCES `PLAYER` (`playerId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `other_player_reference`
     FOREIGN KEY (`otherPlayer` )
-    REFERENCES 'JSF'.`PLAYER` (`playerId` )
+    REFERENCES `PLAYER` (`playerId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Placeholder table for view 'JSF'.`BEST_BOWLING`
+-- Placeholder table for view `BEST_BOWLING`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS 'JSF'.`BEST_BOWLING` (`scorecardname` INT, `playerid` INT, `wickets` INT, `runs` INT);
+CREATE TABLE IF NOT EXISTS `BEST_BOWLING` (`scorecardname` INT, `playerid` INT, `wickets` INT, `runs` INT);
 
 -- -----------------------------------------------------
--- View 'JSF'.`BEST_BOWLING`
+-- View `BEST_BOWLING`
 -- -----------------------------------------------------
-DROP VIEW IF EXISTS 'JSF'.`BEST_BOWLING` ;
-DROP TABLE IF EXISTS 'JSF'.`BEST_BOWLING`;
-USE 'JSF';
-CREATE  OR REPLACE VIEW 'JSF'.`BEST_BOWLING` AS 
+DROP VIEW IF EXISTS `BEST_BOWLING` ;
+DROP TABLE IF EXISTS `BEST_BOWLING`;
+CREATE  OR REPLACE VIEW `BEST_BOWLING` AS 
 select scorecardname, playerid, wickets, runs from BOWLING b natural join PLAYER p where wickets = 
 (select max(wickets) from BOWLING x where x.playerid = p.playerid) and runs = (select min(runs) from BOWLING y where y.playerid = p.playerid and y.wickets = b.wickets) 
 group by playerid order by wickets desc, runs asc;
@@ -487,57 +483,54 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
--- Data for table 'JSF'.`WIN_TYPE`
+-- Data for table `WIN_TYPE`
 -- -----------------------------------------------------
 START TRANSACTION;
-USE 'JSF';
-INSERT INTO 'JSF'.`WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (1, 'Runs on First Innings');
-INSERT INTO 'JSF'.`WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (2, 'Wickets on First Innings');
-INSERT INTO 'JSF'.`WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (3, 'Draw on First Innings');
-INSERT INTO 'JSF'.`WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (4, 'Washed Out');
-INSERT INTO 'JSF'.`WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (5, 'Tie on First Innings');
-INSERT INTO 'JSF'.`WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (6, 'Runs on Second Innings after First Innings Lead');
-INSERT INTO 'JSF'.`WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (7, 'Wickets on Second Innings after First Innings Lead');
-INSERT INTO 'JSF'.`WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (8, 'Runs on Second Innings after First Innings Deficit');
-INSERT INTO 'JSF'.`WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (9, 'Wickets on Second Innings after First Innings Deficit');
-INSERT INTO 'JSF'.`WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (10, 'Draw on Second Innings');
-INSERT INTO 'JSF'.`WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (11, 'Tie on Second Innings');
+INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (1, 'Runs on First Innings');
+INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (2, 'Wickets on First Innings');
+INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (3, 'Draw on First Innings');
+INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (4, 'Washed Out');
+INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (5, 'Tie on First Innings');
+INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (6, 'Runs on Second Innings after First Innings Lead');
+INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (7, 'Wickets on Second Innings after First Innings Lead');
+INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (8, 'Runs on Second Innings after First Innings Deficit');
+INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (9, 'Wickets on Second Innings after First Innings Deficit');
+INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (10, 'Draw on Second Innings');
+INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (11, 'Tie on Second Innings');
 
 COMMIT;
 
 -- -----------------------------------------------------
--- Data for table 'JSF'.`HOWOUT`
+-- Data for table `HOWOUT`
 -- -----------------------------------------------------
 START TRANSACTION;
-USE 'JSF';
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (1, 'no', 'not out');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (2, 'b', 'bowled');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (3, 'c', 'caught');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (6, 'lbw', 'lbw');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (18, 'ct wk', 'caught behind');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (8, 'run out', 'run out');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (7, 'ret hurt', 'retired hurt');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (12, 'ret out', 'retired out');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (16, 'abs hurt', 'absent hurt');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (14, 'timed out', 'timed out');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (0, 'dnb', 'did not bat');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (4, 'c&b', 'caught & bowled');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (5, 'hit wkt', 'hit wicket');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (9, 'st', 'stumped');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (10, 'obs', 'obstructed field');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (11, 'hand. ball', 'handled ball');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (13, 'ret no', 'retired not out');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (15, 'hit ball twice', 'hit ball twice');
-INSERT INTO 'JSF'.`HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (17, 'abs ill', 'absent ill');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (1, 'no', 'not out');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (2, 'b', 'bowled');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (3, 'c', 'caught');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (6, 'lbw', 'lbw');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (18, 'ct wk', 'caught behind');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (8, 'run out', 'run out');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (7, 'ret hurt', 'retired hurt');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (12, 'ret out', 'retired out');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (16, 'abs hurt', 'absent hurt');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (14, 'timed out', 'timed out');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (0, 'dnb', 'did not bat');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (4, 'c&b', 'caught & bowled');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (5, 'hit wkt', 'hit wicket');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (9, 'st', 'stumped');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (10, 'obs', 'obstructed field');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (11, 'hand. ball', 'handled ball');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (13, 'ret no', 'retired not out');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (15, 'hit ball twice', 'hit ball twice');
+INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (17, 'abs ill', 'absent ill');
 
 COMMIT;
 
 -- -----------------------------------------------------
--- Data for table 'JSF'.`USER`
+-- Data for table `USER`
 -- -----------------------------------------------------
 START TRANSACTION;
-USE 'JSF';
-INSERT INTO 'JSF'.`USER` (`username`, `password`) VALUES ('murdoch', 'cricket');
-INSERT INTO 'JSF'.`USER` (`username`, `password`) VALUES ('vorn', 'a1b2c3');
+INSERT INTO `USER` (`username`, `password`) VALUES ('murdoch', 'cricket');
+INSERT INTO `USER` (`username`, `password`) VALUES ('vorn', 'a1b2c3');
 
 COMMIT;

@@ -9,6 +9,8 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.jwxicc.cricket.entity.Bowling;
 import com.jwxicc.cricket.entityutils.EntityMethods;
 import com.jwxicc.cricket.interfaces.PlayerManager;
@@ -21,7 +23,7 @@ import com.jwxicc.cricket.util.JwxiccUtils;
 @LocalBean
 public class BowlingRecordsManager extends
 		RecordsManager<Bowling, BowlingRecord> {
-	
+
 	@EJB
 	PlayerManager playerManager;
 
@@ -83,7 +85,9 @@ public class BowlingRecordsManager extends
 		// 1: matches
 		bowlingRecord.setMatchesPlayed(objToInt(rs[1]));
 		// 2-3: overs, over parts
-		BigDecimal overs = buildAggregateOvers(Double.valueOf(rs[2].toString()), Double.valueOf(rs[3].toString()));
+		BigDecimal overs = buildAggregateOvers(
+				Double.valueOf(rs[2].toString()),
+				Double.valueOf(rs[3].toString()));
 		bowlingRecord.setOvers(overs);
 		// 4: maidens
 		bowlingRecord.setMaidens(objToInt(rs[4]));
@@ -93,7 +97,11 @@ public class BowlingRecordsManager extends
 		// 6: wickets
 		bowlingRecord.setWickets(objToInt(rs[6]));
 		// 7: average
-		bowlingRecord.setAverage(BigDecimal.valueOf(Double.valueOf(rs[7].toString())));
+		// was getting null pointer for players with no wickets
+		if (StringUtils.isNotBlank(rs[7].toString())) {
+			bowlingRecord.setAverage(BigDecimal.valueOf(Double.valueOf(rs[7]
+					.toString())));
+		}
 		// 8: best bowling wickets
 		bowlingRecord.setBestBowlingWickets(objToInt(rs[8]));
 		// 9: best bowling runs
@@ -103,14 +111,14 @@ public class BowlingRecordsManager extends
 		// extra: economy
 		BigDecimal economy = EntityMethods.calculateEconomy(runs, overs);
 		bowlingRecord.setEconomy(economy);
-		
-		
+
 		return bowlingRecord;
 	}
-	
+
 	private BigDecimal buildAggregateOvers(Double aggOvers, Double overParts) {
 		System.out.println("building over aggregates");
-		System.out.println("agg overs: " + aggOvers + " over parts: " + overParts);
+		System.out.println("agg overs: " + aggOvers + " over parts: "
+				+ overParts);
 		if (aggOvers.equals(0d)) {
 			return BigDecimal.ZERO;
 		} else if (overParts.equals(0d) || overParts.doubleValue() < 0.6) {
@@ -121,10 +129,15 @@ public class BowlingRecordsManager extends
 			double completeOvers = aggOvers - overParts;
 			System.out.println("complete overs: " + completeOvers);
 			BigDecimal oPBigDec = new BigDecimal(overParts.doubleValue());
-			double oversToAdd = Math.floor(oPBigDec.divide(BigDecimal.valueOf(0.6d), BigDecimal.ROUND_HALF_UP).doubleValue());
-			BigDecimal toReturn = BigDecimal.valueOf(completeOvers).add(BigDecimal.valueOf(oversToAdd));
-			// remainder wont work: BigDecimal remainder = oPBigDec.remainder(BigDecimal.valueOf(0.6d)); 
-			//System.out.println("remainder from the 0.6 division: " + remainder);
+			double oversToAdd = Math.floor(oPBigDec.divide(
+					BigDecimal.valueOf(0.6d), BigDecimal.ROUND_HALF_UP)
+					.doubleValue());
+			BigDecimal toReturn = BigDecimal.valueOf(completeOvers).add(
+					BigDecimal.valueOf(oversToAdd));
+			// remainder wont work: BigDecimal remainder =
+			// oPBigDec.remainder(BigDecimal.valueOf(0.6d));
+			// System.out.println("remainder from the 0.6 division: " +
+			// remainder);
 			overParts = overParts - (oversToAdd * 0.6);
 			if (overParts == 0d) {
 				return toReturn;
@@ -142,7 +155,7 @@ public class BowlingRecordsManager extends
 		Query query = em.createNativeQuery(sqlQuery);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
 		query.setParameter("pid", playerId);
-		
+
 		// only returns 1 object[]
 		List<Object[]> results = query.getResultList();
 
