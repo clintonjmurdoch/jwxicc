@@ -18,23 +18,27 @@
 						rendered="#{compBean.pageCompId == 0}">
 						<rich:dataTable id="compTable" binding="#{compBean.compTable}"
 							styleClass="objectTable" value="#{compBean.compList}" var="comp">
-							<f:facet name="header">
-								<rich:column colspan="3">
-									<h:outputText styleClass="tblhdrctr" value="Competitions" />
-								</rich:column>
-							</f:facet>
 							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Association" />
+								</f:facet>
 								<h:outputText value="#{comp.associationName}"
 									rendered="#{not comp.editable}" />
 								<h:inputText value="#{comp.associationName}"
 									rendered="#{comp.editable}" />
 							</rich:column>
 							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Grade" />
+								</f:facet>
 								<h:outputText value="#{comp.grade}"
 									rendered="#{not comp.editable}" />
 								<h:inputText value="#{comp.grade}" rendered="#{comp.editable}" />
 							</rich:column>
 							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Year" />
+								</f:facet>
 								<h:outputText value="#{comp.season}"
 									rendered="#{not comp.editable}" />
 								<h:inputText value="#{comp.season}" rendered="#{comp.editable}" />
