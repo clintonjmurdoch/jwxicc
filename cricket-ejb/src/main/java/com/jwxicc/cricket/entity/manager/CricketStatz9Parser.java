@@ -350,7 +350,8 @@ public class CricketStatz9Parser implements ImportedGameParser {
 						innsManager.persist(inning);
 
 						// add FOW helper for the innings
-						FallOfWicketHelper fowHelper = new FallOfWicketHelper();
+						FallOfWicketHelper fowHelper = new FallOfWicketHelper(
+								inning);
 
 						// increment i as we know it is innings line
 						i++;
@@ -415,7 +416,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 								// order
 								int fowScore = multiLine.getIntValueAt(8);
 								int fowBatPos = multiLine.getIntValueAt(9);
-								fowHelper.addBatpos(batpos, batter);
+								fowHelper.addBatpos(batpos, batting);
 								if (fowBatPos != 0) {
 									fowHelper.addFall(fowBatPos, fowScore);
 								}
@@ -792,6 +793,10 @@ public class CricketStatz9Parser implements ImportedGameParser {
 		// needs bat pos, player object as batter, score
 
 		/**
+		 * The innings that these FOWs are for
+		 */
+		private Inning inning;
+		/**
 		 * List holding the batting position of that player to be dismissed at
 		 * each wicket, in order of wickets
 		 */
@@ -800,7 +805,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 		 * Map with a key of the batting position and the player batting at that
 		 * position in this innings
 		 */
-		private Map<Integer, Player> batPosMap = new HashMap<Integer, Player>();
+		private Map<Integer, Batting> batPosMap = new HashMap<Integer, Batting>();
 		/**
 		 * List holding the score at each wicket, in order of wickets
 		 */
@@ -810,12 +815,12 @@ public class CricketStatz9Parser implements ImportedGameParser {
 		 */
 		private int retiredNotOutBattingPosition;
 
-		public FallOfWicketHelper() {
-
+		public FallOfWicketHelper(Inning inning) {
+			this.inning = inning;
 		}
 
-		public void addBatpos(int currentBatPos, Player currentPlayer) {
-			batPosMap.put(Integer.valueOf(currentBatPos), currentPlayer);
+		public void addBatpos(int currentBatPos, Batting currentBatter) {
+			batPosMap.put(Integer.valueOf(currentBatPos), currentBatter);
 		}
 
 		public void addFall(int outPlayerBatPos, int scoreAtFow) {
@@ -827,10 +832,10 @@ public class CricketStatz9Parser implements ImportedGameParser {
 			// loop through the lists and map, matching them up and creating the
 			// FOW structure
 			int wicketsLost = outPlayerBatPosList.size();
+			boolean canDoNotOuts = true;
+			int[] currentBatters = new int[] { 1, 2 };
 			if (wicketsLost != 0) {
-				boolean canDoNotOuts = true;
 
-				int[] currentBatters = new int[] { 1, 2 };
 				// if one of the batters retired not out, cant do not out FOWs
 				if (this.retiredNotOutBattingPosition == currentBatters[0]
 						|| this.retiredNotOutBattingPosition == currentBatters[1]) {
@@ -846,9 +851,10 @@ public class CricketStatz9Parser implements ImportedGameParser {
 					innsManager.addFOW(fow);
 					int outPlayerPos = outPlayerBatPosList.get(i);
 
-					// create fow wicket for out player, if possible
+					// create fow wicket for out player
 					FowWicket outPlayer = new FowWicket();
-					outPlayer.setPlayer(batPosMap.get(outPlayerPos));
+					outPlayer
+							.setPlayer(batPosMap.get(outPlayerPos).getPlayer());
 					outPlayer.setOutStatus(true);
 					innsManager.addFowWicket(outPlayer);
 
@@ -861,14 +867,14 @@ public class CricketStatz9Parser implements ImportedGameParser {
 						// wicket number + 2
 						// the first 'current batter' is out
 						if (outPlayerPos == currentBatters[0]) {
-							notOutPlayer.setPlayer(batPosMap
-									.get(currentBatters[1]));
+							notOutPlayer.setPlayer(batPosMap.get(
+									currentBatters[1]).getPlayer());
 							currentBatters[0] = wicket + 2;
 						}
 						// the second 'current batter' is out
 						else if (outPlayerPos == currentBatters[1]) {
-							notOutPlayer.setPlayer(batPosMap
-									.get(currentBatters[0]));
+							notOutPlayer.setPlayer(batPosMap.get(
+									currentBatters[0]).getPlayer());
 							currentBatters[1] = wicket + 2;
 						}
 						innsManager.addFowWicket(notOutPlayer);
@@ -879,6 +885,31 @@ public class CricketStatz9Parser implements ImportedGameParser {
 					}
 
 				}
+			}
+
+			// if the team is not bowled out, there may be a not out FOW at the
+			// end
+			// if the last batter is not out, create a new fow
+			// make sure the last batpos is set
+			if (canDoNotOuts
+					&& !InningsClosureType.ALLOUT.equals(inning
+							.getClosureType())
+					&& (batPosMap.get(wicketsLost + 2).getHowout()
+							.getHowOutid() == 1)) {
+				// there should be a not out partnership at the end
+				// for both current batters left over
+				Fow finalFow = new Fow();
+				finalFow.setScore(inning.getRunsScored());
+				finalFow.setWicket(wicketsLost + 1);
+				innsManager.addFOW(finalFow);
+				for (int i = 0; i < 2; i++) {
+					FowWicket fowWicket = new FowWicket();
+					fowWicket.setOutStatus(false);
+					fowWicket.setPlayer(batPosMap.get(currentBatters[i])
+							.getPlayer());
+					innsManager.addFowWicket(fowWicket);
+				}
+
 			}
 
 		}

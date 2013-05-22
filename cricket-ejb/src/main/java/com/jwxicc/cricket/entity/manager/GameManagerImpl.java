@@ -42,7 +42,7 @@ public class GameManagerImpl extends BaseManager<Game> implements GameManager {
 				+ "left join FETCH ba.player " + "left join FETCH ba.howout "
 				+ "left join FETCH ba.wicketDetails wd "
 				+ "left join FETCH i.fows f "
-				+ "left join FETCH f.fowWickets fw "
+				+ "inner join FETCH f.fowWickets fw "
 				+ "left join FETCH wd.player " + "where g.gameId = ?1 "
 				+ "and fw.outStatus = ?2";
 		Query q = em.createQuery(sqlString);
