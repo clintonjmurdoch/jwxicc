@@ -6,6 +6,9 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:a4j="http://richfaces.org/a4j">
 <ui:composition template="/resources/templates/template.xhtml">
+	<ui:define name="head">
+		<f:event listener="#{playerBean.editRow}" type="preRenderView" />
+	</ui:define>
 	<ui:define name="title">Manage Players - Johnnie Walker XI</ui:define>
 	<ui:define name="body">
 		<div class="centreAlign">

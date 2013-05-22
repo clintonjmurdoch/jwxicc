@@ -71,7 +71,7 @@ public class PlayerBean implements Serializable {
 	}
 	
 	private Player findSelectedPlayer(int id) {
-		for (Player player : allPlayers) {
+		for (Player player : getAllPlayers()) {
 			if (player.getPlayerId() == id) {
 				return player;
 			}
