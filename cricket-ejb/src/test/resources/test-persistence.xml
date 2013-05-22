@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://java.sun.com/xml/ns/persistence
+        http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="Jwxicc_JPA">
+		<!-- If you are running in a production environment, add a managed data 
+			source, the example data source is just for development and testing! -->
+		<jta-data-source>java:jboss/datasources/MysqlDS</jta-data-source>
+		<class>com.jwxicc.cricket.entity.Batting</class>
+		<class>com.jwxicc.cricket.entity.Bowling</class>
+		<class>com.jwxicc.cricket.entity.Competition</class>
+		<class>com.jwxicc.cricket.entity.Fow</class>
+		<class>com.jwxicc.cricket.entity.FowWicket</class>
+		<class>com.jwxicc.cricket.entity.Game</class>
+		<class>com.jwxicc.cricket.entity.GamePlayerDesignation</class>
+		<class>com.jwxicc.cricket.entity.Ground</class>
+		<class>com.jwxicc.cricket.entity.Howout</class>
+		<class>com.jwxicc.cricket.entity.Inning</class>
+		<class>com.jwxicc.cricket.entity.PlayerDetail</class>
+		<class>com.jwxicc.cricket.entity.Newsitem</class>
+		<class>com.jwxicc.cricket.entity.Player</class>
+		<class>com.jwxicc.cricket.entity.Review</class>
+		<class>com.jwxicc.cricket.entity.Team</class>
+		<class>com.jwxicc.cricket.entity.User</class>
+		<class>com.jwxicc.cricket.entity.WicketDetail</class>
+		<class>com.jwxicc.cricket.entity.WinType</class>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<properties>
+			<!-- Properties for Hibernate -->
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			<property name="hibernate.jdbc.batch_size" value="0"/>
+		</properties>
+	</persistence-unit>
+</persistence>
