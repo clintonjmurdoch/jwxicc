@@ -382,15 +382,21 @@ public class CricketStatz9Parser implements ImportedGameParser {
 
 								// pos 2 - how out
 								int howoutid = multiLine.getIntValueAt(2);
-								// FIXME may need to be a db lookup
 								Howout howout = null;
-								if (1 <= howoutid && howoutid <= 18) {
+								if (0 <= howoutid && howoutid <= 18) {
 									howout = dismissalsManager
 											.findHowout(howoutid);
 								} else {
 									howout = dismissalsManager.findHowout(0);
 								}
 								batting.setHowout(howout);
+								// if there is a retired not out, add it to the
+								// fowhelper
+								// these are ids 7 and 13
+								if (howoutid == 7 || howoutid == 13) {
+									fowHelper
+											.addRetiredNotOutBattingPosition(batpos);
+								}
 
 								// pos 3-6 done in method
 								boolean batterOut = assignWicketsToPlayers(
@@ -784,9 +790,25 @@ public class CricketStatz9Parser implements ImportedGameParser {
 
 	private class FallOfWicketHelper {
 		// needs bat pos, player object as batter, score
+
+		/**
+		 * List holding the batting position of that player to be dismissed at
+		 * each wicket, in order of wickets
+		 */
 		private List<Integer> outPlayerBatPosList = new ArrayList<Integer>();
+		/**
+		 * Map with a key of the batting position and the player batting at that
+		 * position in this innings
+		 */
 		private Map<Integer, Player> batPosMap = new HashMap<Integer, Player>();
+		/**
+		 * List holding the score at each wicket, in order of wickets
+		 */
 		private List<Integer> scoreAtFowList = new ArrayList<Integer>();
+		/**
+		 * The first batting position to retire not out
+		 */
+		private int retiredNotOutBattingPosition;
 
 		public FallOfWicketHelper() {
 
@@ -803,29 +825,70 @@ public class CricketStatz9Parser implements ImportedGameParser {
 
 		public void createFallOfWickets() {
 			// loop through the lists and map, matching them up and creating the
-			// FOW
-			// structure
-
+			// FOW structure
 			int wicketsLost = outPlayerBatPosList.size();
-			int currentNotOutBatter = 1;
 			if (wicketsLost != 0) {
+				boolean canDoNotOuts = true;
+
+				int[] currentBatters = new int[] { 1, 2 };
+				// if one of the batters retired not out, cant do not out FOWs
+				if (this.retiredNotOutBattingPosition == currentBatters[0]
+						|| this.retiredNotOutBattingPosition == currentBatters[1]) {
+					canDoNotOuts = false;
+				}
+
 				for (int i = 0; i < wicketsLost; i++) {
+					int wicket = i + 1;
+
 					Fow fow = new Fow();
-					fow.setWicket(i + 1);
+					fow.setWicket(wicket);
 					fow.setScore(scoreAtFowList.get(i));
 					innsManager.addFOW(fow);
-					// create fow wicket for out player
+					int outPlayerPos = outPlayerBatPosList.get(i);
+
+					// create fow wicket for out player, if possible
 					FowWicket outPlayer = new FowWicket();
-					outPlayer.setPlayer(batPosMap.get(Integer
-							.valueOf(outPlayerBatPosList.get(i))));
+					outPlayer.setPlayer(batPosMap.get(outPlayerPos));
 					outPlayer.setOutStatus(true);
 					innsManager.addFowWicket(outPlayer);
 
-					// TODO determine how to do not outs
+					// create fow wicket for not out player
+					if (canDoNotOuts) {
+						FowWicket notOutPlayer = new FowWicket();
+						notOutPlayer.setOutStatus(false);
+						// determine which player is not out by keeping track of
+						// the current batters, then updating the out batsman to
+						// wicket number + 2
+						// the first 'current batter' is out
+						if (outPlayerPos == currentBatters[0]) {
+							notOutPlayer.setPlayer(batPosMap
+									.get(currentBatters[1]));
+							currentBatters[0] = wicket + 2;
+						}
+						// the second 'current batter' is out
+						else if (outPlayerPos == currentBatters[1]) {
+							notOutPlayer.setPlayer(batPosMap
+									.get(currentBatters[0]));
+							currentBatters[1] = wicket + 2;
+						}
+						innsManager.addFowWicket(notOutPlayer);
+						// check whether not outs can continue to be done
+						if (this.retiredNotOutBattingPosition == wicket + 2) {
+							canDoNotOuts = false;
+						}
+					}
 
 				}
 			}
 
+		}
+
+		public void addRetiredNotOutBattingPosition(int batPos) {
+			// only store the lowest
+			if (this.retiredNotOutBattingPosition == 0
+					|| batPos < this.retiredNotOutBattingPosition) {
+				this.retiredNotOutBattingPosition = batPos;
+			}
 		}
 
 	}
