@@ -8,36 +8,35 @@ import com.jwxicc.cricket.entity.dbenum.InningsClosureType;
 import java.math.BigDecimal;
 import java.util.Set;
 
-
 /**
  * The persistent class for the innings database table.
  * 
  */
 @Entity
-@Table(name="INNINGS")
+@Table(name = "INNINGS")
 public class Inning implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
 	private int inningsId;
 
 	private int byes;
 
-	@Column(length=12)
+	@Column(length = 12)
 	@Enumerated(EnumType.STRING)
 	private InningsClosureType closureType;
 
 	private int inningsOfMatch;
 
-	@Column(name="leg_byes")
+	@Column(name = "leg_byes")
 	private int legByes;
 
-	@Column(name="no_balls")
+	@Column(name = "no_balls")
 	private int noBalls;
 
-	@Column(precision=10, scale=1)
+	@Column(precision = 10, scale = 1)
 	private BigDecimal oversFaced;
 
 	private int penalties;
@@ -48,26 +47,26 @@ public class Inning implements Serializable {
 
 	private int wides;
 
-	//bi-directional many-to-one association to Batting
-	@OneToMany(mappedBy="inning")
+	// bi-directional many-to-one association to Batting
+	@OneToMany(mappedBy = "inning")
 	private Set<Batting> battings;
 
-	//bi-directional many-to-one association to Bowling
-	@OneToMany(mappedBy="inning")
+	// bi-directional many-to-one association to Bowling
+	@OneToMany(mappedBy = "inning")
 	private Set<Bowling> bowlings;
 
-	//bi-directional many-to-one association to Fow
-	@OneToMany(mappedBy="inning")
-	private Set<Partnership> fows;
+	// bi-directional many-to-one association to Partnership
+	@OneToMany(mappedBy = "inning")
+	private Set<Partnership> partnerships;
 
-	//bi-directional many-to-one association to Game
+	// bi-directional many-to-one association to Game
 	@ManyToOne
-	@JoinColumn(name="gameId", nullable=false)
+	@JoinColumn(name = "gameId", nullable = false)
 	private Game game;
 
-	//bi-directional many-to-one association to Team
+	// bi-directional many-to-one association to Team
 	@ManyToOne
-	@JoinColumn(name="teamId", nullable=false)
+	@JoinColumn(name = "teamId", nullable = false)
 	private Team team;
 
 	public Inning() {
@@ -129,6 +128,14 @@ public class Inning implements Serializable {
 		this.oversFaced = oversFaced;
 	}
 
+	public Set<Partnership> getPartnerships() {
+		return partnerships;
+	}
+
+	public void setPartnerships(Set<Partnership> partnerships) {
+		this.partnerships = partnerships;
+	}
+
 	public int getPenalties() {
 		return this.penalties;
 	}
@@ -175,14 +182,6 @@ public class Inning implements Serializable {
 
 	public void setBowlings(Set<Bowling> bowlings) {
 		this.bowlings = bowlings;
-	}
-
-	public Set<Partnership> getFows() {
-		return this.fows;
-	}
-
-	public void setFows(Set<Partnership> fows) {
-		this.fows = fows;
 	}
 
 	public Game getGame() {

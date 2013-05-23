@@ -16,7 +16,7 @@ public class InningsManagerImpl extends BaseManager<Inning> implements
 		InningsManager {
 
 	private Inning inns;
-	private Partnership fow;
+	private Partnership partnership;
 
 	@Override
 	public boolean validateRequiredFields(Inning obj) {
@@ -53,17 +53,16 @@ public class InningsManagerImpl extends BaseManager<Inning> implements
 	}
 
 	@Override
-	public void addFOW(Partnership fow) {
-		fow.setInning(inns);
-		this.fow = fow;
-		em.persist(fow);
+	public void addPartnership(Partnership partnership) {
+		partnership.setInning(inns);
+		this.partnership = partnership;
+		em.persist(partnership);
 	}
 
 	@Override
-	public void addFowWicket(PartnershipPlayer fowWicket) {
-		// TODO Auto-generated method stub
-		fowWicket.setFow(this.fow);
-		em.persist(fowWicket);
+	public void addPartnershipPlayer(PartnershipPlayer partnershipPlayer) {
+		partnershipPlayer.setPartnership(this.partnership);
+		em.persist(partnershipPlayer);
 	}
 
 }

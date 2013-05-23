@@ -13,6 +13,6 @@ public interface InningsManager extends CricketDataManager<Inning> {
 
 	public void addBatting(Batting bat);
 	public void addBowling(Bowling bowl);
-	public void addFOW(Partnership fow);
-	public void addFowWicket(PartnershipPlayer fowWicket);
+	public void addPartnership(Partnership partnership);
+	public void addPartnershipPlayer(PartnershipPlayer partnershipPlayer);
 }

@@ -122,11 +122,11 @@
 							<rich:column breakRowBefore="true" colspan="7"
 								styleClass="sc-innsDetail">
 								<h:outputText value="Fall of wickets: "></h:outputText>
-								<ui:repeat var="fow" value="#{inns.fows.setToList}"
+								<ui:repeat var="partnership" value="#{inns.partnerships.setToList}"
 									varStatus="c">
-									<h:outputText value="#{fow.wicket}-#{fow.score} " />
+									<h:outputText value="#{partnership.wicket}-#{partnership.score} " />
 									<h:outputText
-										value="(#{matchBean.allPlayerMap[fow.fowWickets.setToList[0].player.playerId].scorecardName})"></h:outputText>
+										value="(#{matchBean.allPlayerMap[partnership.partnershipPlayers.setToList[0].player.playerId].scorecardName})"></h:outputText>
 									<h:outputText value="#{c.last ? '' : ', '}" />
 								</ui:repeat>
 							</rich:column>

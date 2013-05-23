@@ -349,8 +349,8 @@ public class CricketStatz9Parser implements ImportedGameParser {
 						// enough data exists to save the inning
 						innsManager.persist(inning);
 
-						// add FOW helper for the innings
-						FallOfWicketHelper fowHelper = new FallOfWicketHelper(
+						// add Partnerships helper for the innings
+						PartnershipsHelper partnershipsHelper = new PartnershipsHelper(
 								inning);
 
 						// increment i as we know it is innings line
@@ -392,10 +392,10 @@ public class CricketStatz9Parser implements ImportedGameParser {
 								}
 								batting.setHowout(howout);
 								// if there is a retired not out, add it to the
-								// fowhelper
+								// partnerships helper
 								// these are ids 7 and 13
 								if (howoutid == 7 || howoutid == 13) {
-									fowHelper
+									partnershipsHelper
 											.addRetiredNotOutBattingPosition(batpos);
 								}
 
@@ -416,9 +416,10 @@ public class CricketStatz9Parser implements ImportedGameParser {
 								// order
 								int fowScore = multiLine.getIntValueAt(8);
 								int fowBatPos = multiLine.getIntValueAt(9);
-								fowHelper.addBatpos(batpos, batting);
+								partnershipsHelper.addBatpos(batpos, batting);
 								if (fowBatPos != 0) {
-									fowHelper.addFall(fowBatPos, fowScore);
+									partnershipsHelper.addFall(fowBatPos,
+											fowScore);
 								}
 
 								// pos 10 - 4s
@@ -507,8 +508,8 @@ public class CricketStatz9Parser implements ImportedGameParser {
 						inning.setRunsScored(aggScore);
 						inning.setWicketsLost(wicketsLost);
 
-						// after the inns stuff is done, do the FOW
-						fowHelper.createFallOfWickets();
+						// after the inns stuff is done, do the Partnerships
+						partnershipsHelper.createFallOfWickets();
 
 						// create a bigdecimal from the int array
 						while (oversBowled[1] >= 6) {
@@ -789,11 +790,11 @@ public class CricketStatz9Parser implements ImportedGameParser {
 
 	}
 
-	private class FallOfWicketHelper {
+	private class PartnershipsHelper {
 		// needs bat pos, player object as batter, score
 
 		/**
-		 * The innings that these FOWs are for
+		 * The innings that these Partnersips are for
 		 */
 		private Inning inning;
 		/**
@@ -815,7 +816,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 		 */
 		private int retiredNotOutBattingPosition;
 
-		public FallOfWicketHelper(Inning inning) {
+		public PartnershipsHelper(Inning inning) {
 			this.inning = inning;
 		}
 
@@ -830,7 +831,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 
 		public void createFallOfWickets() {
 			// loop through the lists and map, matching them up and creating the
-			// FOW structure
+			// Partnership structure
 			int wicketsLost = outPlayerBatPosList.size();
 			boolean canDoNotOuts = true;
 			int[] currentBatters = new int[] { 1, 2 };
@@ -845,20 +846,20 @@ public class CricketStatz9Parser implements ImportedGameParser {
 				for (int i = 0; i < wicketsLost; i++) {
 					int wicket = i + 1;
 
-					Partnership fow = new Partnership();
-					fow.setWicket(wicket);
-					fow.setScoreAtEnd(scoreAtFowList.get(i));
-					innsManager.addFOW(fow);
+					Partnership partnership = new Partnership();
+					partnership.setWicket(wicket);
+					partnership.setScoreAtEnd(scoreAtFowList.get(i));
+					innsManager.addPartnership(partnership);
 					int outPlayerPos = outPlayerBatPosList.get(i);
 
-					// create fow wicket for out player
+					// create partnership player for out player
 					PartnershipPlayer outPlayer = new PartnershipPlayer();
 					outPlayer
 							.setPlayer(batPosMap.get(outPlayerPos).getPlayer());
 					outPlayer.setOutStatus(true);
-					innsManager.addFowWicket(outPlayer);
+					innsManager.addPartnershipPlayer(outPlayer);
 
-					// create fow wicket for not out player
+					// create partnership player for not out player
 					if (canDoNotOuts) {
 						PartnershipPlayer notOutPlayer = new PartnershipPlayer();
 						notOutPlayer.setOutStatus(false);
@@ -877,7 +878,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 									currentBatters[0]).getPlayer());
 							currentBatters[1] = wicket + 2;
 						}
-						innsManager.addFowWicket(notOutPlayer);
+						innsManager.addPartnershipPlayer(notOutPlayer);
 						// check whether not outs can continue to be done
 						if (this.retiredNotOutBattingPosition == wicket + 2) {
 							canDoNotOuts = false;
@@ -887,9 +888,9 @@ public class CricketStatz9Parser implements ImportedGameParser {
 				}
 			}
 
-			// if the team is not bowled out, there may be a not out FOW at the
-			// end
-			// if the last batter is not out, create a new fow
+			// if the team is not bowled out, there may be a not out Partnership
+			// at the end
+			// if the last batter is not out, create a new partnership
 			// make sure the last batpos is set
 			if (canDoNotOuts
 					&& !InningsClosureType.ALLOUT.equals(inning
@@ -898,16 +899,16 @@ public class CricketStatz9Parser implements ImportedGameParser {
 							.getHowOutid() == 1)) {
 				// there should be a not out partnership at the end
 				// for both current batters left over
-				Partnership finalFow = new Partnership();
-				finalFow.setScoreAtEnd(inning.getRunsScored());
-				finalFow.setWicket(wicketsLost + 1);
-				innsManager.addFOW(finalFow);
+				Partnership finalPartnership = new Partnership();
+				finalPartnership.setScoreAtEnd(inning.getRunsScored());
+				finalPartnership.setWicket(wicketsLost + 1);
+				innsManager.addPartnership(finalPartnership);
 				for (int i = 0; i < 2; i++) {
 					PartnershipPlayer fowWicket = new PartnershipPlayer();
 					fowWicket.setOutStatus(false);
 					fowWicket.setPlayer(batPosMap.get(currentBatters[i])
 							.getPlayer());
-					innsManager.addFowWicket(fowWicket);
+					innsManager.addPartnershipPlayer(fowWicket);
 				}
 
 			}

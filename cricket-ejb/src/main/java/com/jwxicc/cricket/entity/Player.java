@@ -5,63 +5,63 @@ import javax.persistence.*;
 
 import java.util.Set;
 
-
 /**
  * The persistent class for the player database table.
  * 
  */
 @Entity
-@Table(name="PLAYER")
+@Table(name = "PLAYER")
 public class Player implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false)
+	@Column(unique = true, nullable = false)
 	private int playerId;
 
-	@Column(length=45)
+	@Column(length = 45)
 	private String scorecardName;
 
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private boolean status;
 
-	//bi-directional many-to-one association to Batting
-	@OneToMany(mappedBy="player")
+	// bi-directional many-to-one association to Batting
+	@OneToMany(mappedBy = "player")
 	private Set<Batting> battings;
 
-	//bi-directional many-to-one association to Bowling
-	@OneToMany(mappedBy="player")
+	// bi-directional many-to-one association to Bowling
+	@OneToMany(mappedBy = "player")
 	private Set<Bowling> bowlings;
-	
+
 	@Transient
 	private boolean captain;
 
-	//bi-directional many-to-one association to FowWicket
-	@OneToMany(mappedBy="player")
-	private Set<PartnershipPlayer> fowWickets;
+	// bi-directional many-to-one association to PartnershipPlayer
+	@OneToMany(mappedBy = "player")
+	private Set<PartnershipPlayer> partnershipPlayers;
 
 	@Transient
 	private boolean keeper;
-	
-	//bi-directional many-to-one association to GamePlayerDesignation
-	@OneToMany(mappedBy="player")
+
+	// bi-directional many-to-one association to GamePlayerDesignation
+	@OneToMany(mappedBy = "player")
 	private Set<GamePlayerDesignation> gameplayerdesignations;
 
-	//bi-directional many-to-one association to Team
+	// bi-directional many-to-one association to Team
 	@ManyToOne
-	@JoinColumn(name="teamId", nullable=false)
+	@JoinColumn(name = "teamId", nullable = false)
 	private Team team;
 
-	//bi-directional many-to-one association to WicketDetail
-	@OneToMany(mappedBy="player")
+	// bi-directional many-to-one association to WicketDetail
+	@OneToMany(mappedBy = "player")
 	private Set<WicketDetail> wicketDetails;
 
-	//bi-directional one-to-one association to PlayerDetail
-	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="playerDetailId")
-	//@JoinColumn(name="playerId", referencedColumnName="playerId", nullable=false, insertable=false, updatable=false)
+	// bi-directional one-to-one association to PlayerDetail
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "playerDetailId")
+	// @JoinColumn(name="playerId", referencedColumnName="playerId",
+	// nullable=false, insertable=false, updatable=false)
 	private PlayerDetail playerDetail;
-	
+
 	@Transient
 	private boolean editable;
 
@@ -108,20 +108,21 @@ public class Player implements Serializable {
 		this.bowlings = bowlings;
 	}
 
-	public Set<PartnershipPlayer> getFowWickets() {
-		return this.fowWickets;
-	}
-
-	public void setFowWickets(Set<PartnershipPlayer> fowWickets) {
-		this.fowWickets = fowWickets;
-	}
-
 	public Set<GamePlayerDesignation> getGameplayerdesignations() {
 		return this.gameplayerdesignations;
 	}
 
-	public void setGameplayerdesignations(Set<GamePlayerDesignation> gameplayerdesignations) {
+	public void setGameplayerdesignations(
+			Set<GamePlayerDesignation> gameplayerdesignations) {
 		this.gameplayerdesignations = gameplayerdesignations;
+	}
+
+	public Set<PartnershipPlayer> getPartnershipPlayers() {
+		return partnershipPlayers;
+	}
+
+	public void setPartnershipPlayers(Set<PartnershipPlayer> partnershipPlayers) {
+		this.partnershipPlayers = partnershipPlayers;
 	}
 
 	public Team getTeam() {

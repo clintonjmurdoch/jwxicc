@@ -5,11 +5,11 @@ import javax.persistence.*;
 import java.util.Set;
 
 /**
- * The persistent class for the fow database table.
+ * The persistent class for the PARTNERSHIP database table.
  * 
  */
 @Entity
-@Table(name = "PARTERSHIP")
+@Table(name = "PARTNERSHIP")
 public class Partnership implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -38,7 +38,7 @@ public class Partnership implements Serializable {
 	@JoinColumn(name = "inningsId", nullable = false)
 	private Inning inning;
 
-	// bi-directional many-to-one association to FowWicket
+	// bi-directional many-to-one association to PartnershipPlayers
 	@OneToMany(mappedBy = "partnership")
 	private Set<PartnershipPlayer> partnershipPlayers;
 

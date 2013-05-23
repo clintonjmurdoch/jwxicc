@@ -4,7 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 /**
- * The persistent class for the fow_wicket database table.
+ * The persistent class for the PARTNERSHIP_PLAYER database table.
  * 
  */
 @Entity
@@ -22,7 +22,7 @@ public class PartnershipPlayer implements Serializable {
 	@Column(nullable = false)
 	private boolean outStatus;
 
-	// bi-directional many-to-one association to Fow
+	// bi-directional many-to-one association to Partnership
 	@ManyToOne
 	@JoinColumn(name = "partnershipId", nullable = false)
 	private Partnership partnership;
