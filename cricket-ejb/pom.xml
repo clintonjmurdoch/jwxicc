@@ -99,11 +99,9 @@
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.as</groupId>
-			<artifactId>jboss-as-arquillian-container-managed</artifactId>
-			<version>7.1.1.Final</version>
+			<artifactId>jboss-as-arquillian-container-remote</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 
 		<dependency>
 			<groupId>javax.ejb</groupId>
