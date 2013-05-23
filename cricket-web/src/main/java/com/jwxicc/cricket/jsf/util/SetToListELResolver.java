@@ -9,7 +9,7 @@ import java.util.Set;
 import javax.el.ELContext;
 import javax.el.ListELResolver;
 
-import com.jwxicc.cricket.entity.Fow;
+import com.jwxicc.cricket.entity.Partnership;
 import com.jwxicc.cricket.entity.Inning;
 
 public class SetToListELResolver extends ListELResolver {
@@ -34,13 +34,13 @@ public class SetToListELResolver extends ListELResolver {
 				});
 			}
 			
-			if (list.get(0) instanceof Fow) {
+			if (list.get(0) instanceof Partnership) {
 				Collections.sort(list, new Comparator<Object>() {
 					@Override
 					public int compare(Object o1, Object o2) {
 						// orders innings by innings of match
-						return Integer.valueOf(((Fow)o1).getWicket()).compareTo(
-								Integer.valueOf(((Fow)o2).getWicket()));
+						return Integer.valueOf(((Partnership)o1).getWicket()).compareTo(
+								Integer.valueOf(((Partnership)o2).getWicket()));
 					}
 				});
 			}

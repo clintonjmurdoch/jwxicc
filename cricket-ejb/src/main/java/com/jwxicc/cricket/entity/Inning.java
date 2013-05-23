@@ -58,7 +58,7 @@ public class Inning implements Serializable {
 
 	//bi-directional many-to-one association to Fow
 	@OneToMany(mappedBy="inning")
-	private Set<Fow> fows;
+	private Set<Partnership> fows;
 
 	//bi-directional many-to-one association to Game
 	@ManyToOne
@@ -177,11 +177,11 @@ public class Inning implements Serializable {
 		this.bowlings = bowlings;
 	}
 
-	public Set<Fow> getFows() {
+	public Set<Partnership> getFows() {
 		return this.fows;
 	}
 
-	public void setFows(Set<Fow> fows) {
+	public void setFows(Set<Partnership> fows) {
 		this.fows = fows;
 	}
 

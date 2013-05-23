@@ -38,7 +38,7 @@ public class Player implements Serializable {
 
 	//bi-directional many-to-one association to FowWicket
 	@OneToMany(mappedBy="player")
-	private Set<FowWicket> fowWickets;
+	private Set<PartnershipPlayer> fowWickets;
 
 	@Transient
 	private boolean keeper;
@@ -108,11 +108,11 @@ public class Player implements Serializable {
 		this.bowlings = bowlings;
 	}
 
-	public Set<FowWicket> getFowWickets() {
+	public Set<PartnershipPlayer> getFowWickets() {
 		return this.fowWickets;
 	}
 
-	public void setFowWickets(Set<FowWicket> fowWickets) {
+	public void setFowWickets(Set<PartnershipPlayer> fowWickets) {
 		this.fowWickets = fowWickets;
 	}
 

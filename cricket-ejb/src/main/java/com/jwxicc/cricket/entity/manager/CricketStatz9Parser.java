@@ -20,8 +20,8 @@ import org.apache.commons.collections.CollectionUtils;
 import com.jwxicc.cricket.entity.Batting;
 import com.jwxicc.cricket.entity.Bowling;
 import com.jwxicc.cricket.entity.Competition;
-import com.jwxicc.cricket.entity.Fow;
-import com.jwxicc.cricket.entity.FowWicket;
+import com.jwxicc.cricket.entity.Partnership;
+import com.jwxicc.cricket.entity.PartnershipPlayer;
 import com.jwxicc.cricket.entity.Game;
 import com.jwxicc.cricket.entity.GamePlayerDesignation;
 import com.jwxicc.cricket.entity.Ground;
@@ -845,14 +845,14 @@ public class CricketStatz9Parser implements ImportedGameParser {
 				for (int i = 0; i < wicketsLost; i++) {
 					int wicket = i + 1;
 
-					Fow fow = new Fow();
+					Partnership fow = new Partnership();
 					fow.setWicket(wicket);
-					fow.setScore(scoreAtFowList.get(i));
+					fow.setScoreAtEnd(scoreAtFowList.get(i));
 					innsManager.addFOW(fow);
 					int outPlayerPos = outPlayerBatPosList.get(i);
 
 					// create fow wicket for out player
-					FowWicket outPlayer = new FowWicket();
+					PartnershipPlayer outPlayer = new PartnershipPlayer();
 					outPlayer
 							.setPlayer(batPosMap.get(outPlayerPos).getPlayer());
 					outPlayer.setOutStatus(true);
@@ -860,7 +860,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 
 					// create fow wicket for not out player
 					if (canDoNotOuts) {
-						FowWicket notOutPlayer = new FowWicket();
+						PartnershipPlayer notOutPlayer = new PartnershipPlayer();
 						notOutPlayer.setOutStatus(false);
 						// determine which player is not out by keeping track of
 						// the current batters, then updating the out batsman to
@@ -898,12 +898,12 @@ public class CricketStatz9Parser implements ImportedGameParser {
 							.getHowOutid() == 1)) {
 				// there should be a not out partnership at the end
 				// for both current batters left over
-				Fow finalFow = new Fow();
-				finalFow.setScore(inning.getRunsScored());
+				Partnership finalFow = new Partnership();
+				finalFow.setScoreAtEnd(inning.getRunsScored());
 				finalFow.setWicket(wicketsLost + 1);
 				innsManager.addFOW(finalFow);
 				for (int i = 0; i < 2; i++) {
-					FowWicket fowWicket = new FowWicket();
+					PartnershipPlayer fowWicket = new PartnershipPlayer();
 					fowWicket.setOutStatus(false);
 					fowWicket.setPlayer(batPosMap.get(currentBatters[i])
 							.getPlayer());

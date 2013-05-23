@@ -4,8 +4,8 @@ import javax.ejb.Local;
 
 import com.jwxicc.cricket.entity.Batting;
 import com.jwxicc.cricket.entity.Bowling;
-import com.jwxicc.cricket.entity.Fow;
-import com.jwxicc.cricket.entity.FowWicket;
+import com.jwxicc.cricket.entity.Partnership;
+import com.jwxicc.cricket.entity.PartnershipPlayer;
 import com.jwxicc.cricket.entity.Inning;
 
 @Local
@@ -13,6 +13,6 @@ public interface InningsManager extends CricketDataManager<Inning> {
 
 	public void addBatting(Batting bat);
 	public void addBowling(Bowling bowl);
-	public void addFOW(Fow fow);
-	public void addFowWicket(FowWicket fowWicket);
+	public void addFOW(Partnership fow);
+	public void addFowWicket(PartnershipPlayer fowWicket);
 }

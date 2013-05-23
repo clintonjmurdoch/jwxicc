@@ -5,8 +5,8 @@ import javax.ejb.Stateless;
 
 import com.jwxicc.cricket.entity.Batting;
 import com.jwxicc.cricket.entity.Bowling;
-import com.jwxicc.cricket.entity.Fow;
-import com.jwxicc.cricket.entity.FowWicket;
+import com.jwxicc.cricket.entity.Partnership;
+import com.jwxicc.cricket.entity.PartnershipPlayer;
 import com.jwxicc.cricket.entity.Inning;
 import com.jwxicc.cricket.interfaces.InningsManager;
 
@@ -16,7 +16,7 @@ public class InningsManagerImpl extends BaseManager<Inning> implements
 		InningsManager {
 
 	private Inning inns;
-	private Fow fow;
+	private Partnership fow;
 
 	@Override
 	public boolean validateRequiredFields(Inning obj) {
@@ -53,14 +53,14 @@ public class InningsManagerImpl extends BaseManager<Inning> implements
 	}
 
 	@Override
-	public void addFOW(Fow fow) {
+	public void addFOW(Partnership fow) {
 		fow.setInning(inns);
 		this.fow = fow;
 		em.persist(fow);
 	}
 
 	@Override
-	public void addFowWicket(FowWicket fowWicket) {
+	public void addFowWicket(PartnershipPlayer fowWicket) {
 		// TODO Auto-generated method stub
 		fowWicket.setFow(this.fow);
 		em.persist(fowWicket);

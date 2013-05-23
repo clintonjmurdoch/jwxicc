@@ -11,8 +11,8 @@
 		<class>com.jwxicc.cricket.entity.Batting</class>
 		<class>com.jwxicc.cricket.entity.Bowling</class>
 		<class>com.jwxicc.cricket.entity.Competition</class>
-		<class>com.jwxicc.cricket.entity.Fow</class>
-		<class>com.jwxicc.cricket.entity.FowWicket</class>
+		<class>com.jwxicc.cricket.entity.Partnership</class>
+		<class>com.jwxicc.cricket.entity.PartnershipPlayer</class>
 		<class>com.jwxicc.cricket.entity.Game</class>
 		<class>com.jwxicc.cricket.entity.GamePlayerDesignation</class>
 		<class>com.jwxicc.cricket.entity.Ground</class>
