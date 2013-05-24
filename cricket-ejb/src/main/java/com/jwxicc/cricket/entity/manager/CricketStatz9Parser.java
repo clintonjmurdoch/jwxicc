@@ -835,6 +835,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 			int wicketsLost = outPlayerBatPosList.size();
 			boolean canDoNotOuts = true;
 			int[] currentBatters = new int[] { 1, 2 };
+			int lastWicketScore = 0;
 			if (wicketsLost != 0) {
 
 				// if one of the batters retired not out, cant do not out FOWs
@@ -848,7 +849,8 @@ public class CricketStatz9Parser implements ImportedGameParser {
 
 					Partnership partnership = new Partnership();
 					partnership.setWicket(wicket);
-					partnership.setScoreAtEnd(scoreAtFowList.get(i));
+					int scoreAtEnd = scoreAtFowList.get(i);
+					partnership.setScoreAtEnd(scoreAtEnd);
 					innsManager.addPartnership(partnership);
 					int outPlayerPos = outPlayerBatPosList.get(i);
 
@@ -861,6 +863,9 @@ public class CricketStatz9Parser implements ImportedGameParser {
 
 					// create partnership player for not out player
 					if (canDoNotOuts) {
+						// set runs scored and update last wicket score
+						partnership.setRunsScored(scoreAtEnd-lastWicketScore);
+						lastWicketScore = scoreAtEnd;
 						PartnershipPlayer notOutPlayer = new PartnershipPlayer();
 						notOutPlayer.setOutStatus(false);
 						// determine which player is not out by keeping track of

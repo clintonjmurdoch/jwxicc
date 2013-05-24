@@ -124,7 +124,7 @@
 								<h:outputText value="Fall of wickets: "></h:outputText>
 								<ui:repeat var="partnership" value="#{inns.partnerships.setToList}"
 									varStatus="c">
-									<h:outputText value="#{partnership.wicket}-#{partnership.score} " />
+									<h:outputText value="#{partnership.wicket}-#{partnership.scoreAtEnd} " />
 									<h:outputText
 										value="(#{matchBean.allPlayerMap[partnership.partnershipPlayers.setToList[0].player.playerId].scorecardName})"></h:outputText>
 									<h:outputText value="#{c.last ? '' : ', '}" />
