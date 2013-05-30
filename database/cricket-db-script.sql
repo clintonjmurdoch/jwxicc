@@ -330,19 +330,21 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `FOW`
+-- Table `PARTNERSHIP`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `FOW` ;
+DROP TABLE IF EXISTS `PARTNERSHIP` ;
 
-CREATE  TABLE IF NOT EXISTS `FOW` (
-  `fowId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+CREATE  TABLE IF NOT EXISTS `PARTNERSHIP` (
+  `partnershipId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `inningsId` INT UNSIGNED NOT NULL ,
   `wicket` INT UNSIGNED NOT NULL ,
-  `score` INT UNSIGNED NOT NULL ,
-  `overs` FLOAT(3,1) NOT NULL ,
-  PRIMARY KEY (`fowId`) ,
-  INDEX `fow_innings` (`inningsId` ASC) ,
-  CONSTRAINT `fow_innings`
+  `scoreAtEnd` INT UNSIGNED NOT NULL ,
+  `oversAtEnd` FLOAT(3,1) NOT NULL ,
+  `runsScored` INT NULL ,
+  `overs` FLOAT(3,1) NULL ,
+  PRIMARY KEY (`partnershipId`) ,
+  INDEX `partnership_innings` (`inningsId` ASC) ,
+  CONSTRAINT `partnership_innings`
     FOREIGN KEY (`inningsId` )
     REFERENCES `INNINGS` (`inningsId` )
     ON DELETE NO ACTION
@@ -351,25 +353,26 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `FOW_WICKET`
+-- Table `PARTNERSHIP_PLAYER`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `FOW_WICKET` ;
+DROP TABLE IF EXISTS `PARTNERSHIP_PLAYER` ;
 
-CREATE  TABLE IF NOT EXISTS `FOW_WICKET` (
-  `fow_wicketId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `fowId` INT UNSIGNED NOT NULL ,
+CREATE  TABLE IF NOT EXISTS `PARTNERSHIP_PLAYER` (
+  `partnershipPlayerId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `partnershipId` INT UNSIGNED NOT NULL ,
   `playerId` INT UNSIGNED NOT NULL ,
   `outStatus` TINYINT(1)  NOT NULL ,
   `contribution` INT UNSIGNED NULL ,
-  PRIMARY KEY (`fow_wicketId`) ,
-  INDEX `fow_wicket_fow` (`fowId` ASC) ,
-  INDEX `fow_wicket_player` (`playerId` ASC) ,
-  CONSTRAINT `fow_wicket_fow`
-    FOREIGN KEY (`fowId` )
-    REFERENCES `FOW` (`fowId` )
+  `battingPosition` INT UNSIGNED NOT NULL ,
+  PRIMARY KEY (`partnershipPlayerId`) ,
+  INDEX `partnershipplayer_partnership_rel` (`partnershipId` ASC) ,
+  INDEX `partnershipplayer_player_rel` (`playerId` ASC) ,
+  CONSTRAINT `partnershipplayer_partnership_rel`
+    FOREIGN KEY (`partnershipId` )
+    REFERENCES `PARTNERSHIP` (`partnershipId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fow_wicket_player`
+  CONSTRAINT `partnershipplayer_player_rel`
     FOREIGN KEY (`playerId` )
     REFERENCES `PLAYER` (`playerId` )
     ON DELETE NO ACTION
