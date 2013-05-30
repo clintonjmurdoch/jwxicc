@@ -39,7 +39,7 @@ public class Partnership implements Serializable {
 	private Inning inning;
 
 	// bi-directional many-to-one association to PartnershipPlayers
-	@OneToMany(mappedBy = "partnership")
+	@OneToMany(mappedBy = "partnership", fetch = FetchType.EAGER)
 	private Set<PartnershipPlayer> partnershipPlayers;
 
 	public Partnership() {

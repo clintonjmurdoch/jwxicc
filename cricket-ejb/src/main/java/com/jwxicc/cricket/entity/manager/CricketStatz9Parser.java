@@ -858,6 +858,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 					PartnershipPlayer outPlayer = new PartnershipPlayer();
 					outPlayer
 							.setPlayer(batPosMap.get(outPlayerPos).getPlayer());
+					outPlayer.setBattingPosition(outPlayerPos);
 					outPlayer.setOutStatus(true);
 					innsManager.addPartnershipPlayer(outPlayer);
 
@@ -875,12 +876,14 @@ public class CricketStatz9Parser implements ImportedGameParser {
 						if (outPlayerPos == currentBatters[0]) {
 							notOutPlayer.setPlayer(batPosMap.get(
 									currentBatters[1]).getPlayer());
+							notOutPlayer.setBattingPosition(currentBatters[1]);
 							currentBatters[0] = wicket + 2;
 						}
 						// the second 'current batter' is out
 						else if (outPlayerPos == currentBatters[1]) {
 							notOutPlayer.setPlayer(batPosMap.get(
 									currentBatters[0]).getPlayer());
+							notOutPlayer.setBattingPosition(currentBatters[0]);
 							currentBatters[1] = wicket + 2;
 						}
 						innsManager.addPartnershipPlayer(notOutPlayer);
@@ -907,12 +910,14 @@ public class CricketStatz9Parser implements ImportedGameParser {
 				Partnership finalPartnership = new Partnership();
 				finalPartnership.setScoreAtEnd(inning.getRunsScored());
 				finalPartnership.setWicket(wicketsLost + 1);
+				finalPartnership.setRunsScored(inning.getRunsScored() - lastWicketScore);
 				innsManager.addPartnership(finalPartnership);
 				for (int i = 0; i < 2; i++) {
 					PartnershipPlayer fowWicket = new PartnershipPlayer();
 					fowWicket.setOutStatus(false);
 					fowWicket.setPlayer(batPosMap.get(currentBatters[i])
 							.getPlayer());
+					fowWicket.setBattingPosition(currentBatters[i]);
 					innsManager.addPartnershipPlayer(fowWicket);
 				}
 

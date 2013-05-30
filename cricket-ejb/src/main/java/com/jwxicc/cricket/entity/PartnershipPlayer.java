@@ -16,6 +16,8 @@ public class PartnershipPlayer implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
 	private int partnershipPlayerId;
+	
+	private int battingPosition;
 
 	private int contribution;
 
@@ -33,6 +35,14 @@ public class PartnershipPlayer implements Serializable {
 	private Player player;
 
 	public PartnershipPlayer() {
+	}
+
+	public int getBattingPosition() {
+		return battingPosition;
+	}
+
+	public void setBattingPosition(int battingPosition) {
+		this.battingPosition = battingPosition;
 	}
 
 	public int getContribution() {

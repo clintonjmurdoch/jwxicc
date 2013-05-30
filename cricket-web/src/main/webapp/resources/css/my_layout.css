@@ -488,7 +488,7 @@ div.rf-tab-cnt,.floatingnav {
 	line-height: 2em;
 }
 
-.ym-fbox-text .rf-fu, .ym-fbox-text .rf-fu-hdr {
+.ym-fbox-text .rf-fu,.ym-fbox-text .rf-fu-hdr {
 	display: inline-block;
 	background: none;
 	border: none;
@@ -613,4 +613,29 @@ div.rf-tab-cnt,.floatingnav {
 .floatingnav ul {
 	margin-top: 5px;
 	margin-bottom: 5px;
+}
+
+/* Partnerships table display */
+.pship-runs {
+	width: 34px;
+}
+
+.pship-ground {
+	width: 150px;
+}
+
+.pship-date {
+	width: 80px;
+}
+
+.pship-perwicket-tbl .pship-players {
+	width: 201px;
+}
+
+.pship-perwicket-tbl .pship-opposition {
+	width: 201px
+}
+
+.pship-perwicket-tbl .pship-ground {
+	width: 170px
 }

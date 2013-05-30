@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<rich:column styleClass="pship-runs">
+		<f:facet name="header">Runs</f:facet>
+		<h:outputText value="#{record.runsScored}" />
+		<h:outputText value=" (#{record.overs})" rendered="#{record.overs != 0}" />
+	</rich:column>
+	<rich:column styleClass="pship-players">
+		<f:facet name="header">Players</f:facet>
+		<h:outputText value="#{record.partnershipPlayers.setToList}">
+			<f:converter converterId="partnershipPlayersConverter" />
+		</h:outputText>
+	</rich:column>
+	<rich:column styleClass="pship-opposition">
+		<f:facet name="header">Opposition</f:facet>
+		<h:outputText
+			value="#{record.inning.game.team2.teamId == pshipRecordsBean.jwTeamId ? record.inning.game.team1.teamName : record.inning.game.team2.teamName }" />
+	</rich:column>
+	<rich:column styleClass="pship-ground">
+		<f:facet name="header">Ground</f:facet>
+		<h:outputText value="#{record.inning.game.ground.groundName}" />
+	</rich:column>
+	<rich:column styleClass="pship-date">
+		<f:facet name="header">Date</f:facet>
+		<h:outputText value="#{record.inning.game.date }">
+			<f:convertDateTime pattern="dd/MM/yyyy" />
+		</h:outputText>
+	</rich:column>
+</ui:composition>
