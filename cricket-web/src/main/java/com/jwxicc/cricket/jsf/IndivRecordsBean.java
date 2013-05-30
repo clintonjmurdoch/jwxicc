@@ -10,13 +10,13 @@ import javax.faces.bean.ViewScoped;
 import com.jwxicc.cricket.records.IndividualRecordsManager;
 import com.jwxicc.cricket.records.Record;
 
-@ManagedBean(name="indivRecordsBean")
+@ManagedBean(name = "indivRecordsBean")
 @ViewScoped
 public class IndivRecordsBean implements Serializable {
-	
-	@EJB(name="indivRecordsManager")
+
+	@EJB(name = "indivRecordsManager")
 	IndividualRecordsManager indivRecords;
-	
+
 	private List<Record> mostMatches;
 	private List<Record> mostMOTMs;
 	private List<Record> mostCaptain;

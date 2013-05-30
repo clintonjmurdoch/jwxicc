@@ -37,37 +37,32 @@ public class GameManagedBean implements Serializable {
 		this.match = gameBean.getGameForScorecard(this.matchId);
 
 		for (Inning i : match.getInnings()) {
-			System.out.println("for innings " + i.getInningsId()
-					+ " there are " + i.getBattings().size() + " battings");
+			System.out.println("for innings " + i.getInningsId() + " there are "
+					+ i.getBattings().size() + " battings");
 			Integer teamInt = Integer.valueOf(i.getTeam().getTeamId());
 
 			Map<Integer, Player> playerMap = new HashMap<Integer, Player>();
 			for (Batting b : i.getBattings()) {
-				playerMap.put(Integer.valueOf(b.getPlayer().getPlayerId()),
-						b.getPlayer());
-				allPlayerMap.put(Integer.valueOf(b.getPlayer().getPlayerId()),
-						b.getPlayer());
+				playerMap.put(Integer.valueOf(b.getPlayer().getPlayerId()), b.getPlayer());
+				allPlayerMap.put(Integer.valueOf(b.getPlayer().getPlayerId()), b.getPlayer());
 			}
 
 			teamPlayerMap.put(teamInt, playerMap);
 		}
 
 		// add designations to players
-		List<GamePlayerDesignation> designations = gameBean
-				.getDesignations(this.matchId);
+		List<GamePlayerDesignation> designations = gameBean.getDesignations(this.matchId);
 		for (GamePlayerDesignation des : designations) {
-			Player playerToDesignate = allPlayerMap.get(Integer.valueOf(des
-					.getPlayer().getPlayerId()));
+			Player playerToDesignate = allPlayerMap.get(Integer.valueOf(des.getPlayer()
+					.getPlayerId()));
 			if (playerToDesignate != null) {
 				switch (des.getDesignationType()) {
 				case CAPTAIN:
-					System.out.println("captain set for "
-							+ des.getPlayer().getScorecardName());
+					System.out.println("captain set for " + des.getPlayer().getScorecardName());
 					playerToDesignate.setCaptain(true);
 					break;
 				case KEEPER:
-					System.out.println("keeper set for "
-							+ des.getPlayer().getScorecardName());
+					System.out.println("keeper set for " + des.getPlayer().getScorecardName());
 					playerToDesignate.setKeeper(true);
 					break;
 				case MAN_OF_MATCH:

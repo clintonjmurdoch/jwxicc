@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 import com.jwxicc.cricket.entity.Player;
 
 /**
- * Base of the record return objects for different record types, as they do not
- * always return db objects due to averages, strike rates, etc
+ * Base of the record return objects for different record types, as they do not always return db
+ * objects due to averages, strike rates, etc
  * 
  * @author cmurdoch
  * 
@@ -18,7 +18,7 @@ public class Record {
 	protected BigDecimal average;
 	protected BigDecimal strikeRate;
 	protected int matchesPlayed;
-	
+
 	public Player getPlayer() {
 		return player;
 	}

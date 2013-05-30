@@ -16,8 +16,7 @@ import com.jwxicc.cricket.util.JwxiccUtils;
 
 @Stateless(name = "battingRecordsManager")
 @LocalBean
-public class BattingRecordsManager extends
-		RecordsManager<Batting, BattingRecord> {
+public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord> {
 
 	@EJB
 	PlayerManager playerManager;
@@ -31,14 +30,6 @@ public class BattingRecordsManager extends
 			+ "sum(score)/count(if(b.howoutid not in (0,1,7,13,16,17),1,null)) as avg, "
 			+ "sum(if(b.balls > 0,b.score,0))/sum(balls) as strikerate "
 			+ "from BATTING b natural join PLAYER p where teamid = :jwxi ";
-
-	/*
-	 * mysql> select b.battingpos, b.playerid, p.scorecardname, score from
-	 * (select battingpos, max(score) as highscore, playerid from batting b
-	 * natural join player p where teamid = 2 group by battingpos) as t inner
-	 * join batting b natural join player p on t.battingpos = b.battingpos and
-	 * t.highscore = score where teamid = 2 order by battingpos;
-	 */
 
 	@Override
 	public List<Batting> getInningsBest() {
@@ -124,13 +115,12 @@ public class BattingRecordsManager extends
 		battingRecord.setHundreds(objToInt(rs[8]));
 		// 9: average
 		if (rs[9] != null) {
-			battingRecord.setAverage(BigDecimal.valueOf(Double.valueOf(rs[9]
-					.toString())));
+			battingRecord.setAverage(BigDecimal.valueOf(Double.valueOf(rs[9].toString())));
 		}
 		// 10: strike rate
 		if (rs[10] != null) {
-			battingRecord.setStrikeRate(BigDecimal.valueOf(
-					Double.valueOf(rs[10].toString())).scaleByPowerOfTen(2));
+			battingRecord.setStrikeRate(BigDecimal.valueOf(Double.valueOf(rs[10].toString()))
+					.scaleByPowerOfTen(2));
 		}
 
 		return battingRecord;
@@ -138,8 +128,7 @@ public class BattingRecordsManager extends
 
 	@Override
 	public BattingRecord getPlayerCareerRecord(int playerId) {
-		String sqlQuery = CAREER_BATTING_BASE_SQL
-				+ "and p.playerId = :pid group by playerid";
+		String sqlQuery = CAREER_BATTING_BASE_SQL + "and p.playerId = :pid group by playerid";
 
 		Query query = em.createNativeQuery(sqlQuery);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);

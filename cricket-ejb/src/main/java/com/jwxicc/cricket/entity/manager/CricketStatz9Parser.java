@@ -145,8 +145,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 						resultHelper = new MatchResultHelper(innsPerSide);
 					} else if (line.keyEquals("Date")) {
 						try {
-							Date gameDate = DataTypeConverter
-									.parseStringDate(line.getValue());
+							Date gameDate = DataTypeConverter.parseStringDate(line.getValue());
 
 							csGame.setDate(gameDate);
 						} catch (ParseException e) {
@@ -156,24 +155,19 @@ public class CricketStatz9Parser implements ImportedGameParser {
 						}
 					} else if (line.keyEquals("Ground")) {
 						// Parse 'value'
-						KeyMultiValueLine multiLine = new KeyMultiValueLine(
-								line);
-						Ground g = buildGround(multiLine.getIntValueAt(0),
-								multiLine.getValueAt(1));
+						KeyMultiValueLine multiLine = new KeyMultiValueLine(line);
+						Ground g = buildGround(multiLine.getIntValueAt(0), multiLine.getValueAt(1));
 						csGame.setGround(g);
 					} else if (line.keyEquals("Grade")) {
-						KeyMultiValueLine multiLine = new KeyMultiValueLine(
-								line);
+						KeyMultiValueLine multiLine = new KeyMultiValueLine(line);
 						Competition c = new Competition();
 						c.setCompetitionId(multiLine.getIntValueAt(0));
 						c.setGrade(multiLine.getValueAt(1));
 						csGame.setCompetition(c);
 						// TODO ignoring club
 					} else if (line.keyStartsWith("Team")) {
-						KeyMultiValueLine multiLine = new KeyMultiValueLine(
-								line);
-						Team t = buildTeam(multiLine.getIntValueAt(0),
-								multiLine.getValueAt(1));
+						KeyMultiValueLine multiLine = new KeyMultiValueLine(line);
+						Team t = buildTeam(multiLine.getIntValueAt(0), multiLine.getValueAt(1));
 						if (line.keyIsNumber(1)) {
 							team1 = t;
 						} else if (line.keyIsNumber(2)) {
@@ -182,8 +176,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 					}
 					// captain
 					else if (line.keyStartsWith("Captain")) {
-						KeyMultiValueLine multiLine = new KeyMultiValueLine(
-								line);
+						KeyMultiValueLine multiLine = new KeyMultiValueLine(line);
 						if (multiLine.getIntValueAt(0) > 0) {
 							Team teamForCaptain = null;
 							if (line.keyIsNumber(1)) {
@@ -191,12 +184,10 @@ public class CricketStatz9Parser implements ImportedGameParser {
 							} else {
 								teamForCaptain = team2;
 							}
-							Player captain = buildPlayer(
-									multiLine.getIntValueAt(0),
+							Player captain = buildPlayer(multiLine.getIntValueAt(0),
 									multiLine.getValueAt(1), teamForCaptain);
 							GamePlayerDesignation designation = new GamePlayerDesignation();
-							designation
-									.setDesignationType(DesignationType.CAPTAIN);
+							designation.setDesignationType(DesignationType.CAPTAIN);
 							designation.setPlayer(captain);
 							designations.add(designation);
 						}
@@ -204,8 +195,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 
 					// keeper
 					else if (line.keyStartsWith("Keeper")) {
-						KeyMultiValueLine multiLine = new KeyMultiValueLine(
-								line);
+						KeyMultiValueLine multiLine = new KeyMultiValueLine(line);
 						if (multiLine.getIntValueAt(0) > 0) {
 							Team teamForKeeper = null;
 							if (line.keyIsNumber(1)) {
@@ -213,12 +203,10 @@ public class CricketStatz9Parser implements ImportedGameParser {
 							} else {
 								teamForKeeper = team2;
 							}
-							Player keeper = buildPlayer(
-									multiLine.getIntValueAt(0),
+							Player keeper = buildPlayer(multiLine.getIntValueAt(0),
 									multiLine.getValueAt(1), teamForKeeper);
 							GamePlayerDesignation designation = new GamePlayerDesignation();
-							designation
-									.setDesignationType(DesignationType.KEEPER);
+							designation.setDesignationType(DesignationType.KEEPER);
 							designation.setPlayer(keeper);
 							designations.add(designation);
 						}
@@ -246,8 +234,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 					}
 					// Only using the follow-on part of config
 					else if (line.keyEquals("Config")) {
-						KeyMultiValueLine multiLine = new KeyMultiValueLine(
-								line);
+						KeyMultiValueLine multiLine = new KeyMultiValueLine(line);
 						if (innsPerSide == 2 && multiLine.getIntValueAt(4) == 1) {
 							followonEnforced = true;
 						}
@@ -262,16 +249,12 @@ public class CricketStatz9Parser implements ImportedGameParser {
 					// TODO ignoring toss
 					// TODO ignoring bonus
 					else if (line.keyEquals("MOM")) {
-						KeyMultiValueLine multiLine = new KeyMultiValueLine(
-								line);
+						KeyMultiValueLine multiLine = new KeyMultiValueLine(line);
 						if (multiLine.getIntValueAt(0) > 0) {
-							Player mom = buildPlayer(
-									multiLine.getIntValueAt(0),
-									multiLine.getValueAt(1),
-									teamManager.getJWXIReference());
+							Player mom = buildPlayer(multiLine.getIntValueAt(0),
+									multiLine.getValueAt(1), teamManager.getJWXIReference());
 							GamePlayerDesignation designation = new GamePlayerDesignation();
-							designation
-									.setDesignationType(DesignationType.MAN_OF_MATCH);
+							designation.setDesignationType(DesignationType.MAN_OF_MATCH);
 							designation.setPlayer(mom);
 							designations.add(designation);
 						}
@@ -307,8 +290,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 						// if it is still false, it broke
 						if (!gamePersisted) {
 							throw new CricketParseDataException(
-									"Failed to put together sufficient game information",
-									null);
+									"Failed to put together sufficient game information", null);
 						}
 
 						// calculate the score, wickets and overs
@@ -350,8 +332,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 						innsManager.persist(inning);
 
 						// add Partnerships helper for the innings
-						PartnershipsHelper partnershipsHelper = new PartnershipsHelper(
-								inning);
+						PartnershipsHelper partnershipsHelper = new PartnershipsHelper(inning);
 
 						// increment i as we know it is innings line
 						i++;
@@ -364,17 +345,14 @@ public class CricketStatz9Parser implements ImportedGameParser {
 							// If statements to check the line (key)
 							if (line.keyStartsWith("Batsman")) {
 								Batting batting = new Batting();
-								int batpos = Integer.parseInt(line.getKey()
-										.substring(7));
+								int batpos = Integer.parseInt(line.getKey().substring(7));
 								batting.setBattingPos(batpos);
 
 								// Split up the batting values
-								KeyMultiValueLine multiLine = new KeyMultiValueLine(
-										line);
+								KeyMultiValueLine multiLine = new KeyMultiValueLine(line);
 
 								// pos 0-1: batter id and name
-								Player batter = buildPlayer(
-										multiLine.getIntValueAt(0),
+								Player batter = buildPlayer(multiLine.getIntValueAt(0),
 										multiLine.getValueAt(1), currentTeam);
 								batting.setPlayer(batter);
 
@@ -385,8 +363,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 								int howoutid = multiLine.getIntValueAt(2);
 								Howout howout = null;
 								if (0 <= howoutid && howoutid <= 18) {
-									howout = dismissalsManager
-											.findHowout(howoutid);
+									howout = dismissalsManager.findHowout(howoutid);
 								} else {
 									howout = dismissalsManager.findHowout(0);
 								}
@@ -395,13 +372,12 @@ public class CricketStatz9Parser implements ImportedGameParser {
 								// partnerships helper
 								// these are ids 7 and 13
 								if (howoutid == 7 || howoutid == 13) {
-									partnershipsHelper
-											.addRetiredNotOutBattingPosition(batpos);
+									partnershipsHelper.addRetiredNotOutBattingPosition(batpos);
 								}
 
 								// pos 3-6 done in method
-								boolean batterOut = assignWicketsToPlayers(
-										batting, multiLine, howoutid, oppTeam);
+								boolean batterOut = assignWicketsToPlayers(batting, multiLine,
+										howoutid, oppTeam);
 								if (batterOut) {
 									wicketsLost += 1;
 								}
@@ -418,8 +394,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 								int fowBatPos = multiLine.getIntValueAt(9);
 								partnershipsHelper.addBatpos(batpos, batting);
 								if (fowBatPos != 0) {
-									partnershipsHelper.addFall(fowBatPos,
-											fowScore);
+									partnershipsHelper.addFall(fowBatPos, fowScore);
 								}
 
 								// pos 10 - 4s
@@ -435,30 +410,25 @@ public class CricketStatz9Parser implements ImportedGameParser {
 
 							} else if (line.keyStartsWith("Bowler")) {
 								Bowling bowling = new Bowling();
-								int bowlPos = Integer.parseInt(line.getKey()
-										.substring(6));
+								int bowlPos = Integer.parseInt(line.getKey().substring(6));
 								bowling.setBowlingPos(bowlPos);
 
 								// Split up the bowling values
-								KeyMultiValueLine multiLine = new KeyMultiValueLine(
-										line);
+								KeyMultiValueLine multiLine = new KeyMultiValueLine(line);
 
 								// pos 0-1 - bowler id and name
-								Player bowler = buildPlayer(
-										multiLine.getIntValueAt(0),
+								Player bowler = buildPlayer(multiLine.getIntValueAt(0),
 										multiLine.getValueAt(1), oppTeam);
 								bowling.setPlayer(bowler);
 
 								// pos 2 - overs
-								BigDecimal overs = BigDecimal.valueOf(Double
-										.valueOf(multiLine.getValueAt(2)));
+								BigDecimal overs = BigDecimal.valueOf(Double.valueOf(multiLine
+										.getValueAt(2)));
 								bowling.setOvers(overs);
 								oversBowled[0] += overs.intValue();
-								oversBowled[1] += (overs
-										.remainder(BigDecimal.ONE)
+								oversBowled[1] += (overs.remainder(BigDecimal.ONE)
 										.multiply(BigDecimal.TEN)).intValue();
-								System.out.println("overs remainder: "
-										+ oversBowled[1]);
+								System.out.println("overs remainder: " + oversBowled[1]);
 
 								// pos 3 - maidens
 								bowling.setMaidens(multiLine.getIntValueAt(3));
@@ -501,8 +471,8 @@ public class CricketStatz9Parser implements ImportedGameParser {
 
 						}
 						// TODO deal with IResult as we know that's what it is
-						InningsClosureType closureType = InningsClosureType
-								.forInt(line.getIntValue());
+						InningsClosureType closureType = InningsClosureType.forInt(line
+								.getIntValue());
 						inning.setClosureType(closureType);
 
 						inning.setRunsScored(aggScore);
@@ -516,10 +486,8 @@ public class CricketStatz9Parser implements ImportedGameParser {
 							oversBowled[0] += 1;
 							oversBowled[1] -= 6;
 						}
-						String oversComposition = "" + oversBowled[0]
-								+ oversBowled[1];
-						System.out.println("oversComposition: "
-								+ oversComposition);
+						String oversComposition = "" + oversBowled[0] + oversBowled[1];
+						System.out.println("oversComposition: " + oversComposition);
 						BigInteger bigInteger = new BigInteger(oversComposition);
 						inning.setOversFaced(new BigDecimal(bigInteger, 1));
 
@@ -542,8 +510,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 				i++;
 				try {
 					// check for final line
-					System.out.println("Checking for final line, line value: "
-							+ linesList.get(i));
+					System.out.println("Checking for final line, line value: " + linesList.get(i));
 					if (linesList.get(i).contains("CStatz Export End")) {
 						break;
 					} else {
@@ -551,8 +518,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 					}
 				} catch (Exception e) {
 					throw new CricketParseDataException(
-							"Data provided does not match the known CricketStatz format",
-							e);
+							"Data provided does not match the known CricketStatz format", e);
 				}
 			}
 		}
@@ -600,8 +566,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 		return foundGround;
 	}
 
-	private WicketDetail buildWicketDetail(int id, String name,
-			WicketDetailType type, Team team) {
+	private WicketDetail buildWicketDetail(int id, String name, WicketDetailType type, Team team) {
 		if (id > 0) {
 			WicketDetail wicketDetail = new WicketDetail();
 			wicketDetail.setPlayer(buildPlayer(id, name, team));
@@ -613,8 +578,8 @@ public class CricketStatz9Parser implements ImportedGameParser {
 
 	}
 
-	private boolean assignWicketsToPlayers(Batting batting,
-			KeyMultiValueLine multiLine, int howout, Team team) {
+	private boolean assignWicketsToPlayers(Batting batting, KeyMultiValueLine multiLine,
+			int howout, Team team) {
 
 		// pos 3-4: wicket assist
 		// pos 5-6: wicket assist or bowler
@@ -633,64 +598,44 @@ public class CricketStatz9Parser implements ImportedGameParser {
 		// 1: not out
 		// 2: bowled
 		case 2:
-			addWicketDetail(
-					batting,
-					buildWicketDetail(assist2Id, assist2Name,
-							WicketDetailType.B, team));
+			addWicketDetail(batting,
+					buildWicketDetail(assist2Id, assist2Name, WicketDetailType.B, team));
 			break;
 		// 3: caught
 		case 3:
-			addWicketDetail(
-					batting,
-					buildWicketDetail(assist1Id, assist1Name,
-							WicketDetailType.CT, team));
-			addWicketDetail(
-					batting,
-					buildWicketDetail(assist2Id, assist2Name,
-							WicketDetailType.B, team));
+			addWicketDetail(batting,
+					buildWicketDetail(assist1Id, assist1Name, WicketDetailType.CT, team));
+			addWicketDetail(batting,
+					buildWicketDetail(assist2Id, assist2Name, WicketDetailType.B, team));
 			break;
 		// 4: caught and bowled
 		case 4:
-			addWicketDetail(
-					batting,
-					buildWicketDetail(assist2Id, assist2Name,
-							WicketDetailType.CT, team));
-			addWicketDetail(
-					batting,
-					buildWicketDetail(assist2Id, assist2Name,
-							WicketDetailType.B, team));
+			addWicketDetail(batting,
+					buildWicketDetail(assist2Id, assist2Name, WicketDetailType.CT, team));
+			addWicketDetail(batting,
+					buildWicketDetail(assist2Id, assist2Name, WicketDetailType.B, team));
 			break;
 		// 5: Hit wicket
 		// TODO does it go to bowler?
 		// 6: LBW
 		case 6:
-			addWicketDetail(
-					batting,
-					buildWicketDetail(assist2Id, assist2Name,
-							WicketDetailType.B, team));
+			addWicketDetail(batting,
+					buildWicketDetail(assist2Id, assist2Name, WicketDetailType.B, team));
 			break;
 		// 7: retired hurt
 		// 8: run out
 		case 8:
-			addWicketDetail(
-					batting,
-					buildWicketDetail(assist1Id, assist1Name,
-							WicketDetailType.RO_1, team));
-			addWicketDetail(
-					batting,
-					buildWicketDetail(assist2Id, assist2Name,
-							WicketDetailType.RO_2, team));
+			addWicketDetail(batting,
+					buildWicketDetail(assist1Id, assist1Name, WicketDetailType.RO_1, team));
+			addWicketDetail(batting,
+					buildWicketDetail(assist2Id, assist2Name, WicketDetailType.RO_2, team));
 			break;
 		// 9: stumped
 		case 9:
-			addWicketDetail(
-					batting,
-					buildWicketDetail(assist1Id, assist1Name,
-							WicketDetailType.ST, team));
-			addWicketDetail(
-					batting,
-					buildWicketDetail(assist2Id, assist2Name,
-							WicketDetailType.B, team));
+			addWicketDetail(batting,
+					buildWicketDetail(assist1Id, assist1Name, WicketDetailType.ST, team));
+			addWicketDetail(batting,
+					buildWicketDetail(assist2Id, assist2Name, WicketDetailType.B, team));
 			break;
 		// 10: obstructed field
 		// 11: handled ball
@@ -702,14 +647,10 @@ public class CricketStatz9Parser implements ImportedGameParser {
 		// 17: absent ill
 		// 18: caught behind
 		case 18:
-			addWicketDetail(
-					batting,
-					buildWicketDetail(assist1Id, assist1Name,
-							WicketDetailType.CT, team));
-			addWicketDetail(
-					batting,
-					buildWicketDetail(assist2Id, assist2Name,
-							WicketDetailType.B, team));
+			addWicketDetail(batting,
+					buildWicketDetail(assist1Id, assist1Name, WicketDetailType.CT, team));
+			addWicketDetail(batting,
+					buildWicketDetail(assist2Id, assist2Name, WicketDetailType.B, team));
 			break;
 		}
 
@@ -735,8 +676,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 		}
 	}
 
-	private boolean persistGame(Game game,
-			List<GamePlayerDesignation> designations) {
+	private boolean persistGame(Game game, List<GamePlayerDesignation> designations) {
 		// validate required fields are set
 		if (gameManager.validateRequiredFields(game)) {
 			gameManager.persist(game);
@@ -774,8 +714,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 			// deal only with 2 innings games
 			if (innsPerSide == 1) {
 				// inns have been added in order
-				int runsDif = innsList.get(0).getRunsScored()
-						- innsList.get(1).getRunsScored();
+				int runsDif = innsList.get(0).getRunsScored() - innsList.get(1).getRunsScored();
 				if (runsDif > 0) {
 					// first to bat won, so it is a runs victory on 1st inns
 					csGame.setWinType(gameManager.getWintTypeRef(1));
@@ -798,13 +737,13 @@ public class CricketStatz9Parser implements ImportedGameParser {
 		 */
 		private Inning inning;
 		/**
-		 * List holding the batting position of that player to be dismissed at
-		 * each wicket, in order of wickets
+		 * List holding the batting position of that player to be dismissed at each wicket, in order
+		 * of wickets
 		 */
 		private List<Integer> outPlayerBatPosList = new ArrayList<Integer>();
 		/**
-		 * Map with a key of the batting position and the player batting at that
-		 * position in this innings
+		 * Map with a key of the batting position and the player batting at that position in this
+		 * innings
 		 */
 		private Map<Integer, Batting> batPosMap = new HashMap<Integer, Batting>();
 		/**
@@ -856,8 +795,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 
 					// create partnership player for out player
 					PartnershipPlayer outPlayer = new PartnershipPlayer();
-					outPlayer
-							.setPlayer(batPosMap.get(outPlayerPos).getPlayer());
+					outPlayer.setPlayer(batPosMap.get(outPlayerPos).getPlayer());
 					outPlayer.setBattingPosition(outPlayerPos);
 					outPlayer.setOutStatus(true);
 					innsManager.addPartnershipPlayer(outPlayer);
@@ -865,7 +803,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 					// create partnership player for not out player
 					if (canDoNotOuts) {
 						// set runs scored and update last wicket score
-						partnership.setRunsScored(scoreAtEnd-lastWicketScore);
+						partnership.setRunsScored(scoreAtEnd - lastWicketScore);
 						lastWicketScore = scoreAtEnd;
 						PartnershipPlayer notOutPlayer = new PartnershipPlayer();
 						notOutPlayer.setOutStatus(false);
@@ -874,15 +812,13 @@ public class CricketStatz9Parser implements ImportedGameParser {
 						// wicket number + 2
 						// the first 'current batter' is out
 						if (outPlayerPos == currentBatters[0]) {
-							notOutPlayer.setPlayer(batPosMap.get(
-									currentBatters[1]).getPlayer());
+							notOutPlayer.setPlayer(batPosMap.get(currentBatters[1]).getPlayer());
 							notOutPlayer.setBattingPosition(currentBatters[1]);
 							currentBatters[0] = wicket + 2;
 						}
 						// the second 'current batter' is out
 						else if (outPlayerPos == currentBatters[1]) {
-							notOutPlayer.setPlayer(batPosMap.get(
-									currentBatters[0]).getPlayer());
+							notOutPlayer.setPlayer(batPosMap.get(currentBatters[0]).getPlayer());
 							notOutPlayer.setBattingPosition(currentBatters[0]);
 							currentBatters[1] = wicket + 2;
 						}
@@ -900,11 +836,8 @@ public class CricketStatz9Parser implements ImportedGameParser {
 			// at the end
 			// if the last batter is not out, create a new partnership
 			// make sure the last batpos is set
-			if (canDoNotOuts
-					&& !InningsClosureType.ALLOUT.equals(inning
-							.getClosureType())
-					&& (batPosMap.get(wicketsLost + 2).getHowout()
-							.getHowOutid() == 1)) {
+			if (canDoNotOuts && !InningsClosureType.ALLOUT.equals(inning.getClosureType())
+					&& (batPosMap.get(wicketsLost + 2).getHowout().getHowOutid() == 1)) {
 				// there should be a not out partnership at the end
 				// for both current batters left over
 				Partnership finalPartnership = new Partnership();
@@ -915,8 +848,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 				for (int i = 0; i < 2; i++) {
 					PartnershipPlayer fowWicket = new PartnershipPlayer();
 					fowWicket.setOutStatus(false);
-					fowWicket.setPlayer(batPosMap.get(currentBatters[i])
-							.getPlayer());
+					fowWicket.setPlayer(batPosMap.get(currentBatters[i]).getPlayer());
 					fowWicket.setBattingPosition(currentBatters[i]);
 					innsManager.addPartnershipPlayer(fowWicket);
 				}

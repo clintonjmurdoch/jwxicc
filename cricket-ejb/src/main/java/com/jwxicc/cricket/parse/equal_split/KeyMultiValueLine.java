@@ -1,6 +1,5 @@
 package com.jwxicc.cricket.parse.equal_split;
 
-
 public class KeyMultiValueLine extends KeyValueLine {
 	protected String[] valueArray;
 

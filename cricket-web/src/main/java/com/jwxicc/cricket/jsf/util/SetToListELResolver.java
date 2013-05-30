@@ -21,30 +21,30 @@ public class SetToListELResolver extends ListELResolver {
 		if (base instanceof Set<?> && KEY_PROPERTY.equals(property)) {
 			context.setPropertyResolved(true);
 			List<Object> list = new ArrayList<Object>((Set<?>) base);
-			
+
 			// If it is a list of inns, sort by inns of match
 			if (list.get(0) instanceof Inning) {
 				Collections.sort(list, new Comparator<Object>() {
 					@Override
 					public int compare(Object o1, Object o2) {
 						// orders innings by innings of match
-						return Integer.valueOf(((Inning)o1).getInningsOfMatch()).compareTo(
-								Integer.valueOf(((Inning)o2).getInningsOfMatch()));
+						return Integer.valueOf(((Inning) o1).getInningsOfMatch()).compareTo(
+								Integer.valueOf(((Inning) o2).getInningsOfMatch()));
 					}
 				});
 			}
-			
+
 			if (list.get(0) instanceof Partnership) {
 				Collections.sort(list, new Comparator<Object>() {
 					@Override
 					public int compare(Object o1, Object o2) {
 						// orders innings by innings of match
-						return Integer.valueOf(((Partnership)o1).getWicket()).compareTo(
-								Integer.valueOf(((Partnership)o2).getWicket()));
+						return Integer.valueOf(((Partnership) o1).getWicket()).compareTo(
+								Integer.valueOf(((Partnership) o2).getWicket()));
 					}
 				});
 			}
-			
+
 			return list;
 		}
 

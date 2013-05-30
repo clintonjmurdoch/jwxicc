@@ -6,8 +6,7 @@ public class FacesExceptionHandlerFactory extends ExceptionHandlerFactory {
 
 	private final ExceptionHandlerFactory parent;
 
-	public FacesExceptionHandlerFactory(
-			final ExceptionHandlerFactory parent) {
+	public FacesExceptionHandlerFactory(final ExceptionHandlerFactory parent) {
 		this.parent = parent;
 	}
 

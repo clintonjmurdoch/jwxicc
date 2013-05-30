@@ -12,7 +12,10 @@ import com.jwxicc.cricket.entity.Inning;
 public interface InningsManager extends CricketDataManager<Inning> {
 
 	public void addBatting(Batting bat);
+
 	public void addBowling(Bowling bowl);
+
 	public void addPartnership(Partnership partnership);
+
 	public void addPartnershipPlayer(PartnershipPlayer partnershipPlayer);
 }

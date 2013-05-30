@@ -37,11 +37,10 @@ public class TeamRecordsManager {
 
 		Object[] result = resultList.get(0);
 
-		WinLossDrawRecord wldRecord = new WinLossDrawRecord(Integer.valueOf(
-				result[0].toString()).intValue(), Integer.valueOf(
-				result[1].toString()).intValue(), Integer.valueOf(
-				result[2].toString()).intValue(), 0, Integer.valueOf(
-				result[3].toString()).intValue());
+		WinLossDrawRecord wldRecord = new WinLossDrawRecord(Integer.valueOf(result[0].toString())
+				.intValue(), Integer.valueOf(result[1].toString()).intValue(), Integer.valueOf(
+				result[2].toString()).intValue(), 0, Integer.valueOf(result[3].toString())
+				.intValue());
 
 		return wldRecord;
 
@@ -75,8 +74,7 @@ public class TeamRecordsManager {
 	}
 
 	public List<Inning> getHighestInningsAgainst() {
-		String ejbql = TEAM_RECORDS_AGAINST_EJBQL
-				+ "order by i.runsScored desc";
+		String ejbql = TEAM_RECORDS_AGAINST_EJBQL + "order by i.runsScored desc";
 
 		Query query = em.createQuery(ejbql);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);

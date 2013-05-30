@@ -17,7 +17,7 @@ public class DismissalsManagerImpl implements DismissalsManager {
 
 	@PersistenceContext(unitName = "Jwxicc_JPA")
 	EntityManager em;
-	
+
 	@Override
 	public List<Howout> getAllDismissalTypes() {
 		return em.createQuery("from Howout").getResultList();

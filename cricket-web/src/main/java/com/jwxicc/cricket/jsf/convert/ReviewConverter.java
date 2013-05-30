@@ -7,7 +7,7 @@ import javax.faces.convert.FacesConverter;
 
 import com.jwxicc.cricket.entity.Review;
 
-@FacesConverter(value="ReviewConverter")
+@FacesConverter(value = "ReviewConverter")
 public class ReviewConverter implements Converter {
 
 	@Override
@@ -16,9 +16,8 @@ public class ReviewConverter implements Converter {
 		Review review;
 		if (arg2 == null || arg2.trim() == "") {
 			review = null;
-		}
-		else {
-			review  = new Review();
+		} else {
+			review = new Review();
 			review.setReviewText(arg2);
 		}
 		return review;
@@ -31,11 +30,10 @@ public class ReviewConverter implements Converter {
 		if (arg2 != null) {
 			Review review = (Review) arg2;
 			toReturn = review.getReviewText();
-		}
-		else {
+		} else {
 			toReturn = null;
 		}
-			
+
 		return toReturn;
 	}
 

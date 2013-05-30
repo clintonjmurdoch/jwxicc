@@ -4,34 +4,33 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-
 /**
  * The persistent class for the newsitem database table.
  * 
  */
 @Entity
-@Table(name="NEWSITEM")
+@Table(name = "NEWSITEM")
 public class Newsitem implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
 	private int newsid;
 
 	@Lob
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private String content;
 
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private Timestamp timestamp;
 
-	@Column(nullable=false, length=100)
+	@Column(nullable = false, length = 100)
 	private String title;
 
-	//bi-directional many-to-one association to User
+	// bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="poster", nullable=false)
+	@JoinColumn(name = "poster", nullable = false)
 	private User user;
 
 	public Newsitem() {

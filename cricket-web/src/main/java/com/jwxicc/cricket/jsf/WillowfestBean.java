@@ -28,8 +28,8 @@ public class WillowfestBean implements Serializable {
 	public Competition getComp() {
 
 		if (this.comp == null) {
-			HttpServletRequest req = (HttpServletRequest) FacesContext
-					.getCurrentInstance().getExternalContext().getRequest();
+			HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance()
+					.getExternalContext().getRequest();
 			String requestURI = req.getRequestURI();
 
 			// get the season
@@ -56,17 +56,17 @@ public class WillowfestBean implements Serializable {
 			System.out.println(season);
 			System.out.println(comp);
 
-			this.comp = compManager.getCompetitionByAssociationAndSeason(comp,
-					season);
+			this.comp = compManager.getCompetitionByAssociationAndSeason(comp, season);
 		}
 		return comp;
 	}
 
 	public String goToMatch() {
 		System.out.println("goToMatch");
-		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		try {
-			context.redirect(context.getRequestContextPath() + "/match.xhtml?matchId=" + this.selectedMatchToView);
+			context.redirect(context.getRequestContextPath() + "/match.xhtml?matchId="
+					+ this.selectedMatchToView);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

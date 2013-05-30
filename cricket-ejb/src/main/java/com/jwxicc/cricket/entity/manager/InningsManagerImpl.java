@@ -12,8 +12,7 @@ import com.jwxicc.cricket.interfaces.InningsManager;
 
 @Stateless(name = "inningsManager")
 @Local(InningsManager.class)
-public class InningsManagerImpl extends BaseManager<Inning> implements
-		InningsManager {
+public class InningsManagerImpl extends BaseManager<Inning> implements InningsManager {
 
 	private Inning inns;
 	private Partnership partnership;

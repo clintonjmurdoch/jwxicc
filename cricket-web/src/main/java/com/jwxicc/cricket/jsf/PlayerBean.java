@@ -28,36 +28,36 @@ public class PlayerBean implements Serializable {
 
 	@EJB(name = "playerManager")
 	PlayerManager playerManager;
-	
+
 	@EJB(name = "battingRecordsManager")
 	BattingRecordsManager battingRecords;
-	
+
 	@EJB(name = "bowlingRecordsManager")
 	BowlingRecordsManager bowlingRecords;
-	
+
 	private int playerId;
 	private Player player;
-	
+
 	private int teamId = JwxiccUtils.JWXICC_TEAM_ID;
 	private List<Player> allPlayers;
 	private int currentRowId = 1;
-	
+
 	// records for display
 	private BattingRecord careerBatting;
 	private BowlingRecord careerBowling;
-	
+
 	public void editRow() {
 		this.player = findSelectedPlayer(currentRowId);
 		if (this.player.getPlayerDetail() == null) {
 			this.player.setPlayerDetail(new PlayerDetail());
 		}
-		
+
 	}
-	
+
 	public void doFileUpload(FileUploadEvent event) {
 		this.player.getPlayerDetail().setImage(event.getUploadedFile().getData());
 	}
-	
+
 	public void paintThumbnail(OutputStream stream, Object obj) {
 		try {
 			stream.write((byte[]) obj);
@@ -65,11 +65,11 @@ public class PlayerBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void loadPlayer() {
 		player = playerManager.getPlayerForProfile(playerId);
 	}
-	
+
 	private Player findSelectedPlayer(int id) {
 		for (Player player : getAllPlayers()) {
 			if (player.getPlayerId() == id) {
@@ -78,19 +78,23 @@ public class PlayerBean implements Serializable {
 		}
 		return null;
 	}
-	
+
 	public void savePlayerDetail() {
 		if (this.player.getPlayerDetail().getPlayerDetailId() > 0) {
 			System.out.println("Existing player detail");
 		} else {
 			System.out.println("New player detail");
 		}
-		PlayerDetail savedPlayerDetail = playerManager.savePlayerDetail(this.player.getPlayerDetail());
+		PlayerDetail savedPlayerDetail = playerManager.savePlayerDetail(this.player
+				.getPlayerDetail());
 		this.player.setPlayerDetail(savedPlayerDetail);
 		playerManager.merge(this.player);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Saved Player information for " + this.player.getScorecardName(), null));
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Saved Player information for "
+						+ this.player.getScorecardName(), null));
 	}
-	
+
 	public void resetPlayerDetail() {
 		this.player = this.allPlayers.get(this.currentRowId);
 	}
@@ -104,9 +108,9 @@ public class PlayerBean implements Serializable {
 	}
 
 	public Player getPlayer() {
-		/*if (this.player == null) {
-			this.player = playerManager.getPlayerForProfile(playerId);
-		}*/
+		/*
+		 * if (this.player == null) { this.player = playerManager.getPlayerForProfile(playerId); }
+		 */
 		return player;
 	}
 

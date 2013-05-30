@@ -12,8 +12,7 @@ import javax.persistence.Query;
 
 @Stateless(name = "playerManager")
 @Local(PlayerManager.class)
-public class PlayerManagerImpl extends BaseManager<Player> implements
-		PlayerManager {
+public class PlayerManagerImpl extends BaseManager<Player> implements PlayerManager {
 
 	@Override
 	public boolean validateRequiredFields(Player obj) {
@@ -35,7 +34,7 @@ public class PlayerManagerImpl extends BaseManager<Player> implements
 	public List<Player> getPlayersFromTeam(int teamId) {
 		Query query = em.createQuery("from Player p where p.team.teamId = :teamId");
 		query.setParameter("teamId", teamId);
-		
+
 		return query.getResultList();
 	}
 
@@ -49,6 +48,6 @@ public class PlayerManagerImpl extends BaseManager<Player> implements
 			em.persist(playerDetail);
 		}
 		return playerDetail;
-			
+
 	}
 }

@@ -42,19 +42,17 @@ public class FacesServlet implements Servlet {
 	}
 
 	@Override
-	public void service(ServletRequest req, ServletResponse resp)
-			throws ServletException, IOException, ViewExpiredException {
+	public void service(ServletRequest req, ServletResponse resp) throws ServletException,
+			IOException, ViewExpiredException {
 		try {
 			delegate.service(req, resp);
 		} catch (ServletException e) {
 			Throwable t = e.getRootCause();
 			if (t instanceof ViewExpiredException) {
 				throw (ViewExpiredException) t;
-			} 
-			else if (t instanceof IllegalStateException) {
-				throw (IllegalStateException)t;
-			}
-			else {
+			} else if (t instanceof IllegalStateException) {
+				throw (IllegalStateException) t;
+			} else {
 				throw e;
 			}
 		}

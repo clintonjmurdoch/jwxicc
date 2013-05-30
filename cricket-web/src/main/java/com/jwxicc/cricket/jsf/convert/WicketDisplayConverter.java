@@ -8,23 +8,21 @@ import javax.faces.convert.FacesConverter;
 import com.jwxicc.cricket.entity.Inning;
 import com.jwxicc.cricket.entity.dbenum.InningsClosureType;
 
-@FacesConverter(value="wicketDisplay")
+@FacesConverter(value = "wicketDisplay")
 public class WicketDisplayConverter implements Converter {
 
 	@Override
-	public Object getAsObject(FacesContext context, UIComponent component,
-			String value) {
+	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		// TODO Auto-generated method stub
 		return value;
 	}
 
 	@Override
-	public String getAsString(FacesContext context, UIComponent component,
-			Object value) {
+	public String getAsString(FacesContext context, UIComponent component, Object value) {
 		String display = "";
 		Inning i = (Inning) value;
 		InningsClosureType closureType = i.getClosureType();
-		
+
 		switch (closureType) {
 		case ALLOUT:
 			display += "(all out; ";
@@ -43,8 +41,8 @@ public class WicketDisplayConverter implements Converter {
 			display += "(" + i.getWicketsLost() + " wickets dec; ";
 			return display;
 		}
-		
+
 		return display;
 	}
-	
+
 }

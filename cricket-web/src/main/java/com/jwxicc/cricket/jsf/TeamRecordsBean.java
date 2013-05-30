@@ -29,12 +29,13 @@ public class TeamRecordsBean implements Serializable {
 	private List<Inning> lowestAgainst;
 	private WinLossDrawRecord overallRecord;
 	private int selectedMatchToView;
-	
+
 	public String goToMatch() {
 		System.out.println("goToMatch");
-		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		try {
-			context.redirect(context.getRequestContextPath() + "/match.xhtml?matchId=" + this.selectedMatchToView);
+			context.redirect(context.getRequestContextPath() + "/match.xhtml?matchId="
+					+ this.selectedMatchToView);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

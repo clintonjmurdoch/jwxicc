@@ -21,8 +21,7 @@ import com.jwxicc.cricket.util.JwxiccUtils;
  */
 @Stateless(name = "bowlingRecordsManager")
 @LocalBean
-public class BowlingRecordsManager extends
-		RecordsManager<Bowling, BowlingRecord> {
+public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord> {
 
 	@EJB
 	PlayerManager playerManager;
@@ -85,8 +84,7 @@ public class BowlingRecordsManager extends
 		// 1: matches
 		bowlingRecord.setMatchesPlayed(objToInt(rs[1]));
 		// 2-3: overs, over parts
-		BigDecimal overs = buildAggregateOvers(
-				Double.valueOf(rs[2].toString()),
+		BigDecimal overs = buildAggregateOvers(Double.valueOf(rs[2].toString()),
 				Double.valueOf(rs[3].toString()));
 		bowlingRecord.setOvers(overs);
 		// 4: maidens
@@ -99,8 +97,7 @@ public class BowlingRecordsManager extends
 		// 7: average
 		// was getting null pointer for players with no wickets
 		if (rs[7] != null) {
-			bowlingRecord.setAverage(BigDecimal.valueOf(Double.valueOf(rs[7]
-					.toString())));
+			bowlingRecord.setAverage(BigDecimal.valueOf(Double.valueOf(rs[7].toString())));
 		}
 		// 8: best bowling wickets
 		bowlingRecord.setBestBowlingWickets(objToInt(rs[8]));
@@ -117,8 +114,7 @@ public class BowlingRecordsManager extends
 
 	private BigDecimal buildAggregateOvers(Double aggOvers, Double overParts) {
 		System.out.println("building over aggregates");
-		System.out.println("agg overs: " + aggOvers + " over parts: "
-				+ overParts);
+		System.out.println("agg overs: " + aggOvers + " over parts: " + overParts);
 		if (aggOvers.equals(0d)) {
 			return BigDecimal.ZERO;
 		} else if (overParts.equals(0d) || overParts.doubleValue() < 0.6) {
@@ -129,9 +125,8 @@ public class BowlingRecordsManager extends
 			double completeOvers = aggOvers - overParts;
 			System.out.println("complete overs: " + completeOvers);
 			BigDecimal oPBigDec = new BigDecimal(overParts.doubleValue());
-			double oversToAdd = Math.floor(oPBigDec.divide(
-					BigDecimal.valueOf(0.6d), BigDecimal.ROUND_HALF_UP)
-					.doubleValue());
+			double oversToAdd = Math.floor(oPBigDec.divide(BigDecimal.valueOf(0.6d),
+					BigDecimal.ROUND_HALF_UP).doubleValue());
 			BigDecimal toReturn = BigDecimal.valueOf(completeOvers).add(
 					BigDecimal.valueOf(oversToAdd));
 			// remainder wont work: BigDecimal remainder =
@@ -149,8 +144,7 @@ public class BowlingRecordsManager extends
 
 	@Override
 	public BowlingRecord getPlayerCareerRecord(int playerId) {
-		String sqlQuery = CAREER_BOWLING_BASE_SQL
-				+ "and p.playerid = :pid group by p.playerid";
+		String sqlQuery = CAREER_BOWLING_BASE_SQL + "and p.playerid = :pid group by p.playerid";
 
 		Query query = em.createNativeQuery(sqlQuery);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);

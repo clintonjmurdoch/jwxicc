@@ -1,8 +1,10 @@
 package com.jwxicc.cricket.entity.dbenum;
 
 public enum InningsClosureType {
-	ALLOUT("all out"), CLOSED("closed"), DECLARED("declared"), ABANDONED(
-			"abandoned");
+	ALLOUT("all out"),
+	CLOSED("closed"),
+	DECLARED("declared"),
+	ABANDONED("abandoned");
 
 	private String displayName;
 
@@ -17,20 +19,20 @@ public enum InningsClosureType {
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
-	
+
 	public static InningsClosureType forInt(int i) {
 		switch (i) {
 		case 1:
 			return ALLOUT;
-		case 2: 
+		case 2:
 			return CLOSED;
 		case 3:
 			return DECLARED;
 		case 4:
 			return ABANDONED;
 		default:
-			throw new NullPointerException("No closure type exists for this int value: " + i);	
+			throw new NullPointerException("No closure type exists for this int value: " + i);
 		}
 	}
-	
+
 }

@@ -17,7 +17,7 @@ public class BattingRecordsBean implements Serializable {
 
 	@EJB(name = "battingRecordsManager")
 	BattingRecordsManager records;
-	
+
 	private List<Batting> runsInInnings;
 	private List<BattingRecord> aggregateRuns;
 	private List<BattingRecord> averageRuns;

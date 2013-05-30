@@ -4,26 +4,25 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Set;
 
-
 /**
  * The persistent class for the user database table.
  * 
  */
 @Entity
-@Table(name="USER")
+@Table(name = "USER")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false, length=20)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false, length = 20)
 	private String username;
 
-	@Column(nullable=false, length=20)
+	@Column(nullable = false, length = 20)
 	private String password;
 
-	//bi-directional many-to-one association to Newsitem
-	@OneToMany(mappedBy="user")
+	// bi-directional many-to-one association to Newsitem
+	@OneToMany(mappedBy = "user")
 	private Set<Newsitem> newsitems;
 
 	public User() {

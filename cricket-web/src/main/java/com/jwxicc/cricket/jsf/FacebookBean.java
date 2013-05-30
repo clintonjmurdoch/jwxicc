@@ -27,8 +27,7 @@ public class FacebookBean implements Serializable {
 			try {
 				this.feed = fbManager.getFeed();
 			} catch (Exception e) {
-				FacesMessage message = new FacesMessage(
-						"Failed to get news items from Facebook");
+				FacesMessage message = new FacesMessage("Failed to get news items from Facebook");
 				FacesContext.getCurrentInstance().addMessage(null, message);
 			}
 		}

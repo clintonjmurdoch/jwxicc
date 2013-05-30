@@ -14,8 +14,7 @@ import com.jwxicc.cricket.interfaces.CompetitionManager;
 
 @Stateless(name = "compManager")
 @Local(CompetitionManager.class)
-public class CompetitionManagerImpl extends BaseManager<Competition> implements
-		CompetitionManager {
+public class CompetitionManagerImpl extends BaseManager<Competition> implements CompetitionManager {
 
 	@Override
 	public boolean validateRequiredFields(Competition obj) {
@@ -37,8 +36,7 @@ public class CompetitionManagerImpl extends BaseManager<Competition> implements
 	@Override
 	public Competition getDetailedCompetition(int compId) {
 		String sqlStr = "from Competition c left join FETCH c.review "
-				+ "left join FETCH c.games g "
-				+ "left join FETCH g.team1 left join fetch g.team2 "
+				+ "left join FETCH c.games g " + "left join FETCH g.team1 left join fetch g.team2 "
 				+ "where c.competitionId = ?1";
 		Query query = em.createQuery(sqlStr);
 
@@ -49,8 +47,7 @@ public class CompetitionManagerImpl extends BaseManager<Competition> implements
 	}
 
 	@Override
-	public Competition getCompetitionByAssociationAndSeason(String assocName,
-			String season) {
+	public Competition getCompetitionByAssociationAndSeason(String assocName, String season) {
 		String jpql = "from Competition c left join FETCH c.games g "
 				+ "left join FETCH g.team1 left join FETCH g.team2 left join FETCH g.ground "
 				+ "where c.associationName = ? and c.season = ?";
@@ -69,7 +66,7 @@ public class CompetitionManagerImpl extends BaseManager<Competition> implements
 		Review rev = comp.getReview();
 		// Get the database version of the competition
 		Competition dbComp = findLazy(comp.getCompetitionId());
-		
+
 		if (dbComp.getReview() == null) {
 			em.persist(rev);
 			dbComp.setReview(rev);

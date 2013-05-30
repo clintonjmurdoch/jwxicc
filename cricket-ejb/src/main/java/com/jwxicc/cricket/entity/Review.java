@@ -3,31 +3,30 @@ package com.jwxicc.cricket.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
-
 /**
  * The persistent class for the review database table.
  * 
  */
 @Entity
-@Table(name="REVIEW")
+@Table(name = "REVIEW")
 public class Review implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
 	private int reviewId;
 
 	@Lob
-	@Column(name="review_text", nullable=false)
+	@Column(name = "review_text", nullable = false)
 	private String reviewText;
 
-	//bi-directional one-to-one association to Competition
-	@OneToOne(mappedBy="review")
+	// bi-directional one-to-one association to Competition
+	@OneToOne(mappedBy = "review")
 	private Competition competition;
 
-	//bi-directional one-to-one association to Game
-	@OneToOne(mappedBy="review")
+	// bi-directional one-to-one association to Game
+	@OneToOne(mappedBy = "review")
 	private Game game;
 
 	public Review() {

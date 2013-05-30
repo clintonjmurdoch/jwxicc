@@ -7,9 +7,8 @@ public class WinLossDrawRecord {
 	private int lost;
 	private int tied;
 	private int noResult;
-	
-	public WinLossDrawRecord(int matches, int won, int lost, int tied,
-			int noResult) {
+
+	public WinLossDrawRecord(int matches, int won, int lost, int tied, int noResult) {
 		super();
 		this.matches = matches;
 		this.won = won;

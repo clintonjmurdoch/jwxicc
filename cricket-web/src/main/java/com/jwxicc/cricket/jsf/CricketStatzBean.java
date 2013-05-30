@@ -34,24 +34,21 @@ public class CricketStatzBean implements Serializable {
 		List<SelectItem> selectItems = new ArrayList<SelectItem>();
 		List<Competition> compList = compsBean.findAll();
 		for (Competition comp : compList) {
-			SelectItem selectItem = new SelectItem(comp.getCompetitionId(),
-					comp.getCompetitionId() + ": " + comp.getAssociationName()
-							+ " " + comp.getGrade() + " " + comp.getSeason());
+			SelectItem selectItem = new SelectItem(comp.getCompetitionId(), comp.getCompetitionId()
+					+ ": " + comp.getAssociationName() + " " + comp.getGrade() + " "
+					+ comp.getSeason());
 			selectItems.add(selectItem);
 		}
 		return selectItems;
 	}
 
 	public String parseText() {
-		FacesContext.getCurrentInstance().addMessage(
-				null,
-				new FacesMessage("Parse Operation requested, selected comp is "
-						+ selectedCompId));
+		FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage("Parse Operation requested, selected comp is " + selectedCompId));
 		try {
 			parseBean.parseGameText(cricketStatzText, selectedCompId);
 		} catch (CricketParseDataException e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(e.getMessage()));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
 			e.printStackTrace();
 		}
 

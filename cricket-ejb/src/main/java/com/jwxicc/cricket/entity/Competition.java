@@ -4,40 +4,39 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Set;
 
-
 /**
  * The persistent class for the competition database table.
  * 
  */
 @Entity
-@Table(name="COMPETITION")
+@Table(name = "COMPETITION")
 public class Competition implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
 	private int competitionId;
 
-	@Column(nullable=false, length=45)
+	@Column(nullable = false, length = 45)
 	private String associationName;
 
 	@Transient
 	private boolean editable;
-	
-	@Column(nullable=false, length=45)
+
+	@Column(nullable = false, length = 45)
 	private String grade;
-	
-	@Column(nullable=false, length=9)
+
+	@Column(nullable = false, length = 9)
 	private String season;
 
-	//bi-directional one-to-one association to Review
-	@OneToOne
-	@JoinColumn(name="reviewId")
+	// bi-directional one-to-one association to Review
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "reviewId")
 	private Review review;
 
-	//bi-directional many-to-one association to Game
-	@OneToMany(mappedBy="competition")
+	// bi-directional many-to-one association to Game
+	@OneToMany(mappedBy = "competition")
 	private Set<Game> games;
 
 	public Competition() {

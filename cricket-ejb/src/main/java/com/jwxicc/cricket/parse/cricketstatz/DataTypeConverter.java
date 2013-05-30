@@ -9,7 +9,7 @@ public class DataTypeConverter {
 	public static Date parseStringDate(String dateString) throws ParseException {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		Date date = df.parse(dateString);
-		
+
 		return date;
 	}
 }

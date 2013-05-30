@@ -8,8 +8,7 @@ import com.jwxicc.cricket.interfaces.GroundManager;
 
 @Stateless(name = "groundManager")
 @Local(GroundManager.class)
-public class GroundManagerImpl extends BaseManager<Ground> implements
-		GroundManager {
+public class GroundManagerImpl extends BaseManager<Ground> implements GroundManager {
 
 	@Override
 	public boolean validateRequiredFields(Ground obj) {

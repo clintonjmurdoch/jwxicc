@@ -11,6 +11,8 @@ import com.jwxicc.cricket.entity.WicketDetail;
 public interface DismissalsManager extends Manager {
 
 	public List<Howout> getAllDismissalTypes();
+
 	public Howout findHowout(int id);
+
 	public void persistWicketDetail(WicketDetail wicket);
 }

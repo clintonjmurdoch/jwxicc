@@ -5,78 +5,77 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
-
 /**
  * The persistent class for the game database table.
  * 
  */
 @Entity
-@Table(name="GAME")
+@Table(name = "GAME")
 public class Game implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
 	private int gameId;
 
 	@Lob
 	private String comment;
 
 	@Temporal(TemporalType.DATE)
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private Date date;
 
-	@Column(length=1)
+	@Column(length = 1)
 	private String gameState;
 
-	@Column(length=1)
+	@Column(length = 1)
 	private String marginType;
 
-	@Column(nullable=false, length=3)
+	@Column(nullable = false, length = 3)
 	private String round;
 
 	private int winMargin;
 
-	@Column(length=1)
+	@Column(length = 1)
 	private String winner;
 
-	//bi-directional many-to-one association to Competition
+	// bi-directional many-to-one association to Competition
 	@ManyToOne
-	@JoinColumn(name="competitionId", nullable=false)
+	@JoinColumn(name = "competitionId", nullable = false)
 	private Competition competition;
 
-	//bi-directional many-to-one association to Ground
+	// bi-directional many-to-one association to Ground
 	@ManyToOne
-	@JoinColumn(name="groundId", nullable=false)
+	@JoinColumn(name = "groundId", nullable = false)
 	private Ground ground;
 
-	//bi-directional one-to-one association to Review
-	@OneToOne
-	@JoinColumn(name="reviewId")
+	// bi-directional one-to-one association to Review
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "reviewId")
 	private Review review;
 
-	//bi-directional many-to-one association to Team
+	// bi-directional many-to-one association to Team
 	@ManyToOne
-	@JoinColumn(name="awayTeamId", nullable=false)
+	@JoinColumn(name = "awayTeamId", nullable = false)
 	private Team team1;
 
-	//bi-directional many-to-one association to Team
+	// bi-directional many-to-one association to Team
 	@ManyToOne
-	@JoinColumn(name="homeTeamId", nullable=false)
+	@JoinColumn(name = "homeTeamId", nullable = false)
 	private Team team2;
 
-	//bi-directional many-to-one association to WinType
+	// bi-directional many-to-one association to WinType
 	@ManyToOne
-	@JoinColumn(name="winTypeId")
+	@JoinColumn(name = "winTypeId")
 	private WinType winType;
 
-	//bi-directional many-to-one association to GamePlayerDesignation
-	@OneToMany(mappedBy="game")
+	// bi-directional many-to-one association to GamePlayerDesignation
+	@OneToMany(mappedBy = "game")
 	private Set<GamePlayerDesignation> gameplayerdesignations;
 
-	//bi-directional many-to-one association to Inning
-	@OneToMany(mappedBy="game")
+	// bi-directional many-to-one association to Inning
+	@OneToMany(mappedBy = "game")
 	private Set<Inning> innings;
 
 	public Game() {

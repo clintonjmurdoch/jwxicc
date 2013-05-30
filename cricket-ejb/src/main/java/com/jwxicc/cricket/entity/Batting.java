@@ -4,19 +4,18 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Set;
 
-
 /**
  * The persistent class for the batting database table.
  * 
  */
 @Entity
-@Table(name="BATTING")
+@Table(name = "BATTING")
 public class Batting implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
 	private int battingId;
 
 	private int balls;
@@ -29,23 +28,23 @@ public class Batting implements Serializable {
 
 	private int sixes;
 
-	//bi-directional many-to-one association to Howout
+	// bi-directional many-to-one association to Howout
 	@ManyToOne
-	@JoinColumn(name="howOutId")
+	@JoinColumn(name = "howOutId")
 	private Howout howout;
 
-	//bi-directional many-to-one association to Inning
+	// bi-directional many-to-one association to Inning
 	@ManyToOne
-	@JoinColumn(name="inningsId", nullable=false)
+	@JoinColumn(name = "inningsId", nullable = false)
 	private Inning inning;
 
-	//bi-directional many-to-one association to Player
+	// bi-directional many-to-one association to Player
 	@ManyToOne
-	@JoinColumn(name="playerId", nullable=false)
+	@JoinColumn(name = "playerId", nullable = false)
 	private Player player;
 
-	//bi-directional many-to-one association to WicketDetail
-	@OneToMany(mappedBy="batting")
+	// bi-directional many-to-one association to WicketDetail
+	@OneToMany(mappedBy = "batting")
 	private Set<WicketDetail> wicketDetails;
 
 	public Batting() {

@@ -13,15 +13,13 @@ import com.jwxicc.cricket.entity.PartnershipPlayer;
 public class PartnershipPlayersDisplayConverter implements Converter {
 
 	@Override
-	public Object getAsObject(FacesContext context, UIComponent component,
-			String value) {
+	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getAsString(FacesContext context, UIComponent component,
-			Object value) {
+	public String getAsString(FacesContext context, UIComponent component, Object value) {
 		String display = "";
 		List<PartnershipPlayer> players = (List<PartnershipPlayer>) value;
 		// use booleans to determine what to add
@@ -32,8 +30,7 @@ public class PartnershipPlayersDisplayConverter implements Converter {
 		PartnershipPlayer secondPlayer = players.get(1);
 
 		// if contribution has been set, display it
-		if (firstPlayer.getContribution() != 0
-				|| secondPlayer.getContribution() != 0) {
+		if (firstPlayer.getContribution() != 0 || secondPlayer.getContribution() != 0) {
 			addContribution = true;
 		}
 
@@ -47,8 +44,7 @@ public class PartnershipPlayersDisplayConverter implements Converter {
 		return display;
 	}
 
-	private String getPlayerDisplay(PartnershipPlayer player,
-			boolean addContribution) {
+	private String getPlayerDisplay(PartnershipPlayer player, boolean addContribution) {
 		String display = "";
 		display += player.getPlayer().getScorecardName();
 		if (!player.isOutStatus())

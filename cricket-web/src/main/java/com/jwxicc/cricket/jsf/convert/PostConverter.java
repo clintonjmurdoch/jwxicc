@@ -9,14 +9,12 @@ import javax.faces.convert.FacesConverter;
 public class PostConverter implements Converter {
 
 	@Override
-	public Object getAsObject(FacesContext context, UIComponent component,
-			String value) {
+	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		return value;
 	}
 
 	@Override
-	public String getAsString(FacesContext context, UIComponent component,
-			Object value) {
+	public String getAsString(FacesContext context, UIComponent component, Object value) {
 		String post = (String) value;
 		return post.replace("\n", "<br/>");
 	}

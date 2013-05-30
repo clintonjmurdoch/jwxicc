@@ -10,7 +10,7 @@ import com.jwxicc.cricket.entity.Newsitem;
 @ManagedBean
 @ViewScoped
 public class NewsBean {
-	
+
 	public List<Newsitem> getNewsForHome() {
 		return null;
 	}

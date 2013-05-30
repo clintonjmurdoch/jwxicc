@@ -5,33 +5,32 @@ import javax.persistence.*;
 
 import com.jwxicc.cricket.entity.dbenum.DesignationType;
 
-
 /**
  * The persistent class for the gameplayerdesignation database table.
  * 
  */
 @Entity
-@Table(name="GAME_PLAYER_DESIGNATION")
+@Table(name = "GAME_PLAYER_DESIGNATION")
 public class GamePlayerDesignation implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
 	private int designationId;
 
-	@Column(nullable=false, length=15)
+	@Column(nullable = false, length = 15)
 	@Enumerated(EnumType.STRING)
 	private DesignationType designationType;
 
-	//bi-directional many-to-one association to Game
+	// bi-directional many-to-one association to Game
 	@ManyToOne
-	@JoinColumn(name="gameId", nullable=false)
+	@JoinColumn(name = "gameId", nullable = false)
 	private Game game;
 
-	//bi-directional many-to-one association to Player
+	// bi-directional many-to-one association to Player
 	@ManyToOne
-	@JoinColumn(name="playerId", nullable=false)
+	@JoinColumn(name = "playerId", nullable = false)
 	private Player player;
 
 	public GamePlayerDesignation() {

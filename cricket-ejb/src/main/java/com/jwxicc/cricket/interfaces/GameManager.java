@@ -12,7 +12,10 @@ import com.jwxicc.cricket.entity.WinType;
 public interface GameManager extends CricketDataManager<Game> {
 
 	public Game getGameForScorecard(int gameId);
+
 	public void addDesignations(List<GamePlayerDesignation> designations);
+
 	public List<GamePlayerDesignation> getDesignations(int gameId);
+
 	public WinType getWintTypeRef(int id);
 }

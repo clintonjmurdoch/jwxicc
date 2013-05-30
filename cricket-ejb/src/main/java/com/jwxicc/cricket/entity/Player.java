@@ -112,8 +112,7 @@ public class Player implements Serializable {
 		return this.gameplayerdesignations;
 	}
 
-	public void setGameplayerdesignations(
-			Set<GamePlayerDesignation> gameplayerdesignations) {
+	public void setGameplayerdesignations(Set<GamePlayerDesignation> gameplayerdesignations) {
 		this.gameplayerdesignations = gameplayerdesignations;
 	}
 

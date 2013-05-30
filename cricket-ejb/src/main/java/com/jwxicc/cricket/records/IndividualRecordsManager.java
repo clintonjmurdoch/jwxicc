@@ -34,17 +34,19 @@ public class IndividualRecordsManager {
 
 	public List<Record> getMostMOTMs() {
 		String sql = "SELECT p.playerId, count(*) as matches from GAME_PLAYER_DESIGNATION natural join PLAYER p "
-				+ "where p.teamId = :jwxi and designationType = '" + DesignationType.MAN_OF_MATCH.toString()
+				+ "where p.teamId = :jwxi and designationType = '"
+				+ DesignationType.MAN_OF_MATCH.toString()
 				+ "' group by p.playerId order by matches desc, scorecardName";
-		
+
 		return getIndividualRecord(sql);
 	}
 
 	public List<Record> getMostMatchesAsCaptain() {
 		String sql = "SELECT p.playerId, count(*) as matches from GAME_PLAYER_DESIGNATION natural join PLAYER p "
-				+ "where p.teamId = :jwxi and designationType = '" + DesignationType.CAPTAIN.toString()
+				+ "where p.teamId = :jwxi and designationType = '"
+				+ DesignationType.CAPTAIN.toString()
 				+ "' group by p.playerId order by matches desc, scorecardName";
-		
+
 		return getIndividualRecord(sql);
 	}
 
@@ -66,8 +68,7 @@ public class IndividualRecordsManager {
 	private Record getPlayerAndMatches(Object[] result) {
 		Record record = new Record();
 		record.setPlayer(playerManager.findLazy(result[0]));
-		record.setMatchesPlayed(Integer.valueOf(result[1].toString())
-				.intValue());
+		record.setMatchesPlayed(Integer.valueOf(result[1].toString()).intValue());
 
 		return record;
 	}

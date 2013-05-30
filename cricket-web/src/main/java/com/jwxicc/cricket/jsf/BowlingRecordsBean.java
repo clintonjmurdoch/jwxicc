@@ -19,7 +19,7 @@ public class BowlingRecordsBean implements Serializable {
 
 	@EJB(name = "bowlingRecordsManager")
 	BowlingRecordsManager records;
-	
+
 	private List<Bowling> bowlingFigures;
 	private List<BowlingRecord> aggregateWickets;
 	private List<BowlingRecord> bowlingAverage;

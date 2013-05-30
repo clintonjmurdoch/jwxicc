@@ -4,34 +4,33 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Set;
 
-
 /**
  * The persistent class for the ground database table.
  * 
  */
 @Entity
-@Table(name="GROUND")
+@Table(name = "GROUND")
 public class Ground implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false)
+	@Column(unique = true, nullable = false)
 	private int groundId;
 
-	@Column(nullable=false, length=45)
+	@Column(nullable = false, length = 45)
 	private String groundName;
 
-	@Column(length=45)
+	@Column(length = 45)
 	private String mapRef;
 
-	@Column(length=45)
+	@Column(length = 45)
 	private String streetAddress;
 
-	@Column(length=45)
+	@Column(length = 45)
 	private String suburb;
 
-	//bi-directional many-to-one association to Game
-	@OneToMany(mappedBy="ground")
+	// bi-directional many-to-one association to Game
+	@OneToMany(mappedBy = "ground")
 	private Set<Game> games;
 
 	public Ground() {

@@ -34,7 +34,7 @@ public class CompetitionBean implements Serializable {
 	private int pageCompId = 0;
 	private Competition pageComp = null;
 	private int selectedMatchToView;
-	
+
 	public void addRow() {
 		Competition newComp = new Competition();
 		newComp.setEditable(true);
@@ -47,13 +47,11 @@ public class CompetitionBean implements Serializable {
 
 	public void resetAll() {
 		/*
-		 * System.out.println("start reset"); for (int i = 0; i <
-		 * compList.size(); i++) { Competition comp = compList.get(i);
-		 * System.out.print("comp id: " + comp.getCompetitionId()); if
-		 * (comp.getCompetitionId() == 0) { compList.remove(i);
+		 * System.out.println("start reset"); for (int i = 0; i < compList.size(); i++) {
+		 * Competition comp = compList.get(i); System.out.print("comp id: " +
+		 * comp.getCompetitionId()); if (comp.getCompetitionId() == 0) { compList.remove(i);
 		 * System.out.println(" removed"); } else { comp.setEditable(false);
-		 * System.out.println(" set uneditable"); } }
-		 * System.out.println("end reset");
+		 * System.out.println(" set uneditable"); } } System.out.println("end reset");
 		 */
 		this.compList = compManager.findAll();
 	}
@@ -80,9 +78,8 @@ public class CompetitionBean implements Serializable {
 		for (Competition comp : this.compList) {
 			try {
 				if (comp.isEditable()) {
-					System.out.println("assoc: " + comp.getAssociationName()
-							+ "; grade: " + comp.getGrade() + "; season: "
-							+ comp.getSeason());
+					System.out.println("assoc: " + comp.getAssociationName() + "; grade: "
+							+ comp.getGrade() + "; season: " + comp.getSeason());
 					if (compManager.validateRequiredFields(comp)) {
 						comp.setEditable(false);
 						if (comp.getCompetitionId() == 0) {
@@ -90,14 +87,10 @@ public class CompetitionBean implements Serializable {
 						} else {
 							comp = compManager.merge(comp);
 						}
-						FacesMessage message = new FacesMessage(
-								FacesMessage.SEVERITY_INFO,
-								"Saved competition: "
-										+ comp.getAssociationName() + " "
-										+ comp.getGrade() + " "
-										+ comp.getSeason(), null);
-						FacesContext.getCurrentInstance().addMessage(null,
-								message);
+						FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Saved competition: " + comp.getAssociationName() + " "
+										+ comp.getGrade() + " " + comp.getSeason(), null);
+						FacesContext.getCurrentInstance().addMessage(null, message);
 					} else {
 						FacesContext
 								.getCurrentInstance()
@@ -112,8 +105,8 @@ public class CompetitionBean implements Serializable {
 					System.out.println("comp not editable");
 				}
 			} catch (Exception e) {
-				FacesMessage message = new FacesMessage(
-						FacesMessage.SEVERITY_ERROR, e.getMessage(), null);
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						e.getMessage(), null);
 				FacesContext.getCurrentInstance().addMessage(null, message);
 			}
 		}
@@ -127,12 +120,13 @@ public class CompetitionBean implements Serializable {
 		}
 		return null;
 	}
-	
+
 	public String goToMatch() {
 		System.out.println("goToMatch");
-		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		try {
-			context.redirect(context.getRequestContextPath() + "/MatchManagement.xhtml?matchId=" + this.selectedMatchToView);
+			context.redirect(context.getRequestContextPath() + "/MatchManagement.xhtml?matchId="
+					+ this.selectedMatchToView);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

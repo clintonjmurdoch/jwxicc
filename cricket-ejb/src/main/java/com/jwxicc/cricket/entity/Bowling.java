@@ -7,23 +7,22 @@ import com.jwxicc.cricket.entityutils.EntityMethods;
 
 import java.math.BigDecimal;
 
-
 /**
  * The persistent class for the bowling database table.
  * 
  */
 @Entity
-@Table(name="BOWLING")
+@Table(name = "BOWLING")
 public class Bowling implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
 	private int bowlingId;
 
 	private int bowlingPos;
-	
+
 	@Transient
 	private BigDecimal economy;
 
@@ -31,7 +30,7 @@ public class Bowling implements Serializable {
 
 	private int noBalls;
 
-	@Column(precision=10, scale=1)
+	@Column(precision = 10, scale = 1)
 	private BigDecimal overs;
 
 	private int runs;
@@ -40,14 +39,14 @@ public class Bowling implements Serializable {
 
 	private int wides;
 
-	//bi-directional many-to-one association to Inning
+	// bi-directional many-to-one association to Inning
 	@ManyToOne
-	@JoinColumn(name="inningsId", nullable=false)
+	@JoinColumn(name = "inningsId", nullable = false)
 	private Inning inning;
 
-	//bi-directional many-to-one association to Player
+	// bi-directional many-to-one association to Player
 	@ManyToOne
-	@JoinColumn(name="playerId", nullable=false)
+	@JoinColumn(name = "playerId", nullable = false)
 	private Player player;
 
 	public Bowling() {

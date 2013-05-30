@@ -42,11 +42,12 @@ public class PartnershipRecordsBean implements Serializable {
 	public void setAllWickets(List<Partnership> allWickets) {
 		this.allWickets = allWickets;
 	}
-	
+
 	public List<PartnershipRecordsHolder> getAllWicketPartnerships() {
 		if (allWicketPartnerships == null) {
 			allWicketPartnerships = new ArrayList<PartnershipRecordsHolder>(10);
-			List<List<Partnership>> topPartnershipsByWicket = this.recordsManager.getAllTopPartnershipsByWicket();
+			List<List<Partnership>> topPartnershipsByWicket = this.recordsManager
+					.getAllTopPartnershipsByWicket();
 			for (List<Partnership> pshipList : topPartnershipsByWicket) {
 				if (pshipList != null) {
 					allWicketPartnerships.add(new PartnershipRecordsHolder(pshipList));
@@ -58,14 +59,13 @@ public class PartnershipRecordsBean implements Serializable {
 		return allWicketPartnerships;
 	}
 
-	public void setAllWicketPartnerships(
-			List<PartnershipRecordsHolder> allWicketPartnerships) {
+	public void setAllWicketPartnerships(List<PartnershipRecordsHolder> allWicketPartnerships) {
 		this.allWicketPartnerships = allWicketPartnerships;
 	}
 
 	public class PartnershipRecordsHolder {
 		private List<Partnership> partnershipList;
-		
+
 		public PartnershipRecordsHolder(List<Partnership> partnershipList) {
 			this.partnershipList = partnershipList;
 		}
@@ -77,8 +77,7 @@ public class PartnershipRecordsBean implements Serializable {
 		public void setPartnershipList(List<Partnership> partnershipList) {
 			this.partnershipList = partnershipList;
 		}
-		
-		
+
 	}
 
 }

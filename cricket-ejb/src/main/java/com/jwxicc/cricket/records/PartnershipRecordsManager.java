@@ -29,8 +29,7 @@ public class PartnershipRecordsManager {
 	private static final String PARTNERSHIP_ORDER_BY = "order by p.runsScored desc";
 
 	public List<Partnership> getTopPartnerships() {
-		Query query = em.createQuery(BASE_PARTNERSHIP_JPQL
-				+ PARTNERSHIP_ORDER_BY);
+		Query query = em.createQuery(BASE_PARTNERSHIP_JPQL + PARTNERSHIP_ORDER_BY);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
 		query.setParameter("minscore", this.getMinScoreForPartnership());
 
@@ -50,11 +49,9 @@ public class PartnershipRecordsManager {
 	}
 
 	public List<List<Partnership>> getAllTopPartnershipsByWicket() {
-		List<List<Partnership>> allPartnershipsList = new ArrayList<List<Partnership>>(
-				10);
+		List<List<Partnership>> allPartnershipsList = new ArrayList<List<Partnership>>(10);
 		for (int i = 1; i <= 10; i++) {
-			List<Partnership> partnershipsByWicket = this
-					.getTopPartnershipsByWicket(i);
+			List<Partnership> partnershipsByWicket = this.getTopPartnershipsByWicket(i);
 			// dont add empty collections
 			if (CollectionUtils.isNotEmpty(partnershipsByWicket)) {
 				allPartnershipsList.add(partnershipsByWicket);

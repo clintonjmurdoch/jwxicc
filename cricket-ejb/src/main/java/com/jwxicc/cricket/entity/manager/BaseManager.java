@@ -34,7 +34,7 @@ public abstract class BaseManager<T> implements CricketDataManager<T> {
 		Class<T> type = this.getClassOfType();
 		return (T) em.find(type, key);
 	}
-	
+
 	@Override
 	public T getReference(Object key) {
 		Class<T> type = this.getClassOfType();
@@ -50,7 +50,7 @@ public abstract class BaseManager<T> implements CricketDataManager<T> {
 	}
 
 	private Class<T> getClassOfType() {
-		return ((Class<T>) ((ParameterizedType) getClass()
-				.getGenericSuperclass()).getActualTypeArguments()[0]);
+		return ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
+				.getActualTypeArguments()[0]);
 	}
 }

@@ -27,19 +27,16 @@ public class FacesExceptionHandler extends ExceptionHandlerWrapper {
 
 	@Override
 	public void handle() throws FacesException {
-		for (Iterator<ExceptionQueuedEvent> i = getUnhandledExceptionQueuedEvents()
-				.iterator(); i.hasNext();) {
+		for (Iterator<ExceptionQueuedEvent> i = getUnhandledExceptionQueuedEvents().iterator(); i
+				.hasNext();) {
 			ExceptionQueuedEvent event = i.next();
-			ExceptionQueuedEventContext context = (ExceptionQueuedEventContext) event
-					.getSource();
+			ExceptionQueuedEventContext context = (ExceptionQueuedEventContext) event.getSource();
 			Throwable t = context.getException();
 			if (t instanceof ViewExpiredException) {
 				ViewExpiredException vee = (ViewExpiredException) t;
 				FacesContext fc = FacesContext.getCurrentInstance();
-				Map<String, Object> requestMap = fc.getExternalContext()
-						.getRequestMap();
-				NavigationHandler nav = fc.getApplication()
-						.getNavigationHandler();
+				Map<String, Object> requestMap = fc.getExternalContext().getRequestMap();
+				NavigationHandler nav = fc.getApplication().getNavigationHandler();
 				try {
 					// Push some useful stuff to the request scope for
 					// use in the page

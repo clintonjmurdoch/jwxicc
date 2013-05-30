@@ -9,8 +9,7 @@ import javax.faces.convert.FacesConverter;
 public class NumberOrdinalConverter implements Converter {
 
 	@Override
-	public Object getAsObject(FacesContext context, UIComponent component,
-			String value) {
+	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		if (value.length() > 2) {
 			return value.substring(0, value.length() - 2);
 		} else {
@@ -19,8 +18,7 @@ public class NumberOrdinalConverter implements Converter {
 	}
 
 	@Override
-	public String getAsString(FacesContext context, UIComponent component,
-			Object value) {
+	public String getAsString(FacesContext context, UIComponent component, Object value) {
 		String numString = String.valueOf(value);
 		int number = Integer.parseInt(numString);
 		if (11 <= number && number <= 13) {

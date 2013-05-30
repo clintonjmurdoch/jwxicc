@@ -4,37 +4,36 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Set;
 
-
 /**
  * The persistent class for the team database table.
  * 
  */
 @Entity
-@Table(name="TEAM")
+@Table(name = "TEAM")
 public class Team implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false)
+	@Column(unique = true, nullable = false)
 	private int teamId;
 
-	@Column(nullable=false, length=45)
+	@Column(nullable = false, length = 45)
 	private String teamName;
 
-	//bi-directional many-to-one association to Game
-	@OneToMany(mappedBy="team1")
+	// bi-directional many-to-one association to Game
+	@OneToMany(mappedBy = "team1")
 	private Set<Game> games1;
 
-	//bi-directional many-to-one association to Game
-	@OneToMany(mappedBy="team2")
+	// bi-directional many-to-one association to Game
+	@OneToMany(mappedBy = "team2")
 	private Set<Game> games2;
 
-	//bi-directional many-to-one association to Inning
-	@OneToMany(mappedBy="team")
+	// bi-directional many-to-one association to Inning
+	@OneToMany(mappedBy = "team")
 	private Set<Inning> innings;
 
-	//bi-directional many-to-one association to Player
-	@OneToMany(mappedBy="team")
+	// bi-directional many-to-one association to Player
+	@OneToMany(mappedBy = "team")
 	private Set<Player> players;
 
 	public Team() {

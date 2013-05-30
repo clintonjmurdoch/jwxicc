@@ -23,8 +23,8 @@ public class IdConverter implements Converter {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			//Most likely this is a parse exception
-			//Therefore, if not numeric, send 0
+			// Most likely this is a parse exception
+			// Therefore, if not numeric, send 0
 			return 0;
 		}
 	}
