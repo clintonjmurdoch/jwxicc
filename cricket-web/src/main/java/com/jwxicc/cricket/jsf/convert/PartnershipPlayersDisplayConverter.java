@@ -1,5 +1,7 @@
 package com.jwxicc.cricket.jsf.convert;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
@@ -22,6 +24,20 @@ public class PartnershipPlayersDisplayConverter implements Converter {
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
 		String display = "";
 		List<PartnershipPlayer> players = (List<PartnershipPlayer>) value;
+		
+		// sort the partnership players in order of batting position
+		Collections.sort(players, new Comparator<PartnershipPlayer>() {
+
+			@Override
+			public int compare(PartnershipPlayer o1, PartnershipPlayer o2) {
+				if (o1.getBattingPosition() < o2.getBattingPosition()) {
+					return -1;
+				} else {
+					return 1;
+				}
+			}
+		});
+		
 		// use booleans to determine what to add
 		boolean addContribution = false;
 
