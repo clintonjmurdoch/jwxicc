@@ -13,13 +13,10 @@
 		</h:outputText>
 	</rich:column>
 	<rich:column>
-		<f:facet name="header">Opposition</f:facet>
-		<h:outputText value="#{inns.game.team2.teamId == teamRecordsBean.jwTeamId ? inns.game.team1.teamName : inns.game.team2.teamName }" />
-	</rich:column>
-	<rich:column>
-		<f:facet name="header">Ground</f:facet>
-		<h:outputText value="#{inns.game.ground.groundName}" />
-		<h:outputText rendered="#{not empty inns.game.ground.suburb}" value=", #{inns.game.ground.suburb}" />
+		<f:facet name="header">Match</f:facet>
+		<h:link outcome="match" value="v #{inns.game.team2.teamId == teamRecordsBean.jwTeamId ? inns.game.team1.teamName : inns.game.team2.teamName } at #{inns.game.ground.groundName}">
+			<f:param name="matchId" value="#{inns.game.gameId}" />
+		</h:link>
 	</rich:column>
 	<rich:column>
 		<f:facet name="header">Score</f:facet>

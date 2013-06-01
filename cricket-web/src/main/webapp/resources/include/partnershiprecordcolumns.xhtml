@@ -8,22 +8,30 @@
 	<rich:column styleClass="pship-runs">
 		<f:facet name="header">Runs</f:facet>
 		<h:outputText value="#{record.runsScored}" />
-		<h:outputText value=" (#{record.overs})" rendered="#{record.overs != 0}" />
+		<h:outputText value=" (#{record.overs})"
+			rendered="#{record.overs != 0}" />
 	</rich:column>
 	<rich:column styleClass="pship-players">
 		<f:facet name="header">Players</f:facet>
-		<h:outputText value="#{record.partnershipPlayers.setToList}">
-			<f:converter converterId="partnershipPlayersConverter" />
-		</h:outputText>
+		<ui:repeat var="pshipPlayer"
+			value="#{record.partnershipPlayers.setToList}" varStatus="cur">
+			<h:link outcome="player">
+				<h:outputText styleClass="sc-highlight"
+					value="#{pshipPlayer.player.scorecardName}" />
+				<h:outputText value="*" rendered="#{not pshipPlayer.outStatus}" />
+				<h:outputText value="(#{pshipPlayer.contribution})" rendered="#{pshipPlayer.contribution != 0}" />
+				<f:param name="playerId"
+					value="#{pshipPlayer.player.playerId}" />
+			</h:link>
+			<h:outputText value="/" rendered="#{cur.index == 0}" />
+		</ui:repeat>
 	</rich:column>
-	<rich:column styleClass="pship-opposition">
-		<f:facet name="header">Opposition</f:facet>
-		<h:outputText
-			value="#{record.inning.game.team2.teamId == pshipRecordsBean.jwTeamId ? record.inning.game.team1.teamName : record.inning.game.team2.teamName }" />
-	</rich:column>
-	<rich:column styleClass="pship-ground">
-		<f:facet name="header">Ground</f:facet>
-		<h:outputText value="#{record.inning.game.ground.groundName}" />
+	<rich:column>
+		<f:facet name="header">Match</f:facet>
+		<h:link outcome="match"
+			value="v #{record.inning.game.team2.teamId == pshipRecordsBean.jwTeamId ? record.inning.game.team1.teamName : record.inning.game.team2.teamName } at #{record.inning.game.ground.groundName}">
+			<f:param name="matchId" value="#{record.inning.game.gameId}" />
+		</h:link>
 	</rich:column>
 	<rich:column styleClass="pship-date">
 		<f:facet name="header">Date</f:facet>

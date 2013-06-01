@@ -40,6 +40,7 @@ public class Partnership implements Serializable {
 
 	// bi-directional many-to-one association to PartnershipPlayers
 	@OneToMany(mappedBy = "partnership", fetch = FetchType.EAGER)
+	@OrderBy("battingPosition ASC")
 	private Set<PartnershipPlayer> partnershipPlayers;
 
 	public Partnership() {

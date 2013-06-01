@@ -75,13 +75,12 @@
 					</h:link>
 				</rich:column>
 				<rich:column>
-					<f:facet name="header">Opposition</f:facet>
-				#{bowl.inning.game.team1.teamId != 2 ? bowl.inning.game.team1.teamName : bowl.inning.game.team2.teamName}
-			</rich:column>
-				<rich:column>
-					<f:facet name="header">Ground</f:facet>
-				#{bowl.inning.game.ground.groundName}
-			</rich:column>
+					<f:facet name="header">Match</f:facet>
+					<h:link outcome="match"
+						value="v #{bowl.inning.game.team1.teamId != 2 ? bowl.inning.game.team1.teamName : bowl.inning.game.team2.teamName} at #{bowl.inning.game.ground.groundName}">
+						<f:param name="matchId" value="#{bowl.inning.game.gameId}" />
+					</h:link>
+				</rich:column>
 				<rich:column>
 					<f:facet name="header">Date</f:facet>
 					<h:outputText value="#{bowl.inning.game.date}">
