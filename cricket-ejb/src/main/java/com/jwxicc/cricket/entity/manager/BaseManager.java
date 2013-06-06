@@ -19,7 +19,12 @@ public abstract class BaseManager<T> implements CricketDataManager<T> {
 
 	@Override
 	public void persist(T obj) {
-		em.persist(obj);
+		try {
+			em.persist(obj);
+		} catch (Exception e) {
+			System.out.println("Persist EXCEPTION: " + e.getMessage());
+			obj = em.merge(obj);
+		}
 	}
 
 	@Override

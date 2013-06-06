@@ -5,7 +5,7 @@ import java.util.List;
 import com.jwxicc.cricket.entity.Game;
 import com.jwxicc.cricket.entity.GamePlayerDesignation;
 import com.jwxicc.cricket.entity.WinType;
-import com.jwxicc.cricket.interfaces.GameManager;
+import com.jwxicc.cricket.interfaces.GameManagerLocal;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -14,23 +14,15 @@ import javax.persistence.Query;
  * Session Bean implementation class GameManagerImpl
  */
 @Stateless(name = "gameManager")
-@Local(GameManager.class)
-public class GameManagerImpl extends BaseManager<Game> implements GameManager {
-
-	private Game game;
+@Local(GameManagerLocal.class)
+public class GameManagerImpl extends BaseManager<Game> implements GameManagerLocal {
 
 	@Override
 	public Game findLazy(Object key) {
-		this.game = super.findLazy(key);
-		return this.game;
+		return super.findLazy(key);
 	}
 
 	@Override
-	public void persist(Game obj) {
-		super.persist(obj);
-		this.game = obj;
-	}
-
 	public Game getGameForScorecard(int gameId) {
 		String sqlString = "Select g from Game g " + "join FETCH g.innings i "
 				+ "left join FETCH g.competition c " + "left join FETCH g.review r "
@@ -62,7 +54,6 @@ public class GameManagerImpl extends BaseManager<Game> implements GameManager {
 	@Override
 	public void addDesignations(List<GamePlayerDesignation> designations) {
 		for (GamePlayerDesignation des : designations) {
-			des.setGame(this.game);
 			em.persist(des);
 		}
 	}
@@ -77,8 +68,13 @@ public class GameManagerImpl extends BaseManager<Game> implements GameManager {
 	}
 
 	@Override
-	public WinType getWintTypeRef(int id) {
+	public WinType getWinTypeRef(int id) {
 		return em.getReference(WinType.class, id);
+	}
+
+	@Override
+	public void addGame(Game game) {
+		super.persist(game);
 	}
 
 }

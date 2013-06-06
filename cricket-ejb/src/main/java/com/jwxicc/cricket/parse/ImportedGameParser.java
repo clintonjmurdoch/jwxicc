@@ -1,6 +1,6 @@
 package com.jwxicc.cricket.parse;
 
-import java.util.List;
+import java.util.concurrent.Future;
 
 import javax.ejb.Local;
 
@@ -10,15 +10,17 @@ import com.jwxicc.cricket.entity.Game;
 public interface ImportedGameParser {
 
 	/**
+	 * Takes as its inputs the text for 1 game as exported from another application and the existing
+	 * competition id in the database. The method should be asynchronous
+	 * 
 	 * @param text
 	 *            The input text
 	 * @param competitionId
 	 *            The competition to add the game to
-	 * @return The list of imported games. Expect lazy initialisation, so only the direct properties
-	 *         of game should be accessed
+	 * @return A future
 	 * @throws CricketParseDataException
-	 *             If the text doesn't match the expected format, or other general failures
+	 *             If the text does not match the expected format
 	 */
-	public List<Game> parseGameText(String text, int competitionId)
+	public Future<Game> parseSingleGameText(String text, int competitionId)
 			throws CricketParseDataException;
 }

@@ -1,15 +1,20 @@
 package com.jwxicc.cricket.interfaces;
 
-import javax.ejb.Local;
-
 import com.jwxicc.cricket.entity.Batting;
 import com.jwxicc.cricket.entity.Bowling;
+import com.jwxicc.cricket.entity.Inning;
 import com.jwxicc.cricket.entity.Partnership;
 import com.jwxicc.cricket.entity.PartnershipPlayer;
-import com.jwxicc.cricket.entity.Inning;
 
-@Local
-public interface InningsManager extends CricketDataManager<Inning> {
+/**
+ * Provides methods for storing innings and its children. The separation from the Manager bean is to
+ * allow interim storage of objects for easier management of persistence.
+ * 
+ * @author cmurdoch
+ * 
+ */
+public interface InningsFacade {
+	public void addInnings(Inning inns);
 
 	public void addBatting(Batting bat);
 

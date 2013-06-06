@@ -34,8 +34,10 @@
 					<h:outputText escape="false" value="#{post.message}">
 						<f:converter converterId="PostConverter" />
 					</h:outputText>
-					<h:outputText rendered="#{not empty post.link}" escape="false"
-						value="&lt;br/&gt;&lt;a href=#{post.link}&gt;#{post.name}&lt;/a&gt;" />
+					<a4j:outputPanel rendered="#{not empty post.link}">
+						<br/>
+						<a href="#{post.link}" target="_blank">Follow Link</a>
+					</a4j:outputPanel>
 				</div>
 			</ui:repeat>
 		</a4j:outputPanel>

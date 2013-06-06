@@ -16,7 +16,7 @@ import com.jwxicc.cricket.entity.Game;
 import com.jwxicc.cricket.entity.GamePlayerDesignation;
 import com.jwxicc.cricket.entity.Inning;
 import com.jwxicc.cricket.entity.Player;
-import com.jwxicc.cricket.interfaces.GameManager;
+import com.jwxicc.cricket.interfaces.GameManagerLocal;
 
 @ManagedBean(name = "matchBean")
 @ViewScoped
@@ -24,7 +24,7 @@ public class GameManagedBean implements Serializable {
 	private static final long serialVersionUID = 1543484449435990728L;
 
 	@EJB
-	GameManager gameBean;
+	GameManagerLocal gameBean;
 
 	private int matchId;
 	private Game match = null;
