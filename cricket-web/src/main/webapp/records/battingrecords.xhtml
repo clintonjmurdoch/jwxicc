@@ -60,6 +60,8 @@
 				<rich:column>
 					<f:facet name="header">Score</f:facet>
 					<h:outputText value="#{bat.score}" />
+					<h:outputText value="*"
+						rendered="#{bat.howout.howOutid == 1 or bat.howout.howOutid == 7 or bat.howout.howOutid == 13}" />
 					<h:outputText value=" (#{bat.balls})" rendered="#{bat.balls != 0}" />
 				</rich:column>
 				<rich:column>
@@ -96,6 +98,7 @@
 			<h4>
 				<a id="careeravg" />Best Career Average
 			</h4>
+			<p>Minimum qualification is 10 innings</p>
 			<rich:dataTable styleClass="objectTable" var="bat"
 				value="#{batRecordsBean.averageRuns}">
 				<ui:include

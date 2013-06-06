@@ -23,7 +23,7 @@ public class PartnershipRecordsManager {
 
 	private static final String MIN_SCORE_SQL = "select min(score) from (select ps.runsScored as score "
 			+ "from PARTNERSHIP ps inner join INNINGS i on ps.inningsId = i.inningsId where i.teamId = :jwxi ";
-	private static final String MIN_SCORE_ORDER_BY = "order by ps.runsScored desc) as T";
+	private static final String MIN_SCORE_ORDER_BY = "order by ps.runsScored desc limit :limit) as T";
 
 	private static final String BASE_PARTNERSHIP_JPQL = "from Partnership p where p.inning.team.teamId = :jwxi and p.runsScored >= :minscore ";
 	private static final String PARTNERSHIP_ORDER_BY = "order by p.runsScored desc";
@@ -38,7 +38,7 @@ public class PartnershipRecordsManager {
 	}
 
 	public List<Partnership> getTopPartnershipsByWicket(int wicket) {
-		String jpql = BASE_PARTNERSHIP_JPQL + "and p.wicket = :wicket ";
+		String jpql = BASE_PARTNERSHIP_JPQL + "and p.wicket = :wicket " + PARTNERSHIP_ORDER_BY;
 		Query query = em.createQuery(jpql);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
 		query.setParameter("minscore", this.getMinScoreForPartnership(wicket));
@@ -75,7 +75,7 @@ public class PartnershipRecordsManager {
 
 		Query minScoreQuery = em.createNativeQuery(sqlQuery);
 		minScoreQuery.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
-		minScoreQuery.setMaxResults(JwxiccUtils.RECORDS_TO_SHOW);
+		minScoreQuery.setParameter("limit", JwxiccUtils.RECORDS_TO_SHOW);
 
 		int minScore = (Integer) minScoreQuery.getSingleResult();
 

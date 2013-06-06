@@ -56,8 +56,9 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 
 	@Override
 	public List<BowlingRecord> getByAverage() {
-		String sqlQuery = CAREER_BOWLING_BASE_SQL
-				+ "group by p.playerid order by (0 - sum(b.runs)/sum(b.wickets)) desc, wickets desc, overs asc";
+		String sqlQuery = CAREER_BOWLING_BASE_SQL + "group by p.playerid "
+				+ "having sum(b.wickets) >= " + JwxiccUtils.MIN_WICKETS_FOR_AVERAGE + " "
+				+ "order by (0 - sum(b.runs)/sum(b.wickets)) desc, wickets desc, overs asc";
 
 		return this.getBowlingRecords(sqlQuery);
 	}

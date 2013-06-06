@@ -4,6 +4,8 @@ public class JwxiccUtils {
 
 	public static final int JWXICC_TEAM_ID = 2;
 	public static final int RECORDS_TO_SHOW = 10;
+	public static final int MIN_WICKETS_FOR_AVERAGE = 10;
+	public static final int MIN_INNINGS_FOR_AVERAGE = 10; 
 
 	public static String formatError(Throwable e, String message) {
 		String error = null;

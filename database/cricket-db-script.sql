@@ -466,6 +466,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Placeholder table for view `jwxiccco_cricket`.`BEST_BATTING`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `BEST_BATTING` (`battingid` INT, `playerid` INT, `score` INT, `balls` INT, `outstatus` INT);
+
+-- -----------------------------------------------------
 -- Placeholder table for view `BEST_BOWLING`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `BEST_BOWLING` (`scorecardname` INT, `playerid` INT, `wickets` INT, `runs` INT);
@@ -480,6 +485,16 @@ select scorecardname, playerid, wickets, runs from BOWLING b natural join PLAYER
 (select max(wickets) from BOWLING x where x.playerid = p.playerid) and runs = (select min(runs) from BOWLING y where y.playerid = p.playerid and y.wickets = b.wickets) 
 group by playerid order by wickets desc, runs asc;
 
+-- -----------------------------------------------------
+-- View `jwxiccco_cricket`.`BEST_BATTING`
+-- -----------------------------------------------------
+DROP VIEW IF EXISTS `BEST_BATTING` ;
+DROP TABLE IF EXISTS `BEST_BATTING`;
+CREATE  OR REPLACE VIEW `BEST_BATTING` AS
+select b.battingid, b.playerid, b.score, b.balls, if(b.howoutid in (1, 7, 13),0,1) as outstatus 
+from batting b natural join player p where b.score = 
+(select score from batting ba where ba.playerid = p.playerid order by ba.score desc, ba.balls asc limit 1) 
+and p.teamid = 2 group by p.playerid;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

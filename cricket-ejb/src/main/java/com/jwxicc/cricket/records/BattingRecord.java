@@ -4,7 +4,9 @@ public class BattingRecord extends Record {
 
 	private int innings;
 	private int notOuts;
-	private int highestScore;
+	private int bestBattingScore;
+	private int bestBattingBalls;
+	private boolean bestBattingOutStatus;
 	private int ballsFaced;
 	private int fifties;
 	private int hundreds;
@@ -28,12 +30,28 @@ public class BattingRecord extends Record {
 		this.notOuts = notOuts;
 	}
 
-	public int getHighestScore() {
-		return highestScore;
+	public int getBestBattingScore() {
+		return bestBattingScore;
 	}
 
-	public void setHighestScore(int highestScore) {
-		this.highestScore = highestScore;
+	public void setBestBattingScore(int bestBattingScore) {
+		this.bestBattingScore = bestBattingScore;
+	}
+
+	public int getBestBattingBalls() {
+		return bestBattingBalls;
+	}
+
+	public void setBestBattingBalls(int bestBattingBalls) {
+		this.bestBattingBalls = bestBattingBalls;
+	}
+
+	public boolean isBestBattingOutStatus() {
+		return bestBattingOutStatus;
+	}
+
+	public void setBestBattingOutStatus(boolean bestBattingOutStatus) {
+		this.bestBattingOutStatus = bestBattingOutStatus;
 	}
 
 	public int getBallsFaced() {

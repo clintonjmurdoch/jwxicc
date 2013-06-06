@@ -35,7 +35,10 @@
 	</rich:column>
 	<rich:column>
 		<f:facet name="header">HS</f:facet>
-		<h:outputText value="#{bat.highestScore}" />
+		<h:outputText value="#{bat.bestBattingScore}" />
+		<h:outputText value="*" rendered="#{not bat.bestBattingOutStatus}" />
+		<h:outputText value=" (#{bat.bestBattingBalls})"
+			rendered="#{bat.bestBattingBalls != 0}" />
 	</rich:column>
 	<rich:column>
 		<f:facet name="header">50s</f:facet>
