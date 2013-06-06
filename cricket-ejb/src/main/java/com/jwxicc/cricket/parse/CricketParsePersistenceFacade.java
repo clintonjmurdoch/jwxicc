@@ -33,7 +33,7 @@ import com.jwxicc.cricket.interfaces.InningsManagerLocal;
  * @author cmurdoch
  * 
  */
-@Stateful(mappedName = "parsePersistenceFacade")
+@Stateful(name = "parsePersistenceFacade")
 @LocalBean
 public class CricketParsePersistenceFacade implements GameFacade, InningsFacade {
 

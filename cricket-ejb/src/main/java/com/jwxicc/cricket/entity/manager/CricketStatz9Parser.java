@@ -56,7 +56,6 @@ public class CricketStatz9Parser implements ImportedGameParser {
 	@Resource
 	SessionContext ctx;
 
-	@EJB
 	CricketParsePersistenceFacade persistenceFacade;
 
 	@EJB
@@ -78,6 +77,10 @@ public class CricketStatz9Parser implements ImportedGameParser {
 			throws CricketParseDataException {
 
 		try {
+			// inject the persistence facade per method
+			persistenceFacade = (CricketParsePersistenceFacade) ctx
+					.lookup("java:module/parsePersistenceFacade");
+
 			// check the text doesnt have leading/ending whitespace
 			text = text.trim();
 			System.out.println("Parsing Cricket Statz text");
