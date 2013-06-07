@@ -446,20 +446,20 @@ DROP TABLE IF EXISTS `PLAYER_RELATIONSHIP` ;
 
 CREATE  TABLE IF NOT EXISTS `PLAYER_RELATIONSHIP` (
   `relationshipId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `owningPlayer` INT UNSIGNED NOT NULL ,
-  `otherPlayer` INT UNSIGNED NOT NULL ,
-  `relationshipType` VARCHAR(45) NULL ,
+  `owningPlayerId` INT UNSIGNED NOT NULL ,
+  `otherPlayerId` INT UNSIGNED NOT NULL ,
+  `ownerViewOfRelationship` VARCHAR(15) NOT NULL ,
   PRIMARY KEY (`relationshipId`) ,
-  INDEX `owning_player_relationship` (`owningPlayer` ASC) ,
-  INDEX `other_player_reference` (`otherPlayer` ASC) ,
+  INDEX `owning_player_relationship` (`owningPlayerId` ASC) ,
+  INDEX `other_player_reference` (`otherPlayerId` ASC) ,
   CONSTRAINT `owning_player_relationship`
-    FOREIGN KEY (`owningPlayer` )
-    REFERENCES `PLAYER` (`playerId` )
+    FOREIGN KEY (`owningPlayerId` )
+    REFERENCES `jwxiccco_cricket`.`PLAYER` (`playerId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `other_player_reference`
-    FOREIGN KEY (`otherPlayer` )
-    REFERENCES `PLAYER` (`playerId` )
+    FOREIGN KEY (`otherPlayerId` )
+    REFERENCES `jwxiccco_cricket`.`PLAYER` (`playerId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

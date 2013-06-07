@@ -26,6 +26,7 @@
 		<class>com.jwxicc.cricket.entity.User</class>
 		<class>com.jwxicc.cricket.entity.WicketDetail</class>
 		<class>com.jwxicc.cricket.entity.WinType</class>
+		<class>com.jwxicc.cricket.entity.PlayerRelationship</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 			<!-- Properties for Hibernate -->

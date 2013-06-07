@@ -46,6 +46,12 @@ public class Player implements Serializable {
 	@OneToMany(mappedBy = "player")
 	private Set<GamePlayerDesignation> gameplayerdesignations;
 
+	@OneToMany(mappedBy = "owningPlayer")
+	private Set<PlayerRelationship> relationships;
+
+	@OneToMany(mappedBy = "otherPlayer")
+	private Set<PlayerRelationship> passiveRelationshipInstances;
+
 	// bi-directional many-to-one association to Team
 	@ManyToOne
 	@JoinColumn(name = "teamId", nullable = false)
@@ -58,8 +64,6 @@ public class Player implements Serializable {
 	// bi-directional one-to-one association to PlayerDetail
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "playerDetailId")
-	// @JoinColumn(name="playerId", referencedColumnName="playerId",
-	// nullable=false, insertable=false, updatable=false)
 	private PlayerDetail playerDetail;
 
 	@Transient
@@ -122,6 +126,22 @@ public class Player implements Serializable {
 
 	public void setPartnershipPlayers(Set<PartnershipPlayer> partnershipPlayers) {
 		this.partnershipPlayers = partnershipPlayers;
+	}
+
+	public Set<PlayerRelationship> getRelationships() {
+		return relationships;
+	}
+
+	public void setRelationships(Set<PlayerRelationship> relationships) {
+		this.relationships = relationships;
+	}
+
+	public Set<PlayerRelationship> getPassiveRelationshipInstances() {
+		return passiveRelationshipInstances;
+	}
+
+	public void setPassiveRelationshipInstances(Set<PlayerRelationship> passiveRelationshipInstances) {
+		this.passiveRelationshipInstances = passiveRelationshipInstances;
 	}
 
 	public Team getTeam() {
