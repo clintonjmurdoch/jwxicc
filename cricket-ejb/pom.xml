@@ -38,6 +38,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+
+		<dependency>
 			<groupId>commons-math</groupId>
 			<artifactId>commons-math</artifactId>
 			<version>1.2</version>
@@ -102,6 +108,12 @@
 			<artifactId>jboss-as-arquillian-container-remote</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.7.2</version>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.ejb</groupId>
@@ -124,7 +136,11 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.12</version>
+				<version>2.15</version>
+				<configuration>
+					<reportFormat>plain</reportFormat>
+					<redirectTestOutputToFile>true</redirectTestOutputToFile>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

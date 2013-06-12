@@ -19,6 +19,7 @@ import com.jwxicc.cricket.entity.Game;
 import com.jwxicc.cricket.interfaces.CompetitionManager;
 import com.jwxicc.cricket.parse.CricketParseDataException;
 import com.jwxicc.cricket.parse.ImportedGameParser;
+import com.jwxicc.cricket.util.parse.CricketStatzParseUtil;
 
 @ManagedBean(name = "parseBean")
 @ViewScoped
@@ -33,9 +34,6 @@ public class CricketStatzBean implements Serializable {
 
 	private String cricketStatzText;
 	private int selectedCompId;
-
-	private static final String MATCH_START_TEXT = "Record=Match";
-	private static final String MATCH_END_TEXT = "Endmatch=True";
 
 	private List<Future<Game>> parseResponseList;
 
@@ -59,21 +57,8 @@ public class CricketStatzBean implements Serializable {
 			this.cricketStatzText = cricketStatzText.trim();
 			// remove stuff from the start and end
 			// also remove the first match start text
-			int lastMatchEnd = this.cricketStatzText.lastIndexOf(MATCH_END_TEXT);
-			int firstMatchStart = this.cricketStatzText.indexOf(MATCH_START_TEXT);
-			String strToParse = cricketStatzText.substring(
-					firstMatchStart + MATCH_START_TEXT.length(),
-					lastMatchEnd + MATCH_END_TEXT.length());
-
-			String[] gameTextArray;
-			// check if there is more than 1 game provided
-			if (strToParse.contains(MATCH_START_TEXT)) {
-				gameTextArray = strToParse.split(MATCH_START_TEXT);
-			} else {
-				gameTextArray = new String[] { strToParse };
-			}
-			System.out.println("Number of games in the provided text: " + gameTextArray.length);
-
+			
+			String[] gameTextArray = CricketStatzParseUtil.splitCricketStatzTextToMatches(this.cricketStatzText);
 			// store the async responses to parse operation
 			parseResponseList = Collections.synchronizedList(new ArrayList<Future<Game>>());
 			for (int z = 0; z < gameTextArray.length; z++) {
