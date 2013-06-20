@@ -21,61 +21,72 @@
 			</div>
 			<a4j:outputPanel layout="block"
 				rendered="#{playerBean.player.playerDetail != null}">
-				<h:outputText styleClass="singleline"
-					value="Full name: #{playerBean.player.playerDetail.fullname}" />
-				<br />
-				<span class="singleline">
-					<h:outputText value="Born: " />
-					<h:outputText value="#{playerBean.player.playerDetail.birthdate}">
-						<f:convertDateTime pattern="MMMMM d yyyy" />
-					</h:outputText>
-					<h:outputText value=", #{playerBean.player.playerDetail.birthplace}" />
-				</span>
-				<br />
-				<h:outputText styleClass="singleline"
-					value="Nicknames: #{playerBean.player.playerDetail.nicknames}" />
-				<br />
-				<h:outputText styleClass="singleline"
-					value="Batting Style: #{playerBean.player.playerDetail.battingStyle}" />
-				<br />
-				<h:outputText styleClass="singleline"
-					value="Bowling Style: #{playerBean.player.playerDetail.bowlingStyle}" />
-				<br />
-				<h:outputText styleClass="singleline"
-					value="Fielding Position: #{playerBean.player.playerDetail.fieldingPositions}" />
-				<br />
-				<h:outputText styleClass="singleline"
-					value="Teams: #{playerBean.player.playerDetail.teams}" />
-				<br />
-				<h:outputText styleClass="singleline"
-					value="Cap Number: #{playerBean.player.playerDetail.capNumber}" />
-				<br />
-				<h:outputText styleClass="singleline"
-					value="Shirt Number: #{playerBean.player.playerDetail.shirtNumber}" />
+				<div style="width: 600px; float: left;">
+					<h:outputText styleClass="singleline"
+						value="Full name: #{playerBean.player.playerDetail.fullname}" />
+					<br /> <span class="singleline"> <h:outputText
+							value="Born: " /> <h:outputText
+							value="#{playerBean.player.playerDetail.birthdate}">
+							<f:convertDateTime pattern="MMMMM d yyyy" />
+						</h:outputText> <h:outputText
+							value=", #{playerBean.player.playerDetail.birthplace}" />
+					</span> <br />
+					<h:outputText styleClass="singleline"
+						value="Nicknames: #{playerBean.player.playerDetail.nicknames}" />
+					<br />
+					<h:outputText styleClass="singleline"
+						value="Batting Style: #{playerBean.player.playerDetail.battingStyle}" />
+					<br />
+					<h:outputText styleClass="singleline"
+						value="Bowling Style: #{playerBean.player.playerDetail.bowlingStyle}" />
+					<br />
+					<h:outputText styleClass="singleline"
+						value="Fielding Position: #{playerBean.player.playerDetail.fieldingPositions}" />
+					<br />
+					<h:outputText styleClass="singleline"
+						value="Teams: #{playerBean.player.playerDetail.teams}" />
+					<br />
+					<h:outputText styleClass="singleline"
+						value="Cap Number: #{playerBean.player.playerDetail.capNumber}" />
+					<br />
+					<h:outputText styleClass="singleline"
+						value="Shirt Number: #{playerBean.player.playerDetail.shirtNumber}" />
+
+				</div>
 
 				<a4j:outputPanel styleClass="reviewText" layout="block"
 					rendered="#{not empty playerBean.player.playerDetail.profile}">
 					<h:outputText value="#{playerBean.player.playerDetail.profile}"></h:outputText>
 				</a4j:outputPanel>
+				<a4j:outputPanel
+					rendered="#{not empty playerBean.player.playerDetail.image}"
+					style="width: 300px;">
+					<a4j:mediaOutput mimeType="image/jpeg" element="img"
+						style="max-width: 400px; max-height: 300px;"
+						value="#{playerBean.player.playerId}"
+						createContent="#{imageBean.paintImage}" />
+				</a4j:outputPanel>
 			</a4j:outputPanel>
 
-			<h4>
-				<a id="battingcareer" />Batting career
-			</h4>
-			<rich:dataTable styleClass="objectTable" var="bat"
-				value="#{playerBean.careerBatting}">
-				<ui:include
-					src="/resources/include/singlebattingrecordcolumns.xhtml" />
-			</rich:dataTable>
+			<div style="clear: both;">
+				<h4>
+					<a id="battingcareer" />Batting career
+				</h4>
+				<rich:dataTable styleClass="objectTable" var="bat"
+					value="#{playerBean.careerBatting}">
+					<ui:include
+						src="/resources/include/singlebattingrecordcolumns.xhtml" />
+				</rich:dataTable>
 
-			<h4>
-				<a id="battingcareer" />Bowling career
-			</h4>
-			<rich:dataTable styleClass="objectTable" var="bowl"
-				value="#{playerBean.careerBowling}">
-				<ui:include
-					src="/resources/include/singlebowlingrecordcolumns.xhtml" />
-			</rich:dataTable>
+				<h4>
+					<a id="battingcareer" />Bowling career
+				</h4>
+				<rich:dataTable styleClass="objectTable" var="bowl"
+					value="#{playerBean.careerBowling}">
+					<ui:include
+						src="/resources/include/singlebowlingrecordcolumns.xhtml" />
+				</rich:dataTable>
+			</div>
 		</div>
 	</ui:define>
 </ui:composition>

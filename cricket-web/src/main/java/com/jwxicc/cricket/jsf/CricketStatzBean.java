@@ -66,6 +66,8 @@ public class CricketStatzBean implements Serializable {
 						selectedCompId));
 				System.out.println("Submitted job number " + z + " to game parser");
 			}
+			
+			this.cricketStatzText = "Submitted " + gameTextArray.length + " games to be imported";
 
 		} catch (CricketParseDataException e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));

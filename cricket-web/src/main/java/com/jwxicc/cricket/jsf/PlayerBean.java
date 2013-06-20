@@ -1,5 +1,7 @@
 package com.jwxicc.cricket.jsf;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -10,6 +12,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.imageio.ImageIO;
 
 import org.richfaces.event.FileUploadEvent;
 
@@ -58,11 +61,15 @@ public class PlayerBean implements Serializable {
 		this.player.getPlayerDetail().setImage(event.getUploadedFile().getData());
 	}
 
-	public void paintThumbnail(OutputStream stream, Object obj) {
+	public void paintImage(OutputStream stream, Object obj) throws IOException {
 		try {
-			stream.write((byte[]) obj);
+			System.out.println("called paintImage");
+			BufferedImage bi = ImageIO.read(new ByteArrayInputStream(player.getPlayerDetail()
+					.getImage()));
+			ImageIO.write(bi, "jpeg", stream);
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw e;
 		}
 	}
 
