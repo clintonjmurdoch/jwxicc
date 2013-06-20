@@ -35,7 +35,11 @@ public class CricketStatzBean implements Serializable {
 	private String cricketStatzText;
 	private int selectedCompId;
 
+	private List<String> parseLog;
 	private List<Future<Game>> parseResponseList;
+	
+	private boolean pollEnabled;
+	private boolean parseEnabled = true;
 
 	public List<SelectItem> getCompetitionsSelectItems() {
 		List<SelectItem> selectItems = new ArrayList<SelectItem>();
@@ -50,24 +54,27 @@ public class CricketStatzBean implements Serializable {
 	}
 
 	public String parseText() {
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage("Parse Operation requested, selected comp is " + selectedCompId));
 		try {
+			this.parseLog = Collections.synchronizedList(new ArrayList<String>());
+			parseLog.add("Beginning parse of Cricket Statz text, please wait...");
+			this.pollEnabled = true;
+			this.parseEnabled = false;
 			// trim whitespace
 			this.cricketStatzText = cricketStatzText.trim();
 			// remove stuff from the start and end
 			// also remove the first match start text
-			
-			String[] gameTextArray = CricketStatzParseUtil.splitCricketStatzTextToMatches(this.cricketStatzText);
+
+			String[] gameTextArray = CricketStatzParseUtil
+					.splitCricketStatzTextToMatches(this.cricketStatzText);
 			// store the async responses to parse operation
 			parseResponseList = Collections.synchronizedList(new ArrayList<Future<Game>>());
 			for (int z = 0; z < gameTextArray.length; z++) {
 				parseResponseList.add(parseBean.parseSingleGameText(gameTextArray[z],
-						selectedCompId));
+						selectedCompId, parseLog));
 				System.out.println("Submitted job number " + z + " to game parser");
 			}
-			
-			this.cricketStatzText = "Submitted " + gameTextArray.length + " games to be imported";
+
+			this.cricketStatzText = "";
 
 		} catch (CricketParseDataException e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
@@ -99,6 +106,33 @@ public class CricketStatzBean implements Serializable {
 
 	public void setParseResponseList(List<Future<Game>> parseResponseList) {
 		this.parseResponseList = parseResponseList;
+	}
+
+	public List<String> getParseLog() {
+		return parseLog;
+	}
+
+	public void pullFromLog() {
+		System.out.println("pullFromLog");
+		boolean allDone = true;
+		for (Future<Game> response : parseResponseList) {
+			if (!response.isDone()) {
+				allDone = false;
+				break;
+			}
+		}
+		if (allDone) {
+			this.pollEnabled = false;
+			this.parseEnabled = true;
+		}
+	}
+
+	public boolean isPollEnabled() {
+		return pollEnabled;
+	}
+
+	public boolean isParseEnabled() {
+		return parseEnabled;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.jwxicc.cricket.parse;
 
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 
 import javax.ejb.Local;
@@ -21,6 +23,7 @@ public interface ImportedGameParser {
 	 * @throws CricketParseDataException
 	 *             If the text does not match the expected format
 	 */
-	public Future<Game> parseSingleGameText(String text, int competitionId)
+	Future<Game> parseSingleGameText(String text, int competitionId, List<String> log)
 			throws CricketParseDataException;
+
 }

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 
 import javax.annotation.Resource;
@@ -17,6 +18,7 @@ import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.SessionContext;
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -73,9 +75,10 @@ public class CricketStatz9Parser implements ImportedGameParser {
 	@Override
 	@Asynchronous
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public Future<Game> parseSingleGameText(String text, int competitionId)
+	public Future<Game> parseSingleGameText(String text, int competitionId, List<String> logMessages)
 			throws CricketParseDataException {
 
+		Game csGame = new Game();
 		try {
 			// inject the persistence facade per method
 			persistenceFacade = (CricketParsePersistenceFacade) ctx
@@ -95,8 +98,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 			// the current line
 			KeyValueLine line = new KeyValueLine(lines[i]);
 
-			Game csGame = new Game();
-
+			logMessages.add("Starting new match");
 			System.out.println("Start a new match");
 			// designations cant be persisted until game is
 			List<GamePlayerDesignation> designations = new ArrayList<GamePlayerDesignation>();
@@ -275,8 +277,12 @@ public class CricketStatz9Parser implements ImportedGameParser {
 					if (!gamePersisted) {
 						throw new CricketParseDataException(
 								"Failed to put together sufficient game information", null);
+					} else {
+						System.out.println("Created game id: " + csGame.getGameId());
+						logMessages.add("Created game id " + csGame.getGameId() + " between "
+								+ csGame.getTeam2().getTeamName() + " and "
+								+ csGame.getTeam1().getTeamName());
 					}
-					System.out.println("Created game id: " + csGame.getGameId());
 
 					// calculate the score, wickets and overs
 					int aggScore = 0;
@@ -491,11 +497,14 @@ public class CricketStatz9Parser implements ImportedGameParser {
 			// Calculate result/winner stuff
 			resultHelper.addWinInfo(csGame);
 
+			logMessages.add("Completed processing game id " + csGame.getGameId());
 			System.out.println("Completed Parsing Cricket Statz text for game id "
 					+ csGame.getGameId());
 
 			return new AsyncResult<Game>(csGame);
 		} catch (Exception e) {
+			logMessages.add("Failed to save game id " + csGame.getGameId()
+					+ ". All data for this game will be rolled back and it should be retried");
 			ctx.setRollbackOnly();
 			if (e instanceof CricketParseDataException) {
 				throw (CricketParseDataException) e;

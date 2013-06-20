@@ -16,22 +16,42 @@
 	<ui:define name="main">
 		<div>
 			<h:form>
+				<a4j:outputPanel id="pollwrapper">
+					<a4j:poll id="poller" action="#{parseBean.pullFromLog}"
+						enabled="#{parseBean.pollEnabled}" interval="1000"
+						render="pollwrapper,updatesPanel,parsePanel" limitRender="true"
+						oncomplete="$('#console').scrollTop($('#console')[0].scrollHeight);" />
+				</a4j:outputPanel>
+			</h:form>
+			<h:form>
 				<h2>Parse Cricket Statz exported text</h2>
 				<p>Paste exported Cricket Statz data here. Matches can be added
 					in bulk for a competition. Do not leave out any elements or lines
 					as this may cause data to be missing or the parse operation to
 					fail.</p>
+				<a4j:outputPanel id="updatesPanel" styleClass="console">
+					<ul id="console">
+						<ui:repeat var="log" rendered="#{not empty parseBean.parseLog}"
+							value="#{parseBean.parseLog}">
+							<li><h:outputText value="#{log}" /></li>
+						</ui:repeat>
+					</ul>
+				</a4j:outputPanel>
 				<h:messages />
 				<h:outputLabel for="selectedComp" value="Competition"></h:outputLabel>
 				<h:selectOneMenu id="selectedComp"
 					value="#{parseBean.selectedCompId}">
 					<f:selectItems value="#{parseBean.competitionsSelectItems}" />
 				</h:selectOneMenu>
-				<h:inputTextarea value="#{parseBean.cricketStatzText}" cols="120"
-					rows="20" id="CSInputArea" />
-				<h:commandButton action="#{parseBean.parseText}" value="Parse text" />
+				<a4j:outputPanel id="parsePanel">
+					<h:inputTextarea value="#{parseBean.cricketStatzText}" cols="120"
+						rows="20" id="CSInputArea" rendered="#{parseBean.parseEnabled}"/>
+					<a4j:commandButton action="#{parseBean.parseText}" rendered="#{parseBean.parseEnabled}"
+						id="submitButton" execute="@form" limitRender="true" type="submit"
+						value="Parse Text" render="allmessages,pollwrapper,parsePanel">
+					</a4j:commandButton>
+				</a4j:outputPanel>
 			</h:form>
-		
 		</div>
 	</ui:define>
 </ui:composition>
