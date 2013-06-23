@@ -643,7 +643,7 @@ div.rf-tab-cnt,.floatingnav {
 .console ul {
 	font-size: 11px;
 	list-style-type: none;
-	max-height: 100px;
+	height: 400px;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	border: 1px solid gray;

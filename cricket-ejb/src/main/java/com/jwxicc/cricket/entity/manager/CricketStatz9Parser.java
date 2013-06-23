@@ -272,6 +272,9 @@ public class CricketStatz9Parser implements ImportedGameParser {
 					// All game stuff should be done so persist it
 					if (gamePersisted == false) {
 						gamePersisted = persistGame(csGame, designations);
+						logMessages.add("Created game id " + csGame.getGameId() + " between "
+								+ csGame.getTeam2().getTeamName() + " and "
+								+ csGame.getTeam1().getTeamName());
 					}
 					// if it is still false, it broke
 					if (!gamePersisted) {
@@ -279,9 +282,6 @@ public class CricketStatz9Parser implements ImportedGameParser {
 								"Failed to put together sufficient game information", null);
 					} else {
 						System.out.println("Created game id: " + csGame.getGameId());
-						logMessages.add("Created game id " + csGame.getGameId() + " between "
-								+ csGame.getTeam2().getTeamName() + " and "
-								+ csGame.getTeam1().getTeamName());
 					}
 
 					// calculate the score, wickets and overs
@@ -468,8 +468,23 @@ public class CricketStatz9Parser implements ImportedGameParser {
 					inning.setRunsScored(aggScore);
 					inning.setWicketsLost(wicketsLost);
 
+					logMessages.add("Innings created with score " + wicketsLost + "/" + aggScore
+							+ " for " + inning.getTeam().getTeamName() + " in game "
+							+ csGame.getGameId());
+
 					// after the inns stuff is done, do the Partnerships
-					partnershipsHelper.createFallOfWickets();
+					boolean notoutsCreated = partnershipsHelper.createFallOfWickets();
+					if (notoutsCreated) {
+						logMessages
+								.add("All partnerships were successfully created for innings of "
+										+ inning.getTeam().getTeamName() + " in game "
+										+ csGame.getGameId());
+					} else {
+						logMessages
+								.add("WARNING: Unable to create partnerships for innings of "
+										+ inning.getTeam().getTeamName() + " in game "
+										+ csGame.getGameId());
+					}
 
 					// create a bigdecimal from the int array
 					while (oversBowled[1] >= 6) {
@@ -716,7 +731,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 			this.scoreAtFowList.add(Integer.valueOf(scoreAtFow));
 		}
 
-		public void createFallOfWickets() {
+		public boolean createFallOfWickets() {
 			// loop through the lists and map, matching them up and creating the
 			// Partnership structure
 			int wicketsLost = outPlayerBatPosList.size();
@@ -802,6 +817,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 				}
 
 			}
+			return canDoNotOuts;
 
 		}
 

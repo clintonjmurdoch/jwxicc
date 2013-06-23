@@ -123,8 +123,12 @@ public class CricketStatzBean implements Serializable {
 		}
 		if (allDone) {
 			this.pollEnabled = false;
-			this.parseEnabled = true;
+			parseLog.add("DONE: All games have completed processing");
 		}
+	}
+	
+	public void enableParse() {
+		this.parseEnabled = true;
 	}
 
 	public boolean isPollEnabled() {
