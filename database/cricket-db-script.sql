@@ -159,13 +159,13 @@ CREATE  TABLE IF NOT EXISTS `INNINGS` (
   CONSTRAINT `innings_team`
     FOREIGN KEY (`teamId` )
     REFERENCES `TEAM` (`teamId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `innings_game`
     FOREIGN KEY (`gameId` )
     REFERENCES `GAME` (`gameId` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -184,11 +184,12 @@ CREATE  TABLE IF NOT EXISTS `PLAYER_DETAIL` (
   `bowling_style` VARCHAR(45) NULL ,
   `fielding_positions` VARCHAR(45) NULL ,
   `teams` VARCHAR(45) NULL ,
-  `shirt_number` VARCHAR(45) NULL ,
-  `cap_number` VARCHAR(45) NULL ,
+  `shirt_number` INT UNSIGNED NULL ,
+  `cap_number` INT UNSIGNED NULL ,
   `image` BLOB NULL ,
   `profile` TEXT NULL ,
-  PRIMARY KEY (`playerDetailId`) )
+  PRIMARY KEY (`playerDetailId`) ,
+  UNIQUE INDEX `cap_number_UNIQUE` (`cap_number` ASC) )
 ENGINE = InnoDB;
 
 
@@ -261,13 +262,13 @@ CREATE  TABLE IF NOT EXISTS `BATTING` (
   CONSTRAINT `batting_player`
     FOREIGN KEY (`playerId` )
     REFERENCES `PLAYER` (`playerId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `batting_howout`
     FOREIGN KEY (`howOutId` )
     REFERENCES `HOWOUT` (`howOutid` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -319,8 +320,8 @@ CREATE  TABLE IF NOT EXISTS `BOWLING` (
   CONSTRAINT `bowling_player`
     FOREIGN KEY (`playerId` )
     REFERENCES `PLAYER` (`playerId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `bowling_innings`
     FOREIGN KEY (`inningsId` )
     REFERENCES `INNINGS` (`inningsId` )
@@ -347,8 +348,8 @@ CREATE  TABLE IF NOT EXISTS `PARTNERSHIP` (
   CONSTRAINT `partnership_innings`
     FOREIGN KEY (`inningsId` )
     REFERENCES `INNINGS` (`inningsId` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -370,8 +371,8 @@ CREATE  TABLE IF NOT EXISTS `PARTNERSHIP_PLAYER` (
   CONSTRAINT `partnershipplayer_partnership_rel`
     FOREIGN KEY (`partnershipId` )
     REFERENCES `PARTNERSHIP` (`partnershipId` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `partnershipplayer_player_rel`
     FOREIGN KEY (`playerId` )
     REFERENCES `PLAYER` (`playerId` )
@@ -429,8 +430,8 @@ CREATE  TABLE IF NOT EXISTS `GAME_PLAYER_DESIGNATION` (
   CONSTRAINT `gpd_game`
     FOREIGN KEY (`gameId` )
     REFERENCES `GAME` (`gameId` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `gpd_player`
     FOREIGN KEY (`playerId` )
     REFERENCES `PLAYER` (`playerId` )
@@ -454,21 +455,16 @@ CREATE  TABLE IF NOT EXISTS `PLAYER_RELATIONSHIP` (
   INDEX `other_player_reference` (`otherPlayerId` ASC) ,
   CONSTRAINT `owning_player_relationship`
     FOREIGN KEY (`owningPlayerId` )
-    REFERENCES `jwxiccco_cricket`.`PLAYER` (`playerId` )
+    REFERENCES `PLAYER` (`playerId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `other_player_reference`
     FOREIGN KEY (`otherPlayerId` )
-    REFERENCES `jwxiccco_cricket`.`PLAYER` (`playerId` )
+    REFERENCES `PLAYER` (`playerId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
--- -----------------------------------------------------
--- Placeholder table for view `jwxiccco_cricket`.`BEST_BATTING`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BEST_BATTING` (`battingid` INT, `playerid` INT, `score` INT, `balls` INT, `outstatus` INT);
 
 -- -----------------------------------------------------
 -- Placeholder table for view `BEST_BOWLING`
@@ -476,25 +472,33 @@ CREATE TABLE IF NOT EXISTS `BEST_BATTING` (`battingid` INT, `playerid` INT, `sco
 CREATE TABLE IF NOT EXISTS `BEST_BOWLING` (`scorecardname` INT, `playerid` INT, `wickets` INT, `runs` INT);
 
 -- -----------------------------------------------------
+-- Placeholder table for view `BEST_BATTING`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `BEST_BATTING` (`battingid` INT, `playerid` INT, `score` INT, `balls` INT, `outstatus` INT);
+
+-- -----------------------------------------------------
 -- View `BEST_BOWLING`
 -- -----------------------------------------------------
 DROP VIEW IF EXISTS `BEST_BOWLING` ;
 DROP TABLE IF EXISTS `BEST_BOWLING`;
+
 CREATE  OR REPLACE VIEW `BEST_BOWLING` AS 
 select scorecardname, playerid, wickets, runs from BOWLING b natural join PLAYER p where wickets = 
 (select max(wickets) from BOWLING x where x.playerid = p.playerid) and runs = (select min(runs) from BOWLING y where y.playerid = p.playerid and y.wickets = b.wickets) 
 group by playerid order by wickets desc, runs asc;
 
 -- -----------------------------------------------------
--- View `jwxiccco_cricket`.`BEST_BATTING`
+-- View `BEST_BATTING`
 -- -----------------------------------------------------
 DROP VIEW IF EXISTS `BEST_BATTING` ;
 DROP TABLE IF EXISTS `BEST_BATTING`;
+
 CREATE  OR REPLACE VIEW `BEST_BATTING` AS
 select b.battingid, b.playerid, b.score, b.balls, if(b.howoutid in (1, 7, 13),0,1) as outstatus 
-from batting b natural join player p where b.score = 
-(select score from batting ba where ba.playerid = p.playerid order by ba.score desc, ba.balls asc limit 1) 
+from BATTING b natural join PLAYER p where b.score = 
+(select score from BATTING ba where ba.playerid = p.playerid order by ba.score desc, ba.balls asc limit 1) 
 and p.teamid = 2 group by p.playerid;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -504,6 +508,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- Data for table `WIN_TYPE`
 -- -----------------------------------------------------
 START TRANSACTION;
+
 INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (1, 'Runs on First Innings');
 INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (2, 'Wickets on First Innings');
 INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (3, 'Draw on First Innings');
@@ -522,6 +527,7 @@ COMMIT;
 -- Data for table `HOWOUT`
 -- -----------------------------------------------------
 START TRANSACTION;
+
 INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (1, 'no', 'not out');
 INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (2, 'b', 'bowled');
 INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (3, 'c', 'caught');
@@ -548,6 +554,7 @@ COMMIT;
 -- Data for table `USER`
 -- -----------------------------------------------------
 START TRANSACTION;
+
 INSERT INTO `USER` (`username`, `password`) VALUES ('murdoch', 'cricket');
 INSERT INTO `USER` (`username`, `password`) VALUES ('vorn', 'a1b2c3');
 
