@@ -1,6 +1,7 @@
 package com.jwxicc.cricket.jsf;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -19,6 +20,7 @@ import com.jwxicc.cricket.entity.Game;
 import com.jwxicc.cricket.interfaces.CompetitionManager;
 import com.jwxicc.cricket.parse.CricketParseDataException;
 import com.jwxicc.cricket.parse.ImportedGameParser;
+import com.jwxicc.cricket.util.JwxiccUtils;
 import com.jwxicc.cricket.util.parse.CricketStatzParseUtil;
 
 @ManagedBean(name = "parseBean")
@@ -40,6 +42,9 @@ public class CricketStatzBean implements Serializable {
 	
 	private boolean pollEnabled;
 	private boolean parseEnabled = true;
+	
+	private Date startDate;
+	private final SimpleDateFormat logDF = new SimpleDateFormat("HH:mm:ss");
 
 	public List<SelectItem> getCompetitionsSelectItems() {
 		List<SelectItem> selectItems = new ArrayList<SelectItem>();
@@ -56,7 +61,8 @@ public class CricketStatzBean implements Serializable {
 	public String parseText() {
 		try {
 			this.parseLog = Collections.synchronizedList(new ArrayList<String>());
-			parseLog.add("Beginning parse of Cricket Statz text, please wait...");
+			startDate = new Date();
+			parseLog.add("Beginning parse of Cricket Statz text at " + logDF.format(startDate) + ", please wait...");
 			this.pollEnabled = true;
 			this.parseEnabled = false;
 			// trim whitespace
@@ -123,7 +129,10 @@ public class CricketStatzBean implements Serializable {
 		}
 		if (allDone) {
 			this.pollEnabled = false;
-			parseLog.add("DONE: All games have completed processing");
+			Date endDate = new Date();
+			parseLog.add("DONE: All games have completed processing at " + logDF.format(endDate));
+			int timeTaken = Math.round((endDate.getTime() - startDate.getTime()) / 1000);
+			parseLog.add("Time taken: " + timeTaken + " seconds");
 		}
 	}
 	

@@ -58,13 +58,12 @@ public class CricketStatz9Parser implements ImportedGameParser {
 	@Resource
 	SessionContext ctx;
 
+	// These need to be looked up from JNDI
 	CricketParsePersistenceFacade persistenceFacade;
-
+	SharedPersistenceObjectsFacade sharedObjects;
+	
 	@EJB
 	DismissalsManager dismissalsManager;
-
-	@EJB
-	SharedPersistenceObjectsFacade sharedObjects;
 
 	/**
 	 * Default constructor.
@@ -83,6 +82,9 @@ public class CricketStatz9Parser implements ImportedGameParser {
 			// inject the persistence facade per method
 			persistenceFacade = (CricketParsePersistenceFacade) ctx
 					.lookup("java:module/parsePersistenceFacade");
+			
+			sharedObjects = (SharedPersistenceObjectsFacade) ctx
+					.lookup("java:module/sharedObjectsFacade");
 
 			// check the text doesnt have leading/ending whitespace
 			text = text.trim();
