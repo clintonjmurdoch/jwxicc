@@ -4,14 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jwxicc</groupId>
 	<artifactId>cricket-web</artifactId>
-	<version>0.0.1.20130623</version>
+	<version>0.0.20130714</version>
 	<packaging>war</packaging>
 	<name>cricket Web module</name>
 
 	<parent>
 		<artifactId>cricket</artifactId>
 		<groupId>com.jwxicc</groupId>
-		<version>0.0.1.20130623</version>
+		<version>0.0.20130714</version>
 	</parent>
 
 	<properties>
