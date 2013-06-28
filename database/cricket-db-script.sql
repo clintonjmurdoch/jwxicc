@@ -156,6 +156,7 @@ CREATE  TABLE IF NOT EXISTS `INNINGS` (
   PRIMARY KEY (`inningsId`) ,
   INDEX `innings_team` (`teamId` ASC) ,
   INDEX `innings_game` (`gameId` ASC) ,
+  INDEX `runs_index` (`runsScored` ASC, `wicketsLost` ASC) ,
   CONSTRAINT `innings_team`
     FOREIGN KEY (`teamId` )
     REFERENCES `TEAM` (`teamId` )
@@ -254,6 +255,9 @@ CREATE  TABLE IF NOT EXISTS `BATTING` (
   INDEX `batting_innings` (`inningsId` ASC) ,
   INDEX `batting_player` (`playerId` ASC) ,
   INDEX `batting_howout` (`howOutId` ASC) ,
+  INDEX `score_index` (`score` ASC, `balls` ASC) ,
+  INDEX `howout_index` (`howOutId` ASC) ,
+  INDEX `batpos_index` (`battingPos` ASC) ,
   CONSTRAINT `batting_innings`
     FOREIGN KEY (`inningsId` )
     REFERENCES `INNINGS` (`inningsId` )
@@ -285,6 +289,7 @@ CREATE  TABLE IF NOT EXISTS `WICKET_DETAIL` (
   PRIMARY KEY (`wicketDetailId`) ,
   INDEX `wicketdetail_batting` (`battingId` ASC) ,
   INDEX `wicketdetail_player` (`playerId` ASC) ,
+  INDEX `wickettype_index` (`wicketType` ASC) ,
   CONSTRAINT `wicketdetail_batting`
     FOREIGN KEY (`battingId` )
     REFERENCES `BATTING` (`battingId` )
@@ -317,6 +322,7 @@ CREATE  TABLE IF NOT EXISTS `BOWLING` (
   PRIMARY KEY (`bowlingId`) ,
   INDEX `bowling_player` (`playerId` ASC) ,
   INDEX `bowling_innings` (`inningsId` ASC) ,
+  INDEX `wickets_index` (`wickets` ASC, `runs` ASC) ,
   CONSTRAINT `bowling_player`
     FOREIGN KEY (`playerId` )
     REFERENCES `PLAYER` (`playerId` )
@@ -345,6 +351,8 @@ CREATE  TABLE IF NOT EXISTS `PARTNERSHIP` (
   `overs` FLOAT(3,1) NULL ,
   PRIMARY KEY (`partnershipId`) ,
   INDEX `partnership_innings` (`inningsId` ASC) ,
+  INDEX `wicket_index` (`wicket` ASC) ,
+  INDEX `runs_index` (`runsScored` ASC) ,
   CONSTRAINT `partnership_innings`
     FOREIGN KEY (`inningsId` )
     REFERENCES `INNINGS` (`inningsId` )
