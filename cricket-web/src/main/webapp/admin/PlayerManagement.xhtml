@@ -93,12 +93,12 @@
 										<div class="ym-fbox-text">
 											<h:outputLabel for="capnum" value="Cap Number" />
 											<h:inputText id="capnum" styleClass="smallinput"
-												value="#{playerBean.player.playerDetail.capNumber}"></h:inputText>
+												value="#{(playerBean.player.playerDetail.capNumber == 0) ? '' : playerBean.player.playerDetail.capNumber }" />
 										</div>
 										<div class="ym-fbox-text">
 											<h:outputLabel for="shirtnum" value="Shirt Number" />
 											<h:inputText id="shirtnum" styleClass="smallinput"
-												value="#{playerBean.player.playerDetail.shirtNumber}"></h:inputText>
+												value="#{(playerBean.player.playerDetail.shirtNumber == 0) ? '' : playerBean.player.playerDetail.shirtNumber}" />
 										</div>
 										<div class="ym-fbox-text">
 											<h:outputLabel for="uploader" value="Profile Image" />
@@ -134,6 +134,7 @@
 					</a4j:outputPanel>
 				</h:form>
 			</a4j:outputPanel>
+			<ui:include src="/resources/include/loadingpopup.xhtml" />
 		</div>
 	</ui:define>
 </ui:composition>
