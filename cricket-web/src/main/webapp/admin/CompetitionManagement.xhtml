@@ -58,12 +58,14 @@
 								</a4j:commandLink>
 							</rich:column>
 						</rich:dataTable>
-						<a4j:commandButton type="submit" action="#{compBean.addRow}"
-							execute="@this" render="tablePanel" value="Add new Competition" />
-						<a4j:commandButton type="submit" action="#{compBean.saveAll}"
-							execute="outPanel" render="tablePanel" value="Save changes" />
+						<a4j:commandButton type="submit"
+							action="#{compBean.saveAll}" execute="outPanel"
+							render="tablePanel" value="Save changes" />
 						<a4j:commandButton type="submit" action="#{compBean.resetAll}"
 							execute="@this" render="tablePanel" value="Reset changes" />
+						<a4j:commandButton type="submit" action="#{compBean.addRow}"
+							execute="outPanel" render="tablePanel"
+							value="Add new Competition" />
 					</a4j:outputPanel>
 					<a4j:outputPanel id="objectPanel"
 						rendered="#{compBean.pageCompId gt 0}">
@@ -97,7 +99,8 @@
 						</a4j:outputPanel>
 						<a4j:jsFunction limitRender="true" name="showGame"
 							action="#{compBean.goToMatch}">
-							<a4j:param name="param1" assignTo="#{compBean.selectedMatchToView}"></a4j:param>
+							<a4j:param name="param1"
+								assignTo="#{compBean.selectedMatchToView}"></a4j:param>
 						</a4j:jsFunction>
 						<p>
 							Other Actions:
@@ -108,6 +111,7 @@
 					</a4j:outputPanel>
 				</h:form>
 			</a4j:outputPanel>
+			<ui:include src="/resources/include/loadingpopup.xhtml" />
 		</div>
 	</ui:define>
 </ui:composition>
