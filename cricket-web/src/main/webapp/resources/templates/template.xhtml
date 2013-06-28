@@ -14,14 +14,15 @@
 	<ui:insert name="head"></ui:insert>
 	<title><ui:insert name="title">Johnnie Walker XI</ui:insert></title>
 	<script type="text/javascript">
-	function doFocus() {
-		if ($('.firstfield') != null) {
-			$('.firstfield').focus();
+		function doFocus() {
+			if ($('.firstfield') != null) {
+				$('.firstfield').focus();
+			}
 		}
-	}
 	</script>
 </h:head>
-<h:body>
+<h:body onload="pageload();">
+	<ui:insert name="pageload"></ui:insert>
 	<div class="ym-wrapper">
 		<div class="ym-wbox">
 			<ui:insert name="header">
@@ -51,7 +52,7 @@
 						</div>
 					</div>
 				</ui:insert>
-				<br style="clear: both"/>
+				<br style="clear: both" />
 			</div>
 			<!-- End of Content Section -->
 

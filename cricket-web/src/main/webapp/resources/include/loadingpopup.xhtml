@@ -8,7 +8,8 @@
 	<a4j:status id="status"
 		onstart="#{rich:component('loadingpanel')}.show()"
 		onstop="#{rich:component('loadingpanel')}.hide()" />
-	<rich:popupPanel modal="true" id="loadingpanel" height="100">
-		<h:outputText value="Loading..." />
+	<rich:popupPanel modal="true" id="loadingpanel" height="200"
+		style="text-align: center">
+		<h:graphicImage library="images" name="loading_gif.gif" />
 	</rich:popupPanel>
 </ui:composition>

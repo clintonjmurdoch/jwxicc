@@ -22,15 +22,19 @@ public class FacebookBean implements Serializable {
 	@EJB(name = "fbManager")
 	FacebookManager fbManager;
 
-	public FacebookFeed getFeed() {
-		if (feed == null) {
-			try {
-				this.feed = fbManager.getFeed();
-			} catch (Exception e) {
-				FacesMessage message = new FacesMessage("Failed to get news items from Facebook");
-				FacesContext.getCurrentInstance().addMessage(null, message);
-			}
+	public void initialiseFeed() {
+		try {
+			System.out.println("getting news");
+			this.feed = fbManager.getFeed();
+			System.out.println("got news");
+			renderNews = true;
+		} catch (Exception e) {
+			FacesMessage message = new FacesMessage("Failed to get news items from Facebook");
+			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
+	}
+
+	public FacebookFeed getFeed() {
 		return feed;
 	}
 
