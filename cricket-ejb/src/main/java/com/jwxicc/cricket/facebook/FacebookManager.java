@@ -1,6 +1,6 @@
 package com.jwxicc.cricket.facebook;
 
-import javax.ejb.Local;
+import javax.ejb.EJBException;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 
@@ -23,6 +23,14 @@ public class FacebookManager {
 	private FacebookClient client = null;
 
 	public FacebookManager() {
+		try {
+			init();
+		} catch (Exception e) {
+			// init will be retried on request anyway
+		}
+	}
+
+	public void init() {
 		this.accessToken = new DefaultFacebookClient().obtainAppAccessToken(appId, appSecret);
 		this.client = new DefaultFacebookClient(this.accessToken.getAccessToken());
 	}
@@ -36,8 +44,21 @@ public class FacebookManager {
 	}
 
 	public FacebookFeed getFeed() {
+		try {
+			return getFeedObject();
+		} catch (Exception e) {
+			// first catch, then retry the init
+			try {
+				init();
+				return getFeedObject();
+			} catch (Exception ex) {
+				throw new EJBException(ex);
+			}
+		}
+	}
+
+	public FacebookFeed getFeedObject() {
 		return client.fetchObject("143138622462934/feed", FacebookFeed.class,
 				Parameter.with("limit", 4));
 	}
-
 }

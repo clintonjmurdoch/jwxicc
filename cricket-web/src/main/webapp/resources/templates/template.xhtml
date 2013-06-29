@@ -13,16 +13,26 @@
 	<h:outputStylesheet library="css" name="my_layout.css" />
 	<ui:insert name="head"></ui:insert>
 	<title><ui:insert name="title">Johnnie Walker XI</ui:insert></title>
+</h:head>
+<h:body onload="pageload();">
 	<script type="text/javascript">
 		function doFocus() {
 			if ($('.firstfield') != null) {
 				$('.firstfield').focus();
 			}
 		}
+		$(document).ready(function() {
+			$("a").bind('click', function() {
+				#{rich:component('loadingpanel')}.show();
+			});
+		});
 	</script>
-</h:head>
-<h:body onload="pageload();">
-	<ui:insert name="pageload"></ui:insert>
+	<ui:insert name="pageload">
+		<script type="text/javascript">
+			function pageload() {
+			}
+		</script>
+	</ui:insert>
 	<div class="ym-wrapper">
 		<div class="ym-wbox">
 			<ui:insert name="header">
@@ -61,5 +71,6 @@
 			</ui:insert>
 		</div>
 	</div>
+	<ui:include src="/resources/include/loadingpopup.xhtml" />
 </h:body>
 </html>

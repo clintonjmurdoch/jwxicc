@@ -12,8 +12,11 @@
 	</ui:define>
 	<ui:define name="pageload">
 		<h:form>
-			<a4j:jsFunction name="pageload" action="#{fbBean.initialiseFeed}"
-				render="lazypanel" />
+			<a4j:region>
+				<a4j:jsFunction name="pageload" action="#{fbBean.initialiseFeed}"
+					render="lazypanel" />
+				<a4j:status />
+			</a4j:region>
 		</h:form>
 	</ui:define>
 	<ui:define name="rightside">
@@ -29,9 +32,9 @@
 			<h3>Next Match</h3>
 			<p>December 27, 2013 - Willowfest 2013, match to be determined</p>
 		</div>
-		<rich:messages />
 		<a4j:outputPanel id="lazypanel">
-			<a4j:outputPanel id="placeholder" rendered="#{not fbBean.renderNews}"
+			<rich:messages />
+			<a4j:outputPanel id="placeholder" rendered="#{fbBean.renderLoading}"
 				layout="block" style="text-align: center; padding: 20px;">
 				<h:graphicImage library="images" name="loading_gif.gif" />
 			</a4j:outputPanel>

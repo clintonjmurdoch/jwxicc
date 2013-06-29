@@ -15,9 +15,9 @@ import com.jwxicc.cricket.facebook.FacebookManager;
 @ViewScoped
 public class FacebookBean implements Serializable {
 
-	private int newsItemsForHome = 2;
 	private FacebookFeed feed = null;
 	private boolean renderNews = false;
+	private boolean renderLoading = true;
 
 	@EJB(name = "fbManager")
 	FacebookManager fbManager;
@@ -29,9 +29,11 @@ public class FacebookBean implements Serializable {
 			System.out.println("got news");
 			renderNews = true;
 		} catch (Exception e) {
-			FacesMessage message = new FacesMessage("Failed to get news items from Facebook");
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Failed to get news items from Facebook", e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
+		renderLoading = false;
 	}
 
 	public FacebookFeed getFeed() {
@@ -48,6 +50,14 @@ public class FacebookBean implements Serializable {
 
 	public void setRenderNews(boolean renderNews) {
 		this.renderNews = renderNews;
+	}
+
+	public boolean isRenderLoading() {
+		return renderLoading;
+	}
+
+	public void setRenderLoading(boolean renderLoading) {
+		this.renderLoading = renderLoading;
 	}
 
 }
