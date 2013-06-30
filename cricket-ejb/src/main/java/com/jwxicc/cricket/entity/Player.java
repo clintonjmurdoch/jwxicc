@@ -19,6 +19,9 @@ public class Player implements Serializable {
 	private int playerId;
 
 	@Column(length = 45)
+	private String playerName;
+	
+	@Column(length = 45)
 	private String scorecardName;
 
 	@Column(nullable = false)
@@ -78,6 +81,14 @@ public class Player implements Serializable {
 
 	public void setPlayerId(int playerId) {
 		this.playerId = playerId;
+	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
 	}
 
 	public String getScorecardName() {

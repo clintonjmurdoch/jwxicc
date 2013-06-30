@@ -6,7 +6,10 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:a4j="http://richfaces.org/a4j">
 <ui:composition template="/resources/templates/template.xhtml">
-	<ui:define name="title">#{playerBean.player.scorecardName} - Johnnie Walker XI</ui:define>
+	<ui:define name="title">#{(empty playerBean.player.playerName) ? playerBean.player.scorecardName : playerBean.player.playerName} - Johnnie Walker XI</ui:define>
+	<ui:define name="head">
+		<h:outputScript library="js" name="fb.js" />
+	</ui:define>
 	<f:metadata>
 		<f:viewParam name="playerId" value="#{playerBean.playerId}"
 			required="true"
@@ -17,54 +20,67 @@
 	<ui:define name="body">
 		<div style="padding: 0 20px;">
 			<div>
-				<h3>#{playerBean.player.scorecardName}</h3>
+				<h3>#{(empty playerBean.player.playerName) ?
+					playerBean.player.scorecardName : playerBean.player.playerName}</h3>
 			</div>
 			<a4j:outputPanel layout="block"
 				rendered="#{playerBean.player.playerDetail != null}">
-				<div style="width: 600px; float: left;">
-					<h:outputText styleClass="singleline"
-						value="Full name: #{playerBean.player.playerDetail.fullname}" />
-					<br /> <span class="singleline"> <h:outputText
-							value="Born: " /> <h:outputText
-							value="#{playerBean.player.playerDetail.birthdate}">
-							<f:convertDateTime pattern="MMMMM d yyyy" />
-						</h:outputText> <h:outputText
-							value=", #{playerBean.player.playerDetail.birthplace}" />
-					</span> <br />
-					<h:outputText styleClass="singleline"
-						value="Nicknames: #{playerBean.player.playerDetail.nicknames}" />
-					<br />
-					<h:outputText styleClass="singleline"
-						value="Batting Style: #{playerBean.player.playerDetail.battingStyle}" />
-					<br />
-					<h:outputText styleClass="singleline"
-						value="Bowling Style: #{playerBean.player.playerDetail.bowlingStyle}" />
-					<br />
-					<h:outputText styleClass="singleline"
-						value="Fielding Position: #{playerBean.player.playerDetail.fieldingPositions}" />
-					<br />
-					<h:outputText styleClass="singleline"
-						value="Teams: #{playerBean.player.playerDetail.teams}" />
-					<br />
-					<h:outputText styleClass="singleline"
-						value="Cap Number: #{playerBean.player.playerDetail.capNumber}" />
-					<br />
-					<h:outputText styleClass="singleline"
-						value="Shirt Number: #{playerBean.player.playerDetail.shirtNumber}" />
+				<div id="topsection">
+					<div style="width: 600px; float: left;">
+						<h:outputText styleClass="singleline"
+							rendered="#{not empty playerBean.player.playerDetail.fullname}"
+							value="Full name: #{playerBean.player.playerDetail.fullname}">
+						</h:outputText>
+						<a4j:outputPanel styleClass="singleline"
+							rendered="#{playerBean.player.playerDetail.birthdate != null}">
+							<h:outputText value="Born: " />
+							<h:outputText value="#{playerBean.player.playerDetail.birthdate}">
+								<f:convertDateTime pattern="MMMMM d yyyy" />
+							</h:outputText>
+							<h:outputText
+								rendered="#{not empty playerBean.player.playerDetail.birthplace}"
+								value=", #{playerBean.player.playerDetail.birthplace}" />
+						</a4j:outputPanel>
+						<h:outputText styleClass="singleline"
+							rendered="#{not empty playerBean.player.playerDetail.nicknames}"
+							value="Nicknames: #{playerBean.player.playerDetail.nicknames}" />
+						<h:outputText styleClass="singleline"
+							rendered="#{not empty playerBean.player.playerDetail.battingStyle}"
+							value="Batting Style: #{playerBean.player.playerDetail.battingStyle}" />
+						<h:outputText styleClass="singleline"
+							rendered="#{not empty playerBean.player.playerDetail.bowlingStyle}"
+							value="Bowling Style: #{playerBean.player.playerDetail.bowlingStyle}" />
+						<h:outputText styleClass="singleline"
+							rendered="#{not empty playerBean.player.playerDetail.fieldingPositions}"
+							value="Fielding Position: #{playerBean.player.playerDetail.fieldingPositions}" />
+						<h:outputText styleClass="singleline"
+							rendered="#{not empty playerBean.player.playerDetail.teams}"
+							value="Teams: #{playerBean.player.playerDetail.teams}" />
+						<h:outputText styleClass="singleline"
+							rendered="#{playerBean.player.playerDetail.capNumber != 0}"
+							value="Cap Number: #{playerBean.player.playerDetail.capNumber}" />
+						<h:outputText styleClass="singleline"
+							rendered="#{playerBean.player.playerDetail.shirtNumber != 0}"
+							value="Shirt Number: #{playerBean.player.playerDetail.shirtNumber}" />
+						<div id="fb-root"></div>
+						<div class="fb-like" data-send="true" data-width="450"
+							data-show-faces="false"
+							data-href="http://www.jwxicc.com/#{playerBean.player.playerDetail.capNumber}.php" />
+					</div>
 
+					<a4j:outputPanel layout="block"
+						style="text-align: right; padding-right: 20px;"
+						rendered="#{not empty playerBean.player.playerDetail.image}">
+						<a4j:mediaOutput mimeType="image/jpeg" element="img"
+							style="max-width: 400px; max-height: 300px;"
+							value="#{playerBean.player.playerId}"
+							createContent="#{imageBean.paintImage}" />
+					</a4j:outputPanel>
 				</div>
 
 				<a4j:outputPanel styleClass="reviewText" layout="block"
 					rendered="#{not empty playerBean.player.playerDetail.profile}">
 					<h:outputText value="#{playerBean.player.playerDetail.profile}"></h:outputText>
-				</a4j:outputPanel>
-				<a4j:outputPanel
-					rendered="#{not empty playerBean.player.playerDetail.image}"
-					style="width: 300px;">
-					<a4j:mediaOutput mimeType="image/jpeg" element="img"
-						style="max-width: 400px; max-height: 300px;"
-						value="#{playerBean.player.playerId}"
-						createContent="#{imageBean.paintImage}" />
 				</a4j:outputPanel>
 			</a4j:outputPanel>
 

@@ -187,7 +187,7 @@ CREATE  TABLE IF NOT EXISTS `PLAYER_DETAIL` (
   `teams` VARCHAR(45) NULL ,
   `shirt_number` INT UNSIGNED NULL ,
   `cap_number` INT UNSIGNED NULL ,
-  `image` BLOB NULL ,
+  `image` LONGBLOB NULL ,
   `profile` TEXT NULL ,
   PRIMARY KEY (`playerDetailId`) ,
   UNIQUE INDEX `cap_number_UNIQUE` (`cap_number` ASC) )
