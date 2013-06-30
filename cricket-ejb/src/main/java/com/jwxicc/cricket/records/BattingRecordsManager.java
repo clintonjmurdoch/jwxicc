@@ -31,7 +31,7 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 			+ "sum(b.score)/count(if(b.howoutid not in (0,1,7,13,16,17),1,null)) as avg, "
 			+ "sum(if(b.balls > 0,b.score,0))/sum(b.balls) as strikerate "
 			+ "from BATTING b natural join PLAYER p left join BEST_BATTING bb on p.playerId = bb.playerId "
-			+ "where p.teamid = :jwxi ";
+			+ "where ";
 
 	@Override
 	public List<Batting> getInningsBest() {
@@ -63,7 +63,7 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 	@Override
 	public List<BattingRecord> getByAggregate() {
 		// Get the base_sql data ordered by most runs
-		String sql = CAREER_BATTING_BASE_SQL
+		String sql = CAREER_BATTING_BASE_SQL + JWXI_TEAM_SQL
 				+ "group by playerid order by total desc, avg desc, strikerate desc, ballsfaced asc";
 
 		return this.getBattingRecords(sql);
@@ -72,7 +72,7 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 	@Override
 	public List<BattingRecord> getByAverage() {
 		// Get the base sql data ordered by average
-		String sql = CAREER_BATTING_BASE_SQL + "group by playerid "
+		String sql = CAREER_BATTING_BASE_SQL + JWXI_TEAM_SQL + "group by playerid "
 				+ "having count(if(b.howoutid not in (0, 16, 17),1,null)) >= "
 				+ JwxiccUtils.MIN_INNINGS_FOR_AVERAGE + " "
 				+ "order by avg desc, total desc, strikerate desc, ballsfaced asc";
@@ -135,14 +135,16 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 
 	@Override
 	public BattingRecord getPlayerCareerRecord(int playerId) {
-		String sqlQuery = CAREER_BATTING_BASE_SQL + "and p.playerId = :pid group by playerid";
+		String sqlQuery = CAREER_BATTING_BASE_SQL + "p.playerId = :pid group by playerid";
 
 		Query query = em.createNativeQuery(sqlQuery);
-		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
 		query.setParameter("pid", playerId);
 
 		// only returns 1 object[]
 		List<Object[]> results = query.getResultList();
+		if (results.size() == 0) {
+			return null;
+		}
 
 		return getRecordFromResult(results.get(0));
 	}

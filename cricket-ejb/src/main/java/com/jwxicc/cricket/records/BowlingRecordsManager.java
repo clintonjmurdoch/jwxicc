@@ -33,7 +33,7 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 			+ "sum(b.wickets) as wickets, sum(b.runs)/sum(b.wickets) as avg, "
 			+ "bb.wickets as bb_wickets, bb.runs bb_runs, count(if(b.wickets>=5,1,null)) as 5I "
 			+ "from BOWLING b natural join PLAYER p left join BEST_BOWLING bb on p.playerid = bb.playerid "
-			+ "where p.teamid = :jwxi ";
+			+ "where ";
 
 	@Override
 	public List<Bowling> getInningsBest() {
@@ -48,7 +48,7 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 
 	@Override
 	public List<BowlingRecord> getByAggregate() {
-		String sqlQuery = CAREER_BOWLING_BASE_SQL
+		String sqlQuery = CAREER_BOWLING_BASE_SQL + JWXI_TEAM_SQL
 				+ "group by p.playerid order by wickets desc, runs asc, overs asc";
 
 		return this.getBowlingRecords(sqlQuery);
@@ -56,7 +56,7 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 
 	@Override
 	public List<BowlingRecord> getByAverage() {
-		String sqlQuery = CAREER_BOWLING_BASE_SQL + "group by p.playerid "
+		String sqlQuery = CAREER_BOWLING_BASE_SQL + JWXI_TEAM_SQL + "group by p.playerid "
 				+ "having sum(b.wickets) >= " + JwxiccUtils.MIN_WICKETS_FOR_AVERAGE + " "
 				+ "order by (0 - sum(b.runs)/sum(b.wickets)) desc, wickets desc, overs asc";
 
@@ -145,14 +145,16 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 
 	@Override
 	public BowlingRecord getPlayerCareerRecord(int playerId) {
-		String sqlQuery = CAREER_BOWLING_BASE_SQL + "and p.playerid = :pid group by p.playerid";
+		String sqlQuery = CAREER_BOWLING_BASE_SQL + "p.playerid = :pid group by p.playerid";
 
 		Query query = em.createNativeQuery(sqlQuery);
-		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
 		query.setParameter("pid", playerId);
 
 		// only returns 1 object[]
 		List<Object[]> results = query.getResultList();
+		if (results.size() == 0) {
+			return null;
+		}
 
 		return getRecordFromResult(results.get(0));
 	}

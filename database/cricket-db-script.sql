@@ -505,7 +505,7 @@ CREATE  OR REPLACE VIEW `BEST_BATTING` AS
 select b.battingid, b.playerid, b.score, b.balls, if(b.howoutid in (1, 7, 13),0,1) as outstatus 
 from BATTING b natural join PLAYER p where b.score = 
 (select score from BATTING ba where ba.playerid = p.playerid order by ba.score desc, ba.balls asc limit 1) 
-and p.teamid = 2 group by p.playerid;
+group by p.playerid;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

@@ -69,23 +69,28 @@
 			</a4j:outputPanel>
 
 			<div style="clear: both;">
-				<h4>
-					<a id="battingcareer" />Batting career
-				</h4>
-				<rich:dataTable styleClass="objectTable" var="bat"
-					value="#{playerBean.careerBatting}">
-					<ui:include
-						src="/resources/include/singlebattingrecordcolumns.xhtml" />
-				</rich:dataTable>
-
-				<h4>
-					<a id="battingcareer" />Bowling career
-				</h4>
-				<rich:dataTable styleClass="objectTable" var="bowl"
-					value="#{playerBean.careerBowling}">
-					<ui:include
-						src="/resources/include/singlebowlingrecordcolumns.xhtml" />
-				</rich:dataTable>
+				<a4j:outputPanel layout="block"
+					rendered="#{not empty playerBean.careerBatting}">
+					<h4>
+						<a id="battingcareer" />Batting career
+					</h4>
+					<rich:dataTable styleClass="objectTable" var="bat"
+						value="#{playerBean.careerBatting}">
+						<ui:include
+							src="/resources/include/singlebattingrecordcolumns.xhtml" />
+					</rich:dataTable>
+				</a4j:outputPanel>
+				<a4j:outputPanel layout="block"
+					rendered="#{not empty playerBean.careerBowling}">
+					<h4>
+						<a id="battingcareer" />Bowling career
+					</h4>
+					<rich:dataTable styleClass="objectTable" var="bowl"
+						value="#{playerBean.careerBowling}">
+						<ui:include
+							src="/resources/include/singlebowlingrecordcolumns.xhtml" />
+					</rich:dataTable>
+				</a4j:outputPanel>
 			</div>
 		</div>
 	</ui:define>

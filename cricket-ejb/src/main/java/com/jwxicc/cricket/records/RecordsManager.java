@@ -8,6 +8,8 @@ import javax.persistence.PersistenceContext;
 
 @Stateless
 public abstract class RecordsManager<T, U> {
+	
+	protected static final String JWXI_TEAM_SQL = "p.teamid = :jwxi ";
 
 	@PersistenceContext(unitName = "Jwxicc_JPA")
 	EntityManager em;
