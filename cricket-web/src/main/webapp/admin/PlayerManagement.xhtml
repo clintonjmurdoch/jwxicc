@@ -11,11 +11,12 @@
 	</ui:define>
 	<ui:define name="title">Manage Players - Johnnie Walker XI</ui:define>
 	<ui:define name="body">
+
 		<div class="centreAlign">
 			<a4j:outputPanel layout="block" id="outPanel">
 				<h:form>
 					<a4j:outputPanel id="tablePanel" layout="block"
-						style="width: 300px; float: left;">
+						style="width: 250px; float: left;">
 						<rich:dataTable id="playerTable" styleClass="objectTable"
 							value="#{playerBean.allPlayers}" var="player">
 							<f:facet name="header">
@@ -39,7 +40,8 @@
 							</rich:column>
 						</rich:dataTable>
 					</a4j:outputPanel>
-					<a4j:outputPanel id="playerPanel" layout="block">
+					<a4j:outputPanel id="playerPanel" layout="block"
+						style="width: 750px; float: right; margin-right: 30px;">
 						<a4j:outputPanel rendered="#{playerBean.player != null}">
 							<a4j:region>
 								<div class="ym-form ym-columnar" id="playerform">
@@ -131,6 +133,21 @@
 								</div>
 							</a4j:region>
 						</a4j:outputPanel>
+						<rich:collapsiblePanel expanded="false" header="Advanced"
+							switchType="ajax" style="margin-top: 50px;">
+							<h:outputText
+								value="Enter the cap number (not the number on the left) of the player to get from the old Johnnie Walker XI site." />
+							<br />
+							<a4j:region>
+								<h:inputText id="capNumber" value="#{playerBean.parseCapNumber}">
+									<f:validateLongRange minimum="1" />
+								</h:inputText>
+								<a4j:commandButton action="#{playerBean.doPlayerParse}"
+									execute="@region" render="outPanel" type="submit"
+									limitRender="true" />
+								<rich:messages for="capNumInput" />
+							</a4j:region>
+						</rich:collapsiblePanel>
 					</a4j:outputPanel>
 				</h:form>
 			</a4j:outputPanel>

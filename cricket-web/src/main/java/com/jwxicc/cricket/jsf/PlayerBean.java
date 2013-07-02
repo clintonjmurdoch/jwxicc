@@ -19,6 +19,8 @@ import org.richfaces.event.FileUploadEvent;
 import com.jwxicc.cricket.entity.PlayerDetail;
 import com.jwxicc.cricket.entity.Player;
 import com.jwxicc.cricket.interfaces.PlayerManager;
+import com.jwxicc.cricket.parse.CricketParseDataException;
+import com.jwxicc.cricket.parse.player.JwxiccPlayerDetailParser;
 import com.jwxicc.cricket.records.BattingRecord;
 import com.jwxicc.cricket.records.BattingRecordsManager;
 import com.jwxicc.cricket.records.BowlingRecord;
@@ -38,6 +40,9 @@ public class PlayerBean implements Serializable {
 	@EJB(name = "bowlingRecordsManager")
 	BowlingRecordsManager bowlingRecords;
 
+	@EJB
+	JwxiccPlayerDetailParser playerParser;
+
 	private int playerId;
 	private Player player;
 
@@ -48,6 +53,9 @@ public class PlayerBean implements Serializable {
 	// records for display
 	private BattingRecord careerBatting;
 	private BowlingRecord careerBowling;
+
+	// 'advanced' player management, parse cap number
+	private int parseCapNumber;
 
 	public void editRow() {
 		this.player = findSelectedPlayer(currentRowId);
@@ -74,16 +82,11 @@ public class PlayerBean implements Serializable {
 	}
 
 	public void loadPlayer() {
-		player = playerManager.getPlayerForProfile(playerId);
+		player = findSelectedPlayer(playerId);
 	}
 
 	private Player findSelectedPlayer(int id) {
-		for (Player player : getAllPlayers()) {
-			if (player.getPlayerId() == id) {
-				return player;
-			}
-		}
-		return null;
+		return playerManager.getPlayerForProfile(id);
 	}
 
 	public void savePlayerDetail() {
@@ -166,4 +169,23 @@ public class PlayerBean implements Serializable {
 		this.careerBowling = careerBowling;
 	}
 
+	public int getParseCapNumber() {
+		return parseCapNumber;
+	}
+
+	public void setParseCapNumber(int parseCapNumber) {
+		this.parseCapNumber = parseCapNumber;
+	}
+
+	public void doPlayerParse() {
+		try {
+			if (this.parseCapNumber == 4747) {
+				playerParser.parseAndSaveAllPlayerDetails();
+			} else {
+				playerParser.parseAndSavePlayerDetails(parseCapNumber);
+			}
+		} catch (CricketParseDataException e) {
+			e.printStackTrace();
+		}
+	}
 }

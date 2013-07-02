@@ -23,11 +23,6 @@ public class FacebookManager {
 	private FacebookClient client = null;
 
 	public FacebookManager() {
-		try {
-			init();
-		} catch (Exception e) {
-			// init will be retried on request anyway
-		}
 	}
 
 	public void init() {
@@ -44,16 +39,17 @@ public class FacebookManager {
 	}
 
 	public FacebookFeed getFeed() {
+		if (client == null) {
+			try {
+				init();
+			} catch (Exception e) {
+				throw new EJBException("Failed to initialise facebook client", e);
+			}
+		}
 		try {
 			return getFeedObject();
 		} catch (Exception e) {
-			// first catch, then retry the init
-			try {
-				init();
-				return getFeedObject();
-			} catch (Exception ex) {
-				throw new EJBException(ex);
-			}
+			throw new EJBException("Failed to rerieve news items from Facebook", e);
 		}
 	}
 
