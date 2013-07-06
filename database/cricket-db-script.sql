@@ -397,6 +397,7 @@ DROP TABLE IF EXISTS `USER` ;
 CREATE  TABLE IF NOT EXISTS `USER` (
   `username` VARCHAR(20) NOT NULL ,
   `password` VARCHAR(20) NOT NULL ,
+  `email` VARCHAR(45) NULL ,
   PRIMARY KEY (`username`) ,
   UNIQUE INDEX `username_UNIQUE` (`username` ASC) )
 ENGINE = InnoDB;
@@ -563,7 +564,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 
-INSERT INTO `USER` (`username`, `password`) VALUES ('murdoch', 'cricket');
-INSERT INTO `USER` (`username`, `password`) VALUES ('vorn', 'a1b2c3');
+INSERT INTO `USER` (`username`, `password`, `email`) VALUES ('murdoch', 'cricket', 'clintonjmurdoch@gmail.com');
+INSERT INTO `USER` (`username`, `password`, `email`) VALUES ('vorn', 'a1b2c3', 'vaughan_garner@hotmail.com');
 
 COMMIT;

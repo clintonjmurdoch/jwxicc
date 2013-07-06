@@ -16,8 +16,8 @@ import com.restfb.Parameter;
 @LocalBean
 public class FacebookManager {
 
-	private static final String appId = "144907679229";
-	private static final String appSecret = "df787abb5bcea52a650bb5c68e5c06cd";
+	private static final String appId = System.getenv("FB_APP_ID");
+	private static final String appSecret = System.getenv("FB_APP_SECRET");
 
 	private AccessToken accessToken = null;
 	private FacebookClient client = null;

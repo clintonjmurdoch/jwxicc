@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 
 @Stateless
 public abstract class RecordsManager<T, U> {
-	
+
 	protected static final String JWXI_TEAM_SQL = "p.teamid = :jwxi ";
 
 	@PersistenceContext(unitName = "Jwxicc_JPA")
@@ -23,6 +23,10 @@ public abstract class RecordsManager<T, U> {
 	public abstract U getPlayerCareerRecord(int playerId);
 
 	public int objToInt(Object o) {
-		return Integer.valueOf(o.toString()).intValue();
+		if (o != null) {
+			return Integer.valueOf(o.toString()).intValue();
+		} else {
+			return 0;
+		}
 	}
 }

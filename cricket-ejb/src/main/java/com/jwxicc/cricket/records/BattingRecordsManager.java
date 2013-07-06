@@ -121,7 +121,7 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 		// 10: 100s
 		battingRecord.setHundreds(objToInt(rs[10]));
 		// 11: average
-		if (rs[9] != null) {
+		if (rs[11] != null) {
 			battingRecord.setAverage(BigDecimal.valueOf(Double.valueOf(rs[11].toString())));
 		}
 		// 12: strike rate

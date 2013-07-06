@@ -1,18 +1,27 @@
 package com.jwxicc.cricket.parse.player;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+import javax.ejb.Asynchronous;
 import javax.ejb.LocalBean;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.jsoup.Jsoup;
 import org.jsoup.Connection.Response;
 import org.jsoup.nodes.Document;
@@ -21,14 +30,22 @@ import org.jsoup.select.Elements;
 
 import com.jwxicc.cricket.entity.Player;
 import com.jwxicc.cricket.entity.PlayerDetail;
+import com.jwxicc.cricket.entity.User;
+import com.jwxicc.cricket.mail.MailSender;
 import com.jwxicc.cricket.parse.CricketParseDataException;
+import com.jwxicc.cricket.util.JwxiccUtils;
 
-@Stateless(name = "playerDetailParser")
+@Stateless(name = JwxiccPlayerDetailParser.EJB_NAME)
 @LocalBean
 public class JwxiccPlayerDetailParser {
 
+	public static final String EJB_NAME = "playerDetailParser";
+
 	@PersistenceContext(unitName = "Jwxicc_JPA")
 	EntityManager em;
+
+	@Resource
+	SessionContext ctx;
 
 	private static final String FULL_NAME = "Full Name:";
 	private static final String BORN = "Born:";
@@ -41,21 +58,57 @@ public class JwxiccPlayerDetailParser {
 
 	private static final String JWXICC_ADDRESS = "http://www.jwxicc.com/";
 	private static final String PAGE_EXT = ".php";
+	private static final int CONNECT_TIMEOUT = 20000;
 
 	private static final DateFormat formatter = new SimpleDateFormat("MMMMM d, yyyy");
 
-	public void parseAndSaveAllPlayerDetails() throws CricketParseDataException {
+	@Asynchronous
+	public void parseAndSaveAllPlayerDetails() {
+		// do this async, so send an email on failure
+		// get current user
+		String user = ctx.getCallerPrincipal().getName();
+		System.out.println("parse and save all player details request by: " + user);
+		Validate.notEmpty(user);
+		StringBuilder mailText = new StringBuilder(500);
+
+		User currentUser = em.find(User.class, user);
+
+		// for transaction boundary issues, this must inject an instance of itself
+		JwxiccPlayerDetailParser parser = (JwxiccPlayerDetailParser) ctx.lookup("java:module/"
+				+ EJB_NAME);
+
 		for (int i = 1; i <= 110; i++) {
-			parseAndSavePlayerDetails(i);
+			try {
+				parser.parseAndSavePlayerDetails(i);
+				mailText.append("Completed player details for cap number [" + i + "]" + "\n");
+			} catch (CricketParseDataException e) {
+				StringWriter writer = new StringWriter();
+				e.printStackTrace(new PrintWriter(writer));
+				System.err.println(writer.toString());
+				mailText.append("*** FAILED **** Player details not added for cap number " + i
+						+ "\n");
+				mailText.append(writer + "\n");
+			}
+		}
+		try {
+			System.out.println("Sending finalise email");
+			new MailSender().sendEmail(currentUser.getEmail(),
+					"Parse JWXICC players has completed", mailText.toString());
+		} catch (MessagingException e) {
+			System.err.println("Mail sending failed");
+			e.printStackTrace();
+			System.err.println("Tried to send the following text as email");
+			System.err.println(mailText.toString());
 		}
 	}
 
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void parseAndSavePlayerDetails(int capNumber) throws CricketParseDataException {
 		Document jwxiccPlayer;
 		String url = JWXICC_ADDRESS + capNumber + PAGE_EXT;
 		System.out.println(url);
 		try {
-			jwxiccPlayer = Jsoup.connect(url).timeout(10000).get();
+			jwxiccPlayer = Jsoup.connect(url).timeout(CONNECT_TIMEOUT).get();
 			Element mainDiv = jwxiccPlayer.getElementById("main");
 
 			Elements foundByText;
@@ -84,7 +137,14 @@ public class JwxiccPlayerDetailParser {
 			System.out.println("player name: " + player.getScorecardName());
 
 			player.setPlayerName(name);
-			PlayerDetail playerDetail = new PlayerDetail();
+
+			PlayerDetail playerDetail;
+			if (player.getPlayerDetail() != null) {
+				playerDetail = player.getPlayerDetail();
+			} else {
+				playerDetail = new PlayerDetail();
+			}
+
 			playerDetail.setFullname(fullName);
 			playerDetail.setCapNumber(capNumber);
 
@@ -184,7 +244,7 @@ public class JwxiccPlayerDetailParser {
 				if (StringUtils.isNotEmpty(imgPath)) {
 					try {
 						Response imgResponse = Jsoup.connect(JWXICC_ADDRESS + imgPath)
-								.ignoreContentType(true).execute();
+								.timeout(CONNECT_TIMEOUT).ignoreContentType(true).execute();
 						playerDetail.setImage(imgResponse.bodyAsBytes());
 					} catch (Exception e) {
 						System.err.println("Could not get image");
@@ -232,7 +292,9 @@ public class JwxiccPlayerDetailParser {
 				playerDetail.setProfile(profileText.trim());
 			}
 
-			em.persist(playerDetail);
+			if (player.getPlayerDetail() == null) {
+				em.persist(playerDetail);
+			}
 			player.setPlayerDetail(playerDetail);
 		} catch (Exception e) {
 			throw new CricketParseDataException("Failed to get player details from url: " + url, e);
@@ -241,7 +303,9 @@ public class JwxiccPlayerDetailParser {
 
 	private Player findPlayer(String name) {
 		// create query
-		Query query = em.createQuery("from Player p where p.scorecardName like :name");
+		Query query = em
+				.createQuery("from Player p where teamid = :team and p.scorecardName like :name");
+		query.setParameter("team", JwxiccUtils.JWXICC_TEAM_ID);
 		String nameParam;
 
 		// try just last name
@@ -252,7 +316,24 @@ public class JwxiccPlayerDetailParser {
 
 		List<Player> resultList = query.getResultList();
 		if (CollectionUtils.isEmpty(resultList)) {
-			return null;
+			// cant find the last name, could be a funky name
+			// if there are 3 names or more, try second last name
+			if (StringUtils.countMatches(name, " ") != 2) {
+				// get previous names
+				String previousNames = name.substring(0, lastSpaceIndex);
+				String secondLastName = previousNames.substring(previousNames.lastIndexOf(" ") + 1);
+				System.out.println("Searching: " + secondLastName);
+				query.setParameter("name", "%" + secondLastName);
+
+				resultList = query.getResultList();
+				if (resultList.size() == 1) {
+					return resultList.get(0);
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
 		} else if (resultList.size() == 1) {
 			return resultList.get(0);
 		} else {

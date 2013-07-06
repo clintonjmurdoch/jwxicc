@@ -51,13 +51,6 @@ public class PersistenceTest {
 						"org.apache.commons.collections")
 				.addPackages(true, "com.jwxicc.cricket")
 				.addPackages(true, "com.restfb")
-				// .addPackage(Game.class.getPackage()).addPackage(DesignationType.class.getPackage())
-				// .addPackage(ImportedGameParser.class.getPackage())
-				// .addPackage(CricketParsePersistenceFacade.class.getPackage())
-				// .addPackage(GameFacade.class.getPackage())
-				// .addPackage(SharedPersistenceObjectsFacade.class.getPackage())
-				// .addPackage(GameManagerImpl.class.getPackage())
-				// .addPackage(KeyMultiValueLine.class.getPackage())
 				.addAsResource("test-persistence.xml", "META-INF/persistence.xml")
 				.addAsResource("test-cs-data.txt").addAsResource("log4j.properties")
 				.addAsResource(EmptyAsset.INSTANCE, "META-INF/beans.xml");
@@ -101,7 +94,8 @@ public class PersistenceTest {
 		// store the async responses to parse operation
 		Future<Game> gameFuture;
 		int gamePos = (int) Math.floor(Math.random() * gameTextArray.length);
-		gameFuture = cs9Parser.parseSingleGameText(gameTextArray[gamePos], comp.getCompetitionId());
+		gameFuture = cs9Parser.parseSingleGameText(gameTextArray[gamePos], comp.getCompetitionId(),
+				Collections.synchronizedList(new ArrayList<String>()));
 		logger.debug("Submitted job number " + gamePos + " to game parser");
 
 		game = gameFuture.get();
