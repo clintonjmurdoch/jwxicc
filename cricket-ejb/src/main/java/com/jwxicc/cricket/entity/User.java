@@ -18,6 +18,9 @@ public class User implements Serializable {
 	@Column(unique = true, nullable = false, length = 20)
 	private String username;
 
+	@Column(nullable = true, length = 45)
+	private String email;
+
 	@Column(nullable = false, length = 20)
 	private String password;
 
@@ -34,6 +37,14 @@ public class User implements Serializable {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {

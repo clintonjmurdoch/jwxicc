@@ -178,6 +178,7 @@ public class PlayerBean implements Serializable {
 	}
 
 	public void doPlayerParse() {
+		System.out.println("player parse requested");
 		try {
 			if (this.parseCapNumber == 4747) {
 				playerParser.parseAndSaveAllPlayerDetails();
