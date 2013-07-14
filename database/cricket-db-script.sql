@@ -106,42 +106,42 @@ CREATE  TABLE IF NOT EXISTS `GAME` (
   INDEX `game_toss_team` (`toss` ASC) ,
   CONSTRAINT `game_ground`
     FOREIGN KEY (`groundId` )
-    REFERENCES `jwxiccco_cricket`.`GROUND` (`groundId` )
+    REFERENCES `GROUND` (`groundId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_competition`
     FOREIGN KEY (`competitionId` )
-    REFERENCES `jwxiccco_cricket`.`COMPETITION` (`competitionId` )
+    REFERENCES `COMPETITION` (`competitionId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_team_home`
     FOREIGN KEY (`homeTeamId` )
-    REFERENCES `jwxiccco_cricket`.`TEAM` (`teamId` )
+    REFERENCES `TEAM` (`teamId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_team_away`
     FOREIGN KEY (`awayTeamId` )
-    REFERENCES `jwxiccco_cricket`.`TEAM` (`teamId` )
+    REFERENCES `TEAM` (`teamId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_wintype`
     FOREIGN KEY (`winTypeId` )
-    REFERENCES `jwxiccco_cricket`.`WIN_TYPE` (`winTypeId` )
+    REFERENCES `WIN_TYPE` (`winTypeId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_review`
     FOREIGN KEY (`reviewId` )
-    REFERENCES `jwxiccco_cricket`.`REVIEW` (`reviewId` )
+    REFERENCES `REVIEW` (`reviewId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_winning_team`
     FOREIGN KEY (`winner` )
-    REFERENCES `jwxiccco_cricket`.`TEAM` (`teamId` )
+    REFERENCES `TEAM` (`teamId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_toss_team`
     FOREIGN KEY (`toss` )
-    REFERENCES `jwxiccco_cricket`.`TEAM` (`teamId` )
+    REFERENCES `TEAM` (`teamId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
