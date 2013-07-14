@@ -12,7 +12,7 @@
 				value="#{matchBean.match.competition.associationName} #{matchBean.match.competition.grade}, " />
 			<h:outputText value="Round #{matchBean.match.round}: " />
 			<h:outputText
-				value="#{matchBean.match.team2.teamName} v #{matchBean.match.team1.teamName} " />
+				value="#{matchBean.match.homeTeam.teamName} v #{matchBean.match.awayTeam.teamName} " />
 			<h:outputText value="at #{matchBean.match.ground.groundName}, " />
 			<h:outputText value="#{matchBean.match.date}">
 				<f:convertDateTime pattern="MMM dd, yyyy" />
@@ -20,7 +20,7 @@
 		</p>
 		<p>
 			<h:outputText
-				value="#{matchBean.match.winner == 'HOME' ? matchBean.match.team2.teamName : matchBean.match.team1.teamName} won by " />
+				value="#{matchBean.match.winner.teamName} won by " />
 			<h:outputText
 				value="#{matchBean.match.winMargin} #{matchBean.match.winType.winTypeName}" />
 		</p>

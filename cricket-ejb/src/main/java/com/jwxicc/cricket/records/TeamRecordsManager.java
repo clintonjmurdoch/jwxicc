@@ -19,7 +19,7 @@ public class TeamRecordsManager {
 	EntityManager em;
 
 	private static final String TEAM_RECORDS_BASE_EJBQL = "from Inning i left join FETCH i.game g "
-			+ "left join FETCH g.team1 t1 left join FETCH g.team2 t2 left join FETCH g.ground ";
+			+ "left join FETCH g.homeTeam t1 left join FETCH g.awayTeam t2 left join FETCH g.ground ";
 	private static final String TEAM_RECORDS_FOR_EJBQL = TEAM_RECORDS_BASE_EJBQL
 			+ "where i.team.teamId = :jwxi ";
 	private static final String TEAM_RECORDS_AGAINST_EJBQL = TEAM_RECORDS_BASE_EJBQL
@@ -27,9 +27,9 @@ public class TeamRecordsManager {
 
 	public WinLossDrawRecord getOverallRecord() {
 		String sql = "SELECT count(*) as matches, "
-				+ "count(IF((winner = 'HOME' and homeTeamId = :jwxi) OR (winner = 'AWAY' and awayTeamId = :jwxi),1,null)) as won, "
-				+ "count(IF((winner = 'HOME' and homeTeamId != :jwxi) OR (winner = 'AWAY' and awayTeamId != :jwxi),1,null)) as lost, "
-				+ "count(IF(winner is null,1,null)) as noresult from GAME";
+				+ "count(IF(winner = :jwxi,1,null)) as won, "
+				+ "count(IF((winner != :jwxi) AND (winner != 0),1,null)) as lost, "
+				+ "count(IF(winner = 0,1,null)) as noresult from GAME";
 
 		Query nativeQuery = em.createNativeQuery(sql);
 		nativeQuery.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);

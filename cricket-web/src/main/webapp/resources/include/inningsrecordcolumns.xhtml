@@ -14,7 +14,7 @@
 	</rich:column>
 	<rich:column>
 		<f:facet name="header">Match</f:facet>
-		<h:link outcome="match" value="v #{inns.game.team2.teamId == teamRecordsBean.jwTeamId ? inns.game.team1.teamName : inns.game.team2.teamName } at #{inns.game.ground.groundName}">
+		<h:link outcome="match" value="v #{inns.game.homeTeam.teamId == teamRecordsBean.jwTeamId ? inns.game.awayTeam.teamName : inns.game.homeTeam.teamName } at #{inns.game.ground.groundName}">
 			<f:param name="matchId" value="#{inns.game.gameId}" />
 		</h:link>
 	</rich:column>
@@ -32,7 +32,7 @@
 	</rich:column>
 	<rich:column>
 		<f:facet name="header">Result</f:facet>
-		<h:outputText rendered="#{inns.game.winner == 'HOME'}" value="#{inns.game.team2.teamId == teamRecordsBean.jwTeamId ? 'Won' : 'Lost' }" />
-		<h:outputText rendered="#{inns.game.winner == 'AWAY'}" value="#{inns.game.team2.teamId == teamRecordsBean.jwTeamId ? 'Lost' : 'Won' }" />
+		<h:outputText rendered="#{inns.game.winner == 'HOME'}" value="#{inns.game.homeTeam.teamId == teamRecordsBean.jwTeamId ? 'Won' : 'Lost' }" />
+		<h:outputText rendered="#{inns.game.winner == 'AWAY'}" value="#{inns.game.homeTeam.teamId == teamRecordsBean.jwTeamId ? 'Lost' : 'Won' }" />
 	</rich:column>
 </ui:composition>

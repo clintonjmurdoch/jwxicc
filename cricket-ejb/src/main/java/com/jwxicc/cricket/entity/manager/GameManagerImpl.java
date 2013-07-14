@@ -44,7 +44,7 @@ public class GameManagerImpl extends BaseManager<Game> implements GameManagerLoc
 	@Override
 	public boolean validateRequiredFields(Game game) {
 		if (game.getCompetition() != null && game.getRound() != null && game.getGround() != null
-				&& game.getDate() != null && game.getTeam1() != null && game.getTeam2() != null) {
+				&& game.getDate() != null && game.getAwayTeam() != null && game.getHomeTeam() != null) {
 			return true;
 		} else {
 			return false;

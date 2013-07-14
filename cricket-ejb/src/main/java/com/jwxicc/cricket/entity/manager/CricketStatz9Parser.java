@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 
 import javax.annotation.Resource;
@@ -18,7 +17,6 @@ import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.SessionContext;
-import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -61,7 +59,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 	// These need to be looked up from JNDI
 	CricketParsePersistenceFacade persistenceFacade;
 	SharedPersistenceObjectsFacade sharedObjects;
-	
+
 	@EJB
 	DismissalsManager dismissalsManager;
 
@@ -82,7 +80,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 			// inject the persistence facade per method
 			persistenceFacade = (CricketParsePersistenceFacade) ctx
 					.lookup("java:module/parsePersistenceFacade");
-			
+
 			sharedObjects = (SharedPersistenceObjectsFacade) ctx
 					.lookup("java:module/sharedObjectsFacade");
 
@@ -111,6 +109,8 @@ public class CricketStatz9Parser implements ImportedGameParser {
 			csGame.setGameState("Completed");
 			// used for home team and result
 			int homeTeamValue = 0;
+			Team homeTeam;
+			Team awayTeam;
 			// helper to create match result
 			MatchResultHelper resultHelper = new MatchResultHelper(innsPerSide);
 
@@ -212,13 +212,15 @@ public class CricketStatz9Parser implements ImportedGameParser {
 					}
 					if (homeTeamValue == 2) {
 						// team2 is the home team
-						csGame.setTeam1(team1);
-						csGame.setTeam2(team2);
+						awayTeam = team1;
+						homeTeam = team2;
 					} else {
 						// team1 is the home team
-						csGame.setTeam1(team2);
-						csGame.setTeam2(team1);
+						awayTeam = team2;
+						homeTeam = team1;
 					}
+					csGame.setHomeTeam(homeTeam);
+					csGame.setAwayTeam(awayTeam);
 				}
 				// Only using the follow-on part of config
 				else if (line.keyEquals("Config")) {
@@ -235,6 +237,15 @@ public class CricketStatz9Parser implements ImportedGameParser {
 					csGame.setRound(line.getValue());
 				}
 				// TODO ignoring toss
+				else if (line.keyEquals("Toss")) {
+					if (line.getIntValue() != 0) {
+						if (line.getIntValue() == 1) {
+							csGame.setToss(team1);
+						} else if (line.getIntValue() == 2) {
+							csGame.setToss(team2);
+						}
+					}
+				}
 				// TODO ignoring bonus
 				else if (line.keyEquals("MOM")) {
 					KeyMultiValueLine multiLine = new KeyMultiValueLine(line);
@@ -247,36 +258,28 @@ public class CricketStatz9Parser implements ImportedGameParser {
 						designations.add(designation);
 					}
 				} else if (line.keyEquals("Result")) {
+					// result is 0, 1 or 2
 					int res = line.getIntValue();
-					String winner = null;
 					switch (res) {
 					case 0:
 						// no result
 						break;
 					case 1:
 						// first listed team won
-						if (homeTeamValue == 2) {
-							winner = "AWAY";
-						} else {
-							winner = "HOME";
-						}
+						csGame.setWinner(team1);
 						break;
 					case 2:
 						// second listed team won
-						if (homeTeamValue == 2) {
-							winner = "HOME";
-						} else {
-							winner = "AWAY";
-						}
+						csGame.setWinner(team2);
+						break;
 					}
-					resultHelper.setWinner(winner);
 				} else if (line.keyEquals("Innings")) {
 					// All game stuff should be done so persist it
 					if (gamePersisted == false) {
 						gamePersisted = persistGame(csGame, designations);
 						logMessages.add("Created game id " + csGame.getGameId() + " between "
-								+ csGame.getTeam2().getTeamName() + " and "
-								+ csGame.getTeam1().getTeamName());
+								+ csGame.getHomeTeam().getTeamName() + " and "
+								+ csGame.getAwayTeam().getTeamName());
 					}
 					// if it is still false, it broke
 					if (!gamePersisted) {
@@ -655,7 +658,6 @@ public class CricketStatz9Parser implements ImportedGameParser {
 	private class MatchResultHelper {
 		private int innsPerSide;
 		private List<Inning> innsList;
-		private String winnerString;
 
 		public MatchResultHelper(int innsPerSide) {
 			this.innsPerSide = innsPerSide;
@@ -670,12 +672,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 			this.innsList.add(inns);
 		}
 
-		public void setWinner(String winner) {
-			this.winnerString = winner;
-		}
-
 		public void addWinInfo(Game csGame) {
-			csGame.setWinner(this.winnerString);
 			// deal only with 2 innings games
 			if (innsPerSide == 1) {
 				// inns have been added in order

@@ -26,19 +26,16 @@ public class Game implements Serializable {
 	@Column(nullable = false)
 	private Date date;
 
-	@Column(length = 1)
+	@Column(length = 20)
 	private String gameState;
 
-	@Column(length = 1)
+	@Column(length = 10)
 	private String marginType;
 
 	@Column(nullable = false, length = 3)
 	private String round;
 
 	private int winMargin;
-
-	@Column(length = 1)
-	private String winner;
 
 	// bi-directional many-to-one association to Competition
 	@ManyToOne
@@ -58,12 +55,22 @@ public class Game implements Serializable {
 	// bi-directional many-to-one association to Team
 	@ManyToOne
 	@JoinColumn(name = "awayTeamId", nullable = false)
-	private Team team1;
+	private Team awayTeam;
 
 	// bi-directional many-to-one association to Team
 	@ManyToOne
 	@JoinColumn(name = "homeTeamId", nullable = false)
-	private Team team2;
+	private Team homeTeam;
+
+	// bi-directional many-to-one association to Team
+	@ManyToOne
+	@JoinColumn(name = "toss")
+	private Team toss;
+
+	// bi-directional many-to-one association to Team
+	@ManyToOne
+	@JoinColumn(name = "winner")
+	private Team winner;
 
 	// bi-directional many-to-one association to WinType
 	@ManyToOne
@@ -129,6 +136,14 @@ public class Game implements Serializable {
 		this.round = round;
 	}
 
+	public Team getToss() {
+		return toss;
+	}
+
+	public void setToss(Team toss) {
+		this.toss = toss;
+	}
+
 	public int getWinMargin() {
 		return this.winMargin;
 	}
@@ -137,11 +152,11 @@ public class Game implements Serializable {
 		this.winMargin = winMargin;
 	}
 
-	public String getWinner() {
-		return this.winner;
+	public Team getWinner() {
+		return winner;
 	}
 
-	public void setWinner(String winner) {
+	public void setWinner(Team winner) {
 		this.winner = winner;
 	}
 
@@ -169,20 +184,20 @@ public class Game implements Serializable {
 		this.review = review;
 	}
 
-	public Team getTeam1() {
-		return this.team1;
+	public Team getAwayTeam() {
+		return this.awayTeam;
 	}
 
-	public void setTeam1(Team team1) {
-		this.team1 = team1;
+	public void setAwayTeam(Team awayTeam) {
+		this.awayTeam = awayTeam;
 	}
 
-	public Team getTeam2() {
-		return this.team2;
+	public Team getHomeTeam() {
+		return this.homeTeam;
 	}
 
-	public void setTeam2(Team team2) {
-		this.team2 = team2;
+	public void setHomeTeam(Team homeTeam) {
+		this.homeTeam = homeTeam;
 	}
 
 	public WinType getWinType() {

@@ -21,12 +21,20 @@ public class Team implements Serializable {
 	private String teamName;
 
 	// bi-directional many-to-one association to Game
-	@OneToMany(mappedBy = "team1")
+	@OneToMany(mappedBy = "awayTeam")
 	private Set<Game> games1;
 
 	// bi-directional many-to-one association to Game
-	@OneToMany(mappedBy = "team2")
+	@OneToMany(mappedBy = "homeTeam")
 	private Set<Game> games2;
+
+	// bi-directional many-to-one association to Game
+	@OneToMany(mappedBy = "winner")
+	private Set<Game> winningGames;
+
+	// bi-directional many-to-one association to Game
+	@OneToMany(mappedBy = "toss")
+	private Set<Game> winningTosses;
 
 	// bi-directional many-to-one association to Inning
 	@OneToMany(mappedBy = "team")
@@ -69,6 +77,22 @@ public class Team implements Serializable {
 
 	public void setGames2(Set<Game> games2) {
 		this.games2 = games2;
+	}
+
+	public Set<Game> getWinningGames() {
+		return winningGames;
+	}
+
+	public void setWinningGames(Set<Game> winningGames) {
+		this.winningGames = winningGames;
+	}
+
+	public Set<Game> getWinningTosses() {
+		return winningTosses;
+	}
+
+	public void setWinningTosses(Set<Game> winningTosses) {
+		this.winningTosses = winningTosses;
 	}
 
 	public Set<Inning> getInnings() {
