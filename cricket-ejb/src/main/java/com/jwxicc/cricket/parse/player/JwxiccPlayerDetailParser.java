@@ -103,7 +103,7 @@ public class JwxiccPlayerDetailParser {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public void parseAndSavePlayerDetails(int capNumber) throws CricketParseDataException {
+	public Player parseAndSavePlayerDetails(int capNumber) throws CricketParseDataException {
 		Document jwxiccPlayer;
 		String url = JWXICC_ADDRESS + capNumber + PAGE_EXT;
 		System.out.println(url);
@@ -296,6 +296,8 @@ public class JwxiccPlayerDetailParser {
 				em.persist(playerDetail);
 			}
 			player.setPlayerDetail(playerDetail);
+			
+			return player;
 		} catch (Exception e) {
 			throw new CricketParseDataException("Failed to get player details from url: " + url, e);
 		}

@@ -134,7 +134,7 @@
 							</a4j:region>
 						</a4j:outputPanel>
 						<rich:collapsiblePanel expanded="false" header="Advanced"
-							switchType="ajax" style="margin-top: 50px;">
+							switchType="ajax" style="margin-top: 50px;" id="advanced-panel">
 							<h:outputText
 								value="Enter the cap number (not the number on the left) of the player to get from the old Johnnie Walker XI site." />
 							<br />
@@ -145,7 +145,8 @@
 								<a4j:commandButton action="#{playerBean.doPlayerParse}"
 									execute="@region" render="outPanel" type="submit"
 									limitRender="true" />
-								<rich:messages for="capNumInput" />
+								<br/>
+								<h:outputText value="#{playerBean.parseResponse}" />
 							</a4j:region>
 						</rich:collapsiblePanel>
 					</a4j:outputPanel>

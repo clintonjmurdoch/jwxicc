@@ -56,6 +56,7 @@ public class PlayerBean implements Serializable {
 
 	// 'advanced' player management, parse cap number
 	private int parseCapNumber;
+	private String parseResponse;
 
 	public void editRow() {
 		this.player = findSelectedPlayer(currentRowId);
@@ -182,11 +183,20 @@ public class PlayerBean implements Serializable {
 		try {
 			if (this.parseCapNumber == 4747) {
 				playerParser.parseAndSaveAllPlayerDetails();
+				this.parseResponse = "Parse all players initiated - you will receive an email upon completion";
 			} else {
-				playerParser.parseAndSavePlayerDetails(parseCapNumber);
+				Player playerDetails = playerParser.parseAndSavePlayerDetails(parseCapNumber);
+				this.parseResponse = "Successfully parsed player with id "
+						+ playerDetails.getPlayerId() + ": " + playerDetails.getPlayerName();
+
 			}
 		} catch (CricketParseDataException e) {
 			e.printStackTrace();
+			this.parseResponse = "Failed to get the requested player information: " + e.getMessage();
 		}
+	}
+
+	public String getParseResponse() {
+		return parseResponse;
 	}
 }
