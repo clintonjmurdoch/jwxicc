@@ -88,7 +88,8 @@ CREATE  TABLE IF NOT EXISTS `GAME` (
   `awayTeamId` INT UNSIGNED NOT NULL ,
   `date` DATE NOT NULL ,
   `reviewId` INT UNSIGNED NULL ,
-  `winner` ENUM('','HOME', 'AWAY') NULL ,
+  `winner` INT UNSIGNED NULL ,
+  `toss` INT UNSIGNED NULL ,
   `winTypeId` INT UNSIGNED NULL ,
   `winMargin` INT UNSIGNED NULL ,
   `marginType` ENUM('','wickets','runs') NULL ,
@@ -101,34 +102,46 @@ CREATE  TABLE IF NOT EXISTS `GAME` (
   INDEX `game_team_away` (`awayTeamId` ASC) ,
   INDEX `game_wintype` (`winTypeId` ASC) ,
   INDEX `game_review` (`reviewId` ASC) ,
+  INDEX `game_winning_team` (`winner` ASC) ,
+  INDEX `game_toss_team` (`toss` ASC) ,
   CONSTRAINT `game_ground`
     FOREIGN KEY (`groundId` )
-    REFERENCES `GROUND` (`groundId` )
+    REFERENCES `jwxiccco_cricket`.`GROUND` (`groundId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_competition`
     FOREIGN KEY (`competitionId` )
-    REFERENCES `COMPETITION` (`competitionId` )
+    REFERENCES `jwxiccco_cricket`.`COMPETITION` (`competitionId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_team_home`
     FOREIGN KEY (`homeTeamId` )
-    REFERENCES `TEAM` (`teamId` )
+    REFERENCES `jwxiccco_cricket`.`TEAM` (`teamId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_team_away`
     FOREIGN KEY (`awayTeamId` )
-    REFERENCES `TEAM` (`teamId` )
+    REFERENCES `jwxiccco_cricket`.`TEAM` (`teamId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_wintype`
     FOREIGN KEY (`winTypeId` )
-    REFERENCES `WIN_TYPE` (`winTypeId` )
+    REFERENCES `jwxiccco_cricket`.`WIN_TYPE` (`winTypeId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_review`
     FOREIGN KEY (`reviewId` )
-    REFERENCES `REVIEW` (`reviewId` )
+    REFERENCES `jwxiccco_cricket`.`REVIEW` (`reviewId` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `game_winning_team`
+    FOREIGN KEY (`winner` )
+    REFERENCES `jwxiccco_cricket`.`TEAM` (`teamId` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `game_toss_team`
+    FOREIGN KEY (`toss` )
+    REFERENCES `jwxiccco_cricket`.`TEAM` (`teamId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
