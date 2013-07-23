@@ -58,7 +58,11 @@ public class CompetitionBean implements Serializable {
 
 	public void expandComp() {
 		System.out.println("comp id set to: " + this.pageCompId);
-		this.pageComp = compManager.getDetailedCompetition(pageCompId);
+		if (this.pageCompId != 0) {
+			this.pageComp = compManager.getDetailedCompetition(pageCompId);
+		} else {
+			this.pageComp = null;
+		}
 	}
 
 	public void addReview() {

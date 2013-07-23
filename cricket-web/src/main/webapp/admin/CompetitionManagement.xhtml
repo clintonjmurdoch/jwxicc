@@ -7,11 +7,36 @@
 	xmlns:a4j="http://richfaces.org/a4j">
 <ui:composition template="/resources/templates/template.xhtml">
 	<ui:define name="title">Manage Competitions - Johnnie Walker XI</ui:define>
+	<ui:define name="head">
+		<script type="text/javascript">
+			window.onhashchange = hashChanged;
+			function hashChanged() {
+				var hash = location.hash;
+				hash = hash.replace('#', '');
+				if (hash == '') {
+					hash = 0;
+				}
+				updateComp(hash);
+			}
+		</script>
+	</ui:define>
+	<ui:define name="pageload">
+		<script type="text/javascript">
+			function pageload() {
+				hashChanged();
+			}
+		</script>
+	</ui:define>
 	<ui:define name="rightside">
 	</ui:define>
 	<ui:define name="main">
 		<div class="centreAlign">
 			<rich:messages />
+			<div id="test-div"></div>
+			<a4j:jsFunction name="updateComp" action="#{compBean.expandComp}"
+				render="outPanel" oncomplete="bindPopup('a:not(a.no-popup)');">
+				<a4j:param name="comp" assignTo="#{compBean.pageCompId}"></a4j:param>
+			</a4j:jsFunction>
 			<a4j:outputPanel id="outPanel">
 				<h:form>
 					<a4j:outputPanel id="tablePanel"
@@ -50,17 +75,11 @@
 									<f:setPropertyActionListener target="#{compBean.currentRowId}"
 										value="#{comp.competitionId}" />
 								</a4j:commandLink>
-								<a4j:commandLink type="submit" action="#{compBean.expandComp}"
-									rendered="#{comp.competitionId != 0}" execute="tablePanel"
-									render="outPanel" value="More">
-									<f:setPropertyActionListener target="#{compBean.pageCompId}"
-										value="#{comp.competitionId}" />
-								</a4j:commandLink>
+								<a href="##{comp.competitionId}" class="ajax-nav no-popup">More</a>
 							</rich:column>
 						</rich:dataTable>
-						<a4j:commandButton type="submit"
-							action="#{compBean.saveAll}" execute="outPanel"
-							render="tablePanel" value="Save changes" />
+						<a4j:commandButton type="submit" action="#{compBean.saveAll}"
+							execute="outPanel" render="tablePanel" value="Save changes" />
 						<a4j:commandButton type="submit" action="#{compBean.resetAll}"
 							execute="@this" render="tablePanel" value="Reset changes" />
 						<a4j:commandButton type="submit" action="#{compBean.addRow}"
@@ -69,11 +88,7 @@
 					</a4j:outputPanel>
 					<a4j:outputPanel id="objectPanel"
 						rendered="#{compBean.pageCompId gt 0}">
-						<a4j:commandLink type="submit" render="outPanel" value="Back"
-							action="#{compBean.showTable}">
-							<f:setPropertyActionListener target="#{compBean.pageCompId}"
-								value="0" />
-						</a4j:commandLink>
+						<a onclick="history.back();">Back</a>
 						<br />
 						<h:outputText
 							value="Competition #{compBean.pageCompId}: #{compBean.pageComp.associationName} #{compBean.pageComp.grade} #{compBean.pageComp.season}" />

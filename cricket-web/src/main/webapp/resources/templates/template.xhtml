@@ -21,10 +21,14 @@
 				$('.firstfield').focus();
 			}
 		}
-		$(document).ready(function() {
-			$("a").bind('click', function() {
+		function bindPopup(selector) {
+			$(selector).bind('click', function() {
 				#{rich:component('loadingpanel')}.show();
 			});
+		}
+		$(document).ready(function() {
+			$(".floatingnav a").addClass("no-popup");
+			bindPopup("a:not(a.no-popup)");
 		});
 	</script>
 	<ui:insert name="pageload">
