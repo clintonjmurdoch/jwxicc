@@ -23,6 +23,26 @@
 
 @import url(css/yaml/screen/screen-PAGE-layout.css);
 
+/* Add email to skinning.ecss for richfaces */
+input[type="email"] {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #C4C0B9;
+	font-size: 12px;
+	font-family: Arial, Verdana, sans-serif;
+	color: #000000;
+	background-repeat: no-repeat;
+	background-position: 1px 1px;
+	background-color: #ffffff;
+	background-image:
+		url(/cricket-web/rfRes/inputBackgroundImage.png.xhtml?v=4.3.0.Final&db=eAFjZL!AyMDD-P8!4!-P714C6f!!GZgAYfQKrA__&ln=org.richfaces.images);
+}
+
+/* remove grey out of required fields */
+.ym-form input:invalid,.ym-form textarea:invalid {
+	background-color: white;
+}
+
 /* Richfaces menu */
 table.ddmenu {
 	border: none;

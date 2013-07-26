@@ -13,6 +13,54 @@
 	<h:outputStylesheet library="css" name="my_layout.css" />
 	<ui:insert name="head"></ui:insert>
 	<title><ui:insert name="title">Johnnie Walker XI</ui:insert></title>
+	<script type="text/javascript">
+	function callSuggestionForm() {
+		$("#suggest-response-div").html('');
+		$("#suggest-response-div").hide();
+		$("#suggest-form-div").show();
+		var jqxhr = $.ajax("#{request.contextPath}/resources/include/suggestion.xhtml")
+    		.done(function(data) { 
+    			$("#suggest-form-div").html(data); 
+    			#{rich:component('suggest-popup')}.show();
+    		})
+    		.fail(function() { alert("error"); });
+	}
+	function submitSuggestion(e) {
+		e.preventDefault();
+		#{rich:component('loadingpanel')}.show();
+		var name = $('#name').val();
+		var email = $('#email').val();
+		var suggestion = $('#suggestion').val();
+		if (name == '' || email == '' || suggestion == '') {
+			alert('All fields are required');
+		} else if(!validateEmail(email)) {
+			alert('Please enter a valid email address');
+		} else {
+			var jqxhr = $.ajax( {
+				type: "POST",
+				url: e.currentTarget.action,
+				data: {name: name, email: email, suggestion: suggestion}
+			})
+			.done(function(data) { 
+				$("#suggest-response-div").show();
+				$("#suggest-response-div").html(data);
+				$("#suggest-form-div").hide();
+				setTimeout(function () { #{rich:component('suggest-popup')}.hide(); },3000);
+			})
+			.fail(function(req, text, error) { 
+				$("#suggest-response-div").html('Error submitting suggestion: ' + text); 
+			})
+			.always(function() { #{rich:component('loadingpanel')}.hide(); } );
+		
+		}
+	}
+	//<![CDATA[
+	function validateEmail(email) { 
+	    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	    return re.test(email);
+	}
+	//]]>
+	</script>
 </h:head>
 <h:body onload="pageload();">
 	<script type="text/javascript">

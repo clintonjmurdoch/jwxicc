@@ -3,7 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
 <ui:composition>
 	<footer>
 		<div class="footer-content">
@@ -13,14 +15,22 @@
 					<h:outputText value="Contact Us" />
 				</h:outputLink>
 				|
-				<h:outputLink value="#{request.contextPath}/suggestions.xhtml">
-					<h:outputText value="Suggestions" />
-				</h:outputLink>
+				<a4j:commandLink styleClass="no-popup" value="Suggestions" execute="@none" type="button"
+					onclick="callSuggestionForm();" />
 			</div>
-			<!-- <div class="fb-subscribe"
-				data-href="http://www.facebook.com/pages/Johnnie-Walker-XI/143138622462934"
-				data-show-faces="false" data-font="verdana" data-width="200"></div>
-				-->
+			<rich:popupPanel autosized="true" id="suggest-popup">
+				<f:facet name="header">
+					<h:outputText value="Suggestion" />
+				</f:facet>
+				<f:facet name="controls">
+					<h:outputLink styleClass="no-popup" value="#"
+						onclick="#{rich:component('suggest-popup')}.hide(); return false;">
+                		Close
+            		</h:outputLink>
+				</f:facet>
+				<div id="suggest-form-div" style="width: 500px; height: 400px;"></div>
+				<div id="suggest-response-div" style="display: none;"></div>
+			</rich:popupPanel>
 		</div>
 	</footer>
 </ui:composition>

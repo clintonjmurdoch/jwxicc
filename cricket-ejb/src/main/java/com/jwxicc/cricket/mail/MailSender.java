@@ -15,7 +15,8 @@ import org.apache.commons.lang.Validate;
 
 public class MailSender {
 
-	public void sendEmail(String recipientAddress, String subject, String mailText) throws MessagingException {
+	public void sendEmail(String fromAddress, String recipientAddress, String subject,
+			String mailText) throws MessagingException {
 		Validate.notEmpty(recipientAddress);
 		System.out.println("sendEmail request sent");
 
@@ -37,16 +38,25 @@ public class MailSender {
 
 		Message message = new MimeMessage(session);
 		try {
-			message.setFrom(new InternetAddress(username, "Johnnie Walker XI"));
+			if (fromAddress == null) {
+				message.setFrom(new InternetAddress(username, "Johnnie Walker XI"));
+			} else {
+				message.setFrom(new InternetAddress(fromAddress));
+			}
+
 		} catch (UnsupportedEncodingException e) {
 			throw new MessagingException("Unable to set FROM address", e);
 		}
-		message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse(recipientAddress));
+		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientAddress));
 		message.setSubject(subject);
 		message.setText(mailText);
 
 		Transport.send(message);
+	}
+
+	public void sendEmail(String recipientAddress, String subject, String mailText)
+			throws MessagingException {
+		this.sendEmail(null, recipientAddress, subject, mailText);
 
 	}
 }

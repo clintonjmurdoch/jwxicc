@@ -1,0 +1,24 @@
+<form onsubmit="submitSuggestion(event);" method="POST"
+	action="#{request.contextPath}/suggestion-servlet" id="suggestion-form">
+	<div class="ym-form">
+		<fieldset>
+			<div class="ym-fbox-text">
+				<label for="name">Name</label> <input type="text" name="name"
+					required="required" id="name" />
+			</div>
+			<div class="ym-fbox-text">
+				<label for="email">Email Address</label> <input type="email"
+					required="required" name="email" id="email" />
+			</div>
+			<div class="ym-fbox-text">
+				<label for="suggestion">Suggestion</label>
+				<textarea rows="6" cols="25" name="suggestion" id="suggestion"
+					required="required" />
+			</div>
+			<div class="ym-fbox-button">
+				<input type="submit" id="button" />
+			</div>
+		</fieldset>
+	</div>
+	<div id="response-area"></div>
+</form>
