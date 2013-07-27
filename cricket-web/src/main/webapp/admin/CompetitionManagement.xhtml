@@ -32,11 +32,12 @@
 	<ui:define name="main">
 		<div class="centreAlign">
 			<rich:messages />
-			<div id="test-div"></div>
-			<a4j:jsFunction name="updateComp" action="#{compBean.expandComp}"
-				render="outPanel" oncomplete="bindPopup('a:not(a.no-popup)');">
-				<a4j:param name="comp" assignTo="#{compBean.pageCompId}"></a4j:param>
-			</a4j:jsFunction>
+			<h:form>
+				<a4j:jsFunction name="updateComp" action="#{compBean.expandComp}"
+					render="outPanel" oncomplete="bindPopup('a:not(a.no-popup)');">
+					<a4j:param name="comp" assignTo="#{compBean.pageCompId}"></a4j:param>
+				</a4j:jsFunction>
+			</h:form>
 			<a4j:outputPanel id="outPanel">
 				<h:form>
 					<a4j:outputPanel id="tablePanel"
