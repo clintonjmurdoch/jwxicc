@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This file is not required if you don't need any extra configuration. -->
-<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_2.xsd"
-	version="2.2">
+	xsi:schemaLocation="
+        http://java.sun.com/xml/ns/javaee
+        http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
 
 	<factory>
 		<exception-handler-factory>com.jwxicc.cricket.jsf.exception.FacesExceptionHandlerFactory</exception-handler-factory>
@@ -12,7 +13,7 @@
 	<application>
 		<el-resolver>com.jwxicc.cricket.jsf.util.SetToListELResolver</el-resolver>
 	</application>
-
+	
 	<navigation-rule>
 		<display-name>Player-nav-case</display-name>
 		<from-view-id>*</from-view-id>
@@ -21,7 +22,7 @@
 			<to-view-id>/player.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-
+	
 	<navigation-rule>
 		<display-name>Match-nav-case</display-name>
 		<from-view-id>*</from-view-id>

@@ -37,48 +37,48 @@
 					render="outPanel" oncomplete="bindPopup('a:not(a.no-popup)');">
 					<a4j:param name="comp" assignTo="#{compBean.pageCompId}"></a4j:param>
 				</a4j:jsFunction>
-			</h:form>
-			<a4j:outputPanel id="outPanel">
-				<h:form>
+				<a4j:outputPanel id="outPanel">
 					<a4j:outputPanel id="tablePanel"
 						rendered="#{compBean.pageCompId == 0}">
-						<rich:dataTable id="compTable" binding="#{compBean.compTable}"
-							styleClass="objectTable" value="#{compBean.compList}" var="comp">
-							<rich:column>
-								<f:facet name="header">
-									<h:outputText value="Association" />
-								</f:facet>
-								<h:outputText value="#{comp.associationName}"
-									rendered="#{not comp.editable}" />
-								<h:inputText value="#{comp.associationName}"
-									rendered="#{comp.editable}" />
-							</rich:column>
-							<rich:column>
-								<f:facet name="header">
-									<h:outputText value="Grade" />
-								</f:facet>
-								<h:outputText value="#{comp.grade}"
-									rendered="#{not comp.editable}" />
-								<h:inputText value="#{comp.grade}" rendered="#{comp.editable}" />
-							</rich:column>
-							<rich:column>
-								<f:facet name="header">
-									<h:outputText value="Year" />
-								</f:facet>
-								<h:outputText value="#{comp.season}"
-									rendered="#{not comp.editable}" />
-								<h:inputText value="#{comp.season}" rendered="#{comp.editable}" />
-							</rich:column>
-							<rich:column>
-								<a4j:commandLink type="submit" action="#{compBean.editRow}"
-									rendered="#{comp.competitionId != 0}" execute="tablePanel"
-									render="compTable" value="Edit">
-									<f:setPropertyActionListener target="#{compBean.currentRowId}"
-										value="#{comp.competitionId}" />
-								</a4j:commandLink>
-								<a href="##{comp.competitionId}" class="ajax-nav no-popup">More</a>
-							</rich:column>
-						</rich:dataTable>
+						<a4j:region>
+							<rich:dataTable id="compTable" binding="#{compBean.compTable}"
+								styleClass="objectTable" value="#{compBean.compList}" var="comp">
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="Association" />
+									</f:facet>
+									<h:outputText value="#{comp.associationName}"
+										rendered="#{not comp.editable}" />
+									<h:inputText value="#{comp.associationName}"
+										rendered="#{comp.editable}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="Grade" />
+									</f:facet>
+									<h:outputText value="#{comp.grade}"
+										rendered="#{not comp.editable}" />
+									<h:inputText value="#{comp.grade}" rendered="#{comp.editable}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="Year" />
+									</f:facet>
+									<h:outputText value="#{comp.season}"
+										rendered="#{not comp.editable}" />
+									<h:inputText value="#{comp.season}" rendered="#{comp.editable}" />
+								</rich:column>
+								<rich:column>
+									<a4j:commandLink type="submit" action="#{compBean.editRow}"
+										rendered="#{comp.competitionId != 0}" execute="@region"
+										render="tablePanel" value="Edit">
+										<f:setPropertyActionListener target="#{compBean.currentRowId}"
+											value="#{comp.competitionId}" />
+									</a4j:commandLink>
+									<a href="##{comp.competitionId}" class="ajax-nav no-popup">More</a>
+								</rich:column>
+							</rich:dataTable>
+						</a4j:region>
 						<a4j:commandButton type="submit" action="#{compBean.saveAll}"
 							execute="outPanel" render="tablePanel" value="Save changes" />
 						<a4j:commandButton type="submit" action="#{compBean.resetAll}"
@@ -125,8 +125,8 @@
 							</h:link>
 						</p>
 					</a4j:outputPanel>
-				</h:form>
-			</a4j:outputPanel>
+				</a4j:outputPanel>
+			</h:form>
 		</div>
 	</ui:define>
 </ui:composition>
