@@ -119,9 +119,6 @@ public class PlayerBean implements Serializable {
 	}
 
 	public Player getPlayer() {
-		/*
-		 * if (this.player == null) { this.player = playerManager.getPlayerForProfile(playerId); }
-		 */
 		return player;
 	}
 
