@@ -9,8 +9,6 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.jwxicc.cricket.entity.Bowling;
 import com.jwxicc.cricket.entityutils.EntityMethods;
 import com.jwxicc.cricket.interfaces.PlayerManager;
@@ -34,6 +32,9 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 			+ "bb.wickets as bb_wickets, bb.runs bb_runs, count(if(b.wickets>=5,1,null)) as 5I "
 			+ "from BOWLING b natural join PLAYER p left join BEST_BOWLING bb on p.playerid = bb.playerid "
 			+ "where ";
+	
+	private static final String COMPETITION_QUALIFIER_SQL = "and b.bowlingid in "
+			+ "(select bowlingid from BOWLING b " + COMPETITION_QUALIFIER_END_SQL;
 
 	@Override
 	public List<Bowling> getInningsBest() {
@@ -157,6 +158,26 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 		}
 
 		return getRecordFromResult(results.get(0));
+	}
+
+	@Override
+	public List<BowlingRecord> getBySeason(int competitionId) {
+		String sqlQuery = CAREER_BOWLING_BASE_SQL
+				+ JWXI_TEAM_SQL
+				+ COMPETITION_QUALIFIER_SQL + "order by wickets desc";
+
+		Query query = em.createNativeQuery(sqlQuery);
+		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
+		query.setParameter("comp", competitionId);
+		List<Object[]> results = query.getResultList();
+
+		List<BowlingRecord> bowlingRecords = new ArrayList<BowlingRecord>(10);
+
+		for (Object[] rs : results) {
+			bowlingRecords.add(this.getRecordFromResult(rs));
+		}
+
+		return bowlingRecords;
 	}
 
 }

@@ -2,6 +2,9 @@ package com.jwxicc.cricket.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.apache.commons.lang.StringUtils;
+
 import java.util.Set;
 
 /**
@@ -10,7 +13,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "COMPETITION")
-public class Competition implements Serializable {
+public class Competition implements Serializable, Comparable<Competition> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -96,6 +99,40 @@ public class Competition implements Serializable {
 
 	public void setGames(Set<Game> games) {
 		this.games = games;
+	}
+
+	@Override
+	public int compareTo(Competition o) {
+		// order them by season
+		String thisSeason = this.season.substring(0, 4);
+		String otherSeason = o.season.substring(0, 4);
+		// take the first 4 characters and get as a number
+		// make sure they are numeric, or return
+		if (!StringUtils.isNumeric(otherSeason)) {
+			return -1;
+		}
+		if (!StringUtils.isNumeric(thisSeason)) {
+			return 1;
+		}
+
+		int thisYear = Integer.parseInt(thisSeason);
+		int otherYear = Integer.parseInt(otherSeason);
+		if (thisYear < otherYear) {
+			return -1;
+		} else if (thisYear > otherYear) {
+			return 1;
+		} else {
+			// same first part of year, check for second part
+			if (this.season.length() == 4 && otherSeason.length() == 4) {
+				return this.associationName.compareTo(o.associationName);
+			} else {
+				if (otherSeason.length() > 4) {
+					return -1;
+				} else {
+					return 1;
+				}
+			}
+		}
 	}
 
 }

@@ -580,6 +580,10 @@ div.rf-tab-cnt,.floatingnav {
 	margin-bottom: 15px;
 }
 
+.ym-wrapper .sortable thead {
+	cursor: pointer;
+}
+
 .ym-wrapper .objectTable th {
 	border: none;
 	background: none;

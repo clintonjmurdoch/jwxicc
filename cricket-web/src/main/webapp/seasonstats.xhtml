@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+<ui:composition template="/resources/templates/template.xhtml">
+	<ui:define name="title">Season Statistics - Johnnie Walker XI</ui:define>
+	<ui:define name="head">
+
+	</ui:define>
+	<ui:define name="rightside">
+
+	</ui:define>
+	<ui:define name="main">
+		<h:outputScript library="js" name="jquery.tablesorter.min.js" />
+		<script type="text/javascript">
+		$.tablesorter.addParser({ 
+	        // set a unique id 
+	        id: 'highscore', 
+	        is: function(s) { 
+	            // return false so this parser is not auto detected 
+	            return false; 
+	        }, 
+	        format: function(s) { 
+	            // format your data for normalization 
+	            return s.substring(0, s.indexOf(' ')).replace('*',''); 
+	        }, 
+	        // set type, either numeric or text 
+	        type: 'numeric' 
+	    });
+		$.tablesorter.addParser({ 
+	        // set a unique id 
+	        id: 'average', 
+	        is: function(s) { 
+	            // return false so this parser is not auto detected 
+	            return false; 
+	        }, 
+	        format: function(s) { 
+	            // format your data for normalization 
+	            return (s == '') ? '9999' : s;
+	        }, 
+	        // set type, either numeric or text 
+	        type: 'numeric' 
+	    });
+		$.tablesorter.addParser({ 
+	        // set a unique id 
+	        id: 'bestbowl', 
+	        is: function(s) { 
+	            // return false so this parser is not auto detected 
+	            return false; 
+	        }, 
+	        format: function(s) { 
+	            // format your data for normalization
+	            var slashi = s.indexOf('/');
+	            var wkt = parseInt(s.substring(0, slashi));
+	            var run = parseInt(s.substring(slashi + 1, s.length));
+	            return wkt + (1-(run/1000));
+	        }, 
+	        // set type, either numeric or text 
+	        type: 'numeric' 
+	    });
+			$(document).ready(function() {
+				addTableSort();
+			});
+			function addTableSort() {
+				$('.sortable thead').attr('title', 'Click each heading to sort');
+				$("#seasonstats\\:battingstats").tablesorter({
+					headers: {
+						6: {sorter:'average'},
+						7: {sorter:'highscore'}
+					}	
+				});
+				$("#seasonstats\\:bowlingstats").tablesorter({
+					headers: {
+						6: {sorter:'average'},
+						7: {sorter:'bestbowl'}
+					}	
+				});
+			}
+		</script>
+		<h2>Season Statistics</h2>
+		<h:form id="seasonstats">
+			<div class="ym-form ym-columnar" id="comp-filter-div"
+				style="margin-bottom: 15px;">
+				<div class="ym-fbox-text">
+					<a4j:region>
+						<h:selectOneMenu id="comp-select"
+							value="#{seasonStats.selectedCompId}">
+							<f:selectItems value="#{seasonStats.competitions}" var="comp"
+								itemValue="#{comp.competitionId}"
+								itemLabel="#{comp.associationName} #{comp.grade} #{comp.season}" />
+							<a4j:ajax event="valueChange" execute="@this"
+								render="statistics-panel" oncomplete="addTableSort();" />
+						</h:selectOneMenu>
+					</a4j:region>
+				</div>
+			</div>
+			<a4j:outputPanel id="statistics-panel"
+				rendered="#{seasonStats.selectedComp != null}">
+
+				<rich:dataTable styleClass="objectTable sortable" id="battingstats"
+					value="#{seasonStats.battingRecords}" var="bat">
+					<ui:include
+						src="/resources/include/careerbattingrecordcolumns.xhtml" />
+				</rich:dataTable>
+
+				<rich:dataTable styleClass="objectTable sortable" var="bowl"
+					value="#{seasonStats.bowlingRecords}" id="bowlingstats">
+					<ui:include
+						src="/resources/include/careerbowlingrecordcolumns.xhtml" />
+				</rich:dataTable>
+			</a4j:outputPanel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

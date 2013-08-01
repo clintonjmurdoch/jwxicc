@@ -14,11 +14,17 @@ public abstract class RecordsManager<T, U> {
 	@PersistenceContext(unitName = "Jwxicc_JPA")
 	EntityManager em;
 
+	protected static final String COMPETITION_QUALIFIER_END_SQL = "inner join INNINGS i natural join GAME g inner join COMPETITION c "
+			+ "on g.competitionid = c.competitionid and b.inningsid = i.inningsid "
+			+ "where c.competitionid = :comp)" + "group by playerid ";
+
 	public abstract List<T> getInningsBest();
 
 	public abstract List<U> getByAggregate();
 
 	public abstract List<U> getByAverage();
+
+	public abstract List<U> getBySeason(int competitionId);
 
 	public abstract U getPlayerCareerRecord(int playerId);
 

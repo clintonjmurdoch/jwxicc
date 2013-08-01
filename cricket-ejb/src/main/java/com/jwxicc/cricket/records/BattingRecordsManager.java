@@ -32,6 +32,9 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 			+ "sum(if(b.balls > 0,b.score,0))/sum(b.balls) as strikerate "
 			+ "from BATTING b natural join PLAYER p left join BEST_BATTING bb on p.playerId = bb.playerId "
 			+ "where ";
+	
+	private static final String COMPETITION_QUALIFIER_SQL = "and b.battingid in "
+			+ "(select battingid from BATTING b " + COMPETITION_QUALIFIER_END_SQL;
 
 	@Override
 	public List<Batting> getInningsBest() {
@@ -63,7 +66,8 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 	@Override
 	public List<BattingRecord> getByAggregate() {
 		// Get the base_sql data ordered by most runs
-		String sql = CAREER_BATTING_BASE_SQL + JWXI_TEAM_SQL
+		String sql = CAREER_BATTING_BASE_SQL
+				+ JWXI_TEAM_SQL
 				+ "group by playerid order by total desc, avg desc, strikerate desc, ballsfaced asc";
 
 		return this.getBattingRecords(sql);
@@ -147,5 +151,25 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 		}
 
 		return getRecordFromResult(results.get(0));
+	}
+
+	@Override
+	public List<BattingRecord> getBySeason(int competitionId) {
+		String sqlQuery = CAREER_BATTING_BASE_SQL
+				+ JWXI_TEAM_SQL
+				+ COMPETITION_QUALIFIER_SQL + "order by total desc";
+
+		Query query = em.createNativeQuery(sqlQuery);
+		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
+		query.setParameter("comp", competitionId);
+		List<Object[]> results = query.getResultList();
+
+		List<BattingRecord> battingRecords = new ArrayList<BattingRecord>(10);
+
+		for (Object[] rs : results) {
+			battingRecords.add(this.getRecordFromResult(rs));
+		}
+
+		return battingRecords;
 	}
 }
