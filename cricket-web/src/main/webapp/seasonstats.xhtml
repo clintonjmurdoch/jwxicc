@@ -8,10 +8,45 @@
 <ui:composition template="/resources/templates/template.xhtml">
 	<ui:define name="title">Season Statistics - Johnnie Walker XI</ui:define>
 	<ui:define name="head">
+		<h:outputScript library="js" name="floating-1.12.js" />
+		<script type="text/javascript">
+			floatingMenu.add('floatdiv', {
+				// Represents distance from left or right browser window  
+				// border depending upon property used. Only one should be  
+				// specified.  
+				// targetLeft: 0,  
+				// targetRight : 10,
 
+				// Represents distance from top or bottom browser window  
+				// border depending upon property used. Only one should be  
+				// specified.  
+				targetTop : 10,
+			// targetBottom: 0,  
+
+			// Uncomment one of those if you need centering on  
+			// X- or Y- axis.  
+			// centerX: true,  
+			// centerY: true,  
+
+			// Remove this one if you don't want snap effect  
+			// snap : true
+			});
+		</script>
 	</ui:define>
-	<ui:define name="rightside">
-
+	<ui:define name="floatingrightside">
+		<a4j:outputPanel id="nav-wrapper">
+			<a4j:outputPanel layout="block" styleClass="contentbox floatingnav"
+				rendered="#{not empty seasonStats.battingRecords}">
+				<ul>
+					<li><a href="#">Return to Top</a></li>
+				</ul>
+				<ul>
+					<li><a href="#batting">Batting</a></li>
+					<li><a href="#bowling">Bowling</a></li>
+					<li><a href="#fielding">Fielding</a></li>
+				</ul>
+			</a4j:outputPanel>
+		</a4j:outputPanel>
 	</ui:define>
 	<ui:define name="main">
 		<h:outputScript library="js" name="jquery.tablesorter.min.js" />
@@ -106,55 +141,66 @@
 								itemValue="#{comp.competitionId}"
 								itemLabel="#{comp.associationName} #{comp.grade} #{comp.season}" />
 							<a4j:ajax event="valueChange" execute="@this"
-								render="statistics-panel" oncomplete="addTableSort();" />
+								render="stats-wrapper, nav-wrapper" oncomplete="addTableSort();" />
 						</h:selectOneMenu>
 					</a4j:region>
 				</div>
 			</div>
-			<a4j:outputPanel id="statistics-panel"
-				rendered="#{seasonStats.selectedComp != null}">
+			<a4j:outputPanel id="stats-wrapper">
+				<a4j:outputPanel id="statistics-panel"
+					rendered="#{seasonStats.selectedComp != null and not empty seasonStats.battingRecords}">
 
-				<h4>Batting</h4>
-				<rich:dataTable styleClass="objectTable sortable" id="battingstats"
-					value="#{seasonStats.battingRecords}" var="bat">
-					<ui:include
-						src="/resources/include/careerbattingrecordcolumns.xhtml" />
-				</rich:dataTable>
+					<h4>
+						<a id="batting" />Batting
+					</h4>
+					<rich:dataTable styleClass="objectTable sortable" id="battingstats"
+						value="#{seasonStats.battingRecords}" var="bat">
+						<ui:include
+							src="/resources/include/careerbattingrecordcolumns.xhtml" />
+					</rich:dataTable>
 
-				<h4>Bowling</h4>
-				<rich:dataTable styleClass="objectTable sortable" var="bowl"
-					value="#{seasonStats.bowlingRecords}" id="bowlingstats">
-					<ui:include
-						src="/resources/include/careerbowlingrecordcolumns.xhtml" />
-				</rich:dataTable>
+					<h4>
+						<a id="bowling" />Bowling
+					</h4>
+					<rich:dataTable styleClass="objectTable sortable" var="bowl"
+						value="#{seasonStats.bowlingRecords}" id="bowlingstats">
+						<ui:include
+							src="/resources/include/careerbowlingrecordcolumns.xhtml" />
+					</rich:dataTable>
 
-				<h4>Fielding</h4>
-				<rich:dataTable styleClass="objectTable sortable" var="record"
-					value="#{seasonStats.fieldingRecords}" id="fieldingstats">
-					<rich:column styleClass="player-row">
-						<f:facet name="header">Player</f:facet>
-						<h:link styleClass="sc-highlight" outcome="player"
-							value="#{record.player.scorecardName}">
-							<f:param name="playerId" value="#{record.player.playerId}" />
-						</h:link>
-					</rich:column>
-					<rich:column>
-						<f:facet name="header">Catches (outfield)</f:facet>
-						<h:outputText value="#{record.catches}" />
-					</rich:column>
-					<rich:column>
-						<f:facet name="header">Runouts</f:facet>
-						<h:outputText value="#{record.runouts}" />
-					</rich:column>
-					<rich:column>
-						<f:facet name="header">Catches (wk)</f:facet>
-						<h:outputText value="#{record.wkCatches}" />
-					</rich:column>
-					<rich:column>
-						<f:facet name="header">Stumpings</f:facet>
-						<h:outputText value="#{record.stumpings}" />
-					</rich:column>
-				</rich:dataTable>
+					<h4>
+						<a id="fielding" />Fielding
+					</h4>
+					<rich:dataTable styleClass="objectTable sortable" var="record"
+						value="#{seasonStats.fieldingRecords}" id="fieldingstats">
+						<rich:column styleClass="player-row">
+							<f:facet name="header">Player</f:facet>
+							<h:link styleClass="sc-highlight" outcome="player"
+								value="#{record.player.scorecardName}">
+								<f:param name="playerId" value="#{record.player.playerId}" />
+							</h:link>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Catches (outfield)</f:facet>
+							<h:outputText value="#{record.catches}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Runouts</f:facet>
+							<h:outputText value="#{record.runouts}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Catches (wk)</f:facet>
+							<h:outputText value="#{record.wkCatches}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Stumpings</f:facet>
+							<h:outputText value="#{record.stumpings}" />
+						</rich:column>
+					</rich:dataTable>
+				</a4j:outputPanel>
+				<a4j:outputPanel rendered="#{empty seasonStats.battingRecords}">
+					<p>No statistics found for the selected competition</p>
+				</a4j:outputPanel>
 			</a4j:outputPanel>
 		</h:form>
 	</ui:define>

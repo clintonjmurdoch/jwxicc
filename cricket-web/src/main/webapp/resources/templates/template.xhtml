@@ -70,8 +70,12 @@
 			}
 		}
 		function bindPopup(selector) {
-			$(selector).bind('click', function() {
-				#{rich:component('loadingpanel')}.show();
+			$(selector).bind('click', function(event) {
+				if (event.ctrlKey || event.shiftKey || event.altKey) {
+					console.log('funky clicking - no popup');
+				} else {
+					#{rich:component('loadingpanel')}.show();
+				}
 			});
 		}
 		$(document).ready(function() {

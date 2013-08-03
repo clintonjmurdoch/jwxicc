@@ -41,7 +41,7 @@
 			<a4j:outputPanel id="newspanel" rendered="#{fbBean.renderNews}">
 				<ui:repeat var="post" value="#{fbBean.feed.posts}">
 					<div class="newsbox">
-						<h:outputText escape="false" value="#{post.message}">
+						<h:outputText escape="false" value="#{post.message != null ? post.message : post.story}">
 							<f:converter converterId="PostConverter" />
 						</h:outputText>
 						<a4j:outputPanel rendered="#{not empty post.link}">

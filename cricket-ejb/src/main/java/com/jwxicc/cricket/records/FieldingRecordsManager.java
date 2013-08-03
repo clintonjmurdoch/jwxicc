@@ -65,8 +65,8 @@ public class FieldingRecordsManager extends RecordsManager<FieldingRecord, Field
 	public List<FieldingRecord> getMostDismissals() {
 		String sql = "SELECT wd.playerid, count(if(wd.wickettype = 'CT',1,null)) as catches, "
 				+ "count(if(wd.wickettype = 'ST',1,null)) as stumpings, count(*) as total "
-				+ FIELDING_BASE_SQL + "where (wd.wickettype = 'CT' and b.howoutid = 18) "
-				+ "or wd.wickettype = 'ST' " + FIELDING_END_SQL;
+				+ FIELDING_BASE_SQL + "where ((wd.wickettype = 'CT' and b.howoutid = 18) "
+				+ "or wd.wickettype = 'ST') " + FIELDING_END_SQL;
 
 		Query query = em.createNativeQuery(sql);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
