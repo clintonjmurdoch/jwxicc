@@ -15,6 +15,8 @@ import com.jwxicc.cricket.records.BattingRecord;
 import com.jwxicc.cricket.records.BattingRecordsManager;
 import com.jwxicc.cricket.records.BowlingRecord;
 import com.jwxicc.cricket.records.BowlingRecordsManager;
+import com.jwxicc.cricket.records.FieldingRecord;
+import com.jwxicc.cricket.records.FieldingRecordsManager;
 
 @ManagedBean(name = "seasonStats")
 @ViewScoped
@@ -29,12 +31,16 @@ public class SeasonStatsBean implements Serializable {
 	@EJB
 	BowlingRecordsManager bowlingRecordsManager;
 
+	@EJB
+	FieldingRecordsManager fieldingRecordsManager;
+
 	private List<Competition> competitions;
 	private List<BattingRecord> battingRecords;
 	private List<BowlingRecord> bowlingRecords;
+	private List<FieldingRecord> fieldingRecords;
 
 	private Competition selectedComp;
-	
+
 	// sorting
 
 	@PostConstruct
@@ -71,6 +77,14 @@ public class SeasonStatsBean implements Serializable {
 		this.bowlingRecords = bowlingRecords;
 	}
 
+	public List<FieldingRecord> getFieldingRecords() {
+		return fieldingRecords;
+	}
+
+	public void setFieldingRecords(List<FieldingRecord> fieldingRecords) {
+		this.fieldingRecords = fieldingRecords;
+	}
+
 	public Competition getSelectedComp() {
 		return selectedComp;
 	}
@@ -92,5 +106,6 @@ public class SeasonStatsBean implements Serializable {
 		}
 		battingRecords = battingRecordsManager.getBySeason(selectedCompId);
 		bowlingRecords = bowlingRecordsManager.getBySeason(selectedCompId);
+		fieldingRecords = fieldingRecordsManager.getBySeason(selectedCompId);
 	}
 }

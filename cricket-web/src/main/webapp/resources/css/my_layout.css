@@ -592,8 +592,16 @@ div.rf-tab-cnt,.floatingnav {
 	text-align: left;
 }
 
-.ym-wrapper .indivRecords {
-	width: 50%
+.ym-wrapper .smallRecords {
+	width: 0;
+}
+
+.ym-wrapper .smallRecords td {
+	width: 100px;
+}
+
+.ym-wrapper .smallRecords td.player-row {
+	width: 200px;
 }
 
 .tblhdrctr {

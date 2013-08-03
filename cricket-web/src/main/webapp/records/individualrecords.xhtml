@@ -53,9 +53,9 @@
 				<h4>
 					<a id="mostmatches" />Most Matches
 				</h4>
-				<rich:dataTable styleClass="objectTable indivRecords" var="record"
+				<rich:dataTable styleClass="objectTable smallRecords" var="record"
 					value="#{indivRecordsBean.mostMatches}">
-					<rich:column>
+					<rich:column styleClass="player-row">
 						<f:facet name="header">Player</f:facet>
 						<h:link styleClass="sc-highlight" outcome="player"
 							value="#{record.player.scorecardName}">
@@ -71,9 +71,9 @@
 				<h4>
 					<a id="mostmotms" />Most Man of the Match Awards
 				</h4>
-				<rich:dataTable styleClass="objectTable indivRecords" var="record"
+				<rich:dataTable styleClass="objectTable smallRecords" var="record"
 					value="#{indivRecordsBean.mostMOTMs}">
-					<rich:column>
+					<rich:column styleClass="player-row">
 						<f:facet name="header">Player</f:facet>
 						<h:link styleClass="sc-highlight" outcome="player"
 							value="#{record.player.scorecardName}">
@@ -89,9 +89,9 @@
 				<h4>
 					<a id="mostcaptain" />Most Matches as Captain
 				</h4>
-				<rich:dataTable styleClass="objectTable indivRecords" var="record"
+				<rich:dataTable styleClass="objectTable smallRecords" var="record"
 					value="#{indivRecordsBean.mostCaptain}">
-					<rich:column>
+					<rich:column styleClass="player-row">
 						<f:facet name="header">Player</f:facet>
 						<h:link styleClass="sc-highlight" outcome="player"
 							value="#{record.player.scorecardName}">

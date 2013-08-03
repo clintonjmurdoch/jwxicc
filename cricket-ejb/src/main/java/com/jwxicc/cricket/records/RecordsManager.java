@@ -2,9 +2,12 @@ package com.jwxicc.cricket.records;
 
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import com.jwxicc.cricket.interfaces.PlayerManager;
 
 @Stateless
 public abstract class RecordsManager<T, U> {
@@ -13,10 +16,13 @@ public abstract class RecordsManager<T, U> {
 
 	@PersistenceContext(unitName = "Jwxicc_JPA")
 	EntityManager em;
+	
+	@EJB
+	PlayerManager playerManager;
 
 	protected static final String COMPETITION_QUALIFIER_END_SQL = "inner join INNINGS i natural join GAME g inner join COMPETITION c "
 			+ "on g.competitionid = c.competitionid and b.inningsid = i.inningsid "
-			+ "where c.competitionid = :comp)" + "group by playerid ";
+			+ "where c.competitionid = :comp ";
 
 	public abstract List<T> getInningsBest();
 

@@ -18,9 +18,6 @@ import com.jwxicc.cricket.util.JwxiccUtils;
 @LocalBean
 public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord> {
 
-	@EJB
-	PlayerManager playerManager;
-
 	private static final String CAREER_BATTING_BASE_SQL = "select p.playerid, count(b.battingid) as matches, "
 			+ "count(if(b.howoutid not in (0, 16, 17),1,null)) as innings, "
 			+ "count(if(b.howoutid in (1, 7, 13),1,null)) as notouts, "
@@ -32,9 +29,10 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 			+ "sum(if(b.balls > 0,b.score,0))/sum(b.balls) as strikerate "
 			+ "from BATTING b natural join PLAYER p left join BEST_BATTING bb on p.playerId = bb.playerId "
 			+ "where ";
-	
+
 	private static final String COMPETITION_QUALIFIER_SQL = "and b.battingid in "
-			+ "(select battingid from BATTING b " + COMPETITION_QUALIFIER_END_SQL;
+			+ "(select battingid from BATTING b " + COMPETITION_QUALIFIER_END_SQL
+			+ ") group by playerid ";
 
 	@Override
 	public List<Batting> getInningsBest() {
@@ -155,9 +153,8 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 
 	@Override
 	public List<BattingRecord> getBySeason(int competitionId) {
-		String sqlQuery = CAREER_BATTING_BASE_SQL
-				+ JWXI_TEAM_SQL
-				+ COMPETITION_QUALIFIER_SQL + "order by total desc";
+		String sqlQuery = CAREER_BATTING_BASE_SQL + JWXI_TEAM_SQL + COMPETITION_QUALIFIER_SQL
+				+ "order by total desc";
 
 		Query query = em.createNativeQuery(sqlQuery);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);

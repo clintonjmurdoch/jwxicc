@@ -32,7 +32,7 @@
 	</rich:column>
 	<rich:column>
 		<f:facet name="header">Result</f:facet>
-		<h:outputText rendered="#{inns.game.winner == 'HOME'}" value="#{inns.game.homeTeam.teamId == teamRecordsBean.jwTeamId ? 'Won' : 'Lost' }" />
-		<h:outputText rendered="#{inns.game.winner == 'AWAY'}" value="#{inns.game.homeTeam.teamId == teamRecordsBean.jwTeamId ? 'Lost' : 'Won' }" />
+		<h:outputText rendered="#{inns.game.winner.teamId == 2}" value="Won" />
+		<h:outputText rendered="#{inns.game.winner.teamId != 2}" value="Lost" />
 	</rich:column>
 </ui:composition>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+<ui:composition template="/resources/templates/template.xhtml">
+	<ui:define name="head">
+		<h:outputScript library="js" name="floating-1.12.js" />
+		<script type="text/javascript">
+			floatingMenu.add('floatdiv', {
+				// Represents distance from left or right browser window  
+				// border depending upon property used. Only one should be  
+				// specified.  
+				// targetLeft: 0,  
+				// targetRight : 10,
+
+				// Represents distance from top or bottom browser window  
+				// border depending upon property used. Only one should be  
+				// specified.  
+				targetTop : 10,
+			// targetBottom: 0,  
+
+			// Uncomment one of those if you need centering on  
+			// X- or Y- axis.  
+			// centerX: true,  
+			// centerY: true,  
+
+			// Remove this one if you don't want snap effect  
+			// snap : true
+			});
+		</script>
+	</ui:define>
+	<ui:define name="title">Fielding Records - Johnnie Walker XI</ui:define>
+	<ui:define name="floatingrightside">
+		<div class="contentbox floatingnav">
+			<ul>
+				<li><a href="#">Return to Top</a></li>
+			</ul>
+			<ul>
+				<li><a href="#careercatches">Most Career Catches</a></li>
+				<li><a href="#dismissals">Most Career Dismissals</a></li>
+				<li><a href="#careeravg">Best Career Average</a></li>
+			</ul>
+		</div>
+	</ui:define>
+	<ui:define name="main">
+		<div class="contentbox">
+			<h2>Fielding Records</h2>
+			<h4>
+				<a id="careercatches" />Most Career Catches
+			</h4>
+			<rich:dataTable value="#{fieldingRecords.catchesByOutfielder}"
+				var="record" styleClass="objectTable smallRecords">
+				<rich:column styleClass="player-row">
+					<f:facet name="header">Player</f:facet>
+					<h:link styleClass="sc-highlight" outcome="player"
+						value="#{record.player.scorecardName}">
+						<f:param name="playerId" value="#{record.player.playerId}" />
+					</h:link>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Catches</f:facet>
+					<h:outputText value="#{record.catches}" />
+				</rich:column>
+			</rich:dataTable>
+			<h4>
+				<a id="dismissals" />Most Career Dismissals
+			</h4>
+			<rich:dataTable value="#{fieldingRecords.mostDismissals}"
+				var="record" styleClass="objectTable smallRecords">
+				<rich:column styleClass="player-row">
+					<f:facet name="header">Player</f:facet>
+					<h:link styleClass="sc-highlight" outcome="player"
+						value="#{record.player.scorecardName}">
+						<f:param name="playerId" value="#{record.player.playerId}" />
+					</h:link>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Catches</f:facet>
+					<h:outputText value="#{record.wkCatches}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Stumpings</f:facet>
+					<h:outputText value="#{record.stumpings}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Dismissals</f:facet>
+					<h:outputText value="#{record.dismissals}" />
+				</rich:column>
+			</rich:dataTable>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

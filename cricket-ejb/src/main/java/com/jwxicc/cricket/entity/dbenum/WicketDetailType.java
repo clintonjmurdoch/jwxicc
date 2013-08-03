@@ -5,7 +5,7 @@ public enum WicketDetailType {
 	 * Catcher
 	 */
 	CT,
-
+	
 	/**
 	 * Run out participant (old)
 	 */
@@ -20,7 +20,7 @@ public enum WicketDetailType {
 	 * Run out participant 2
 	 */
 	RO_2,
-
+	
 	/**
 	 * Bowler
 	 */
