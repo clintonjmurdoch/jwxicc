@@ -29,9 +29,6 @@ public class Game implements Serializable {
 	@Column(length = 20)
 	private String gameState;
 
-	@Column(length = 10)
-	private String marginType;
-
 	@Column(nullable = false, length = 3)
 	private String round;
 
@@ -118,14 +115,6 @@ public class Game implements Serializable {
 
 	public void setGameState(String gameState) {
 		this.gameState = gameState;
-	}
-
-	public String getMarginType() {
-		return this.marginType;
-	}
-
-	public void setMarginType(String marginType) {
-		this.marginType = marginType;
 	}
 
 	public String getRound() {
