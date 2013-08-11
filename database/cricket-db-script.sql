@@ -92,7 +92,6 @@ CREATE  TABLE IF NOT EXISTS `GAME` (
   `toss` INT UNSIGNED NULL ,
   `winTypeId` INT UNSIGNED NULL ,
   `winMargin` INT UNSIGNED NULL ,
-  `marginType` ENUM('','wickets','runs') NULL ,
   `gameState` ENUM('Not Started', 'Incomplete', 'Completed') NULL ,
   `comment` TEXT NULL ,
   PRIMARY KEY (`gameId`) ,
