@@ -129,7 +129,7 @@ public class CompetitionBean implements Serializable {
 		System.out.println("goToMatch");
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		try {
-			context.redirect(context.getRequestContextPath() + "/MatchManagement.xhtml?matchId="
+			context.redirect(context.getRequestContextPath() + "/admin/MatchManagement.xhtml?matchId="
 					+ this.selectedMatchToView);
 		} catch (IOException e) {
 			e.printStackTrace();

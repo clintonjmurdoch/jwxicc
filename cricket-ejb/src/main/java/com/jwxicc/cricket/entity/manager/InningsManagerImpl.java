@@ -51,4 +51,14 @@ public class InningsManagerImpl extends BaseManager<Inning> implements InningsMa
 		super.persist(inns);
 	}
 
+	@Override
+	public void mergeBatting(Batting bat) {
+		em.merge(bat);
+	}
+
+	@Override
+	public void mergeBowling(Bowling bowl) {
+		em.merge(bowl);
+	}
+
 }

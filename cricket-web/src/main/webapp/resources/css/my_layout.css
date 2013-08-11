@@ -99,6 +99,11 @@ table.ddmenu .rf-ddm-lst a {
 	padding: 6px 15px;
 }
 
+/* Richfaces collapsible panel fonts */
+div.rf-cp-b {
+	font-size: 100%;
+}
+
 /* new html5 stuff */
 html {
 	font-family: Tahoma, Arial, Helvetica, sans-serif;
@@ -388,6 +393,11 @@ table.scorecard .rf-dt-shdr-c {
 	padding: 0;
 }
 
+/* remove table background color */
+*.rf-dt {
+	color: inherit;
+}
+
 table.scorecard,table.scorecard td,table.scorecard tr,table.scorecard th
 	{
 	border: none;
@@ -592,6 +602,10 @@ div.rf-tab-cnt,.floatingnav {
 	text-align: left;
 }
 
+.ym-wrapper .smallEditsTable select,.ym-wrapper .smallEditsTable input {
+	width: 50px;
+}
+
 .ym-wrapper .smallRecords {
 	width: 0;
 }
@@ -617,6 +631,16 @@ div.rf-tab-cnt,.floatingnav {
 
 .ym-wrapper .objectTable a {
 	padding: 0 5px;
+}
+
+/* re-align labels in forms */
+.ym-columnar .ym-fbox-text label,.ym-columnar .ym-fbox-select label {
+	margin: 5px;
+}
+
+/* re-align text boxes in forms */
+.ym-wrapper .ym-columnar .ym-fbox-text input[type="text"] {
+	margin: 5px -3px 5px 0;
 }
 
 /* clickable rows */

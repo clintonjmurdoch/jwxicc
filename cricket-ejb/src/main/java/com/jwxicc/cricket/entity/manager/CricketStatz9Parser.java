@@ -682,6 +682,7 @@ public class CricketStatz9Parser implements ImportedGameParser {
 					csGame.setWinType(persistenceFacade.getWinTypeRef(1));
 					csGame.setWinMargin(runsDif);
 				} else if (runsDif < 0) {
+					// second team won, so wickets victory on first inns
 					int wkts = 10 - innsList.get(1).getWicketsLost();
 					csGame.setWinType(persistenceFacade.getWinTypeRef(2));
 					csGame.setWinMargin(wkts);
