@@ -40,7 +40,7 @@ public class MatchManagementBean implements Serializable {
 
 	public void loadMatch() {
 		if (match == null) {
-			match = gameManager.getGameForScorecard(selectedMatchId);
+			match = gameManager.getGameForManagement(selectedMatchId);
 		}
 	}
 

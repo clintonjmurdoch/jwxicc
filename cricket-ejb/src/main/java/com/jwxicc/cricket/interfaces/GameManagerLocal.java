@@ -11,6 +11,8 @@ import com.jwxicc.cricket.entity.WinType;
 @Local
 public interface GameManagerLocal extends GameFacade, CricketDataManager<Game> {
 	public Game getGameForScorecard(int gameId);
+	
+	public Game getGameForManagement(int gameId);
 
 	public List<GamePlayerDesignation> getDesignations(int gameId);
 }

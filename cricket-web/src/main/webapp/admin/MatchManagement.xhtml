@@ -195,6 +195,35 @@
 											itemLabel="#{p.scorecardName }" />
 									</h:selectOneMenu>
 								</rich:column>
+								<rich:column>
+									<f:facet name="header">Contribution</f:facet>
+									<h:inputText
+										value="#{pship.partnershipPlayers.setToList[0].contribution }" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">Out</f:facet>
+									<h:selectBooleanCheckbox
+										value="#{pship.partnershipPlayers.setToList[0].outStatus }" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">Player</f:facet>
+									<h:selectOneMenu
+										value="#{pship.partnershipPlayers.setToList[1].player }"
+										style="width: 150px;">
+										<f:selectItems value="#{matchManBean.inningsPlayers }" var="p"
+											itemLabel="#{p.scorecardName }" />
+									</h:selectOneMenu>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">Contribution</f:facet>
+									<h:inputText
+										value="#{pship.partnershipPlayers.setToList[1].contribution }" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">Out</f:facet>
+									<h:selectBooleanCheckbox
+										value="#{pship.partnershipPlayers.setToList[1].outStatus }" />
+								</rich:column>
 							</rich:dataTable>
 							<rich:dataTable
 								value="#{matchManBean.selectedInnings.bowlings.setToList}"

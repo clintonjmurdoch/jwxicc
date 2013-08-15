@@ -16,22 +16,35 @@ import javax.persistence.Query;
 @Stateless(name = "gameManager")
 @Local(GameManagerLocal.class)
 public class GameManagerImpl extends BaseManager<Game> implements GameManagerLocal {
+	
+	private static final String GET_GAME_FETCH_BASE_JPQL = "Select g from Game g " + "join FETCH g.innings i "
+			+ "left join FETCH g.competition c " + "left join FETCH g.review r "
+			+ "left join FETCH g.ground gr " + "left join FETCH i.team "
+			+ "left join FETCH i.bowlings bo " + "left join FETCH bo.player "
+			+ "left join FETCH i.battings ba " + "left join FETCH ba.player "
+			+ "left join FETCH ba.howout " + "left join FETCH ba.wicketDetails wd "
+			+ "left join FETCH i.partnerships p " + "left join FETCH p.partnershipPlayers pp "
+			+ "left join FETCH wd.player " + "where g.gameId = ?1 "; 
 
 	@Override
 	public Game findLazy(Object key) {
 		return super.findLazy(key);
 	}
+	
+	@Override
+	public Game getGameForManagement(int gameId) {
+		String sqlString = GET_GAME_FETCH_BASE_JPQL;
+		Query q = em.createQuery(sqlString);
+		q.setParameter(1, gameId);
+
+		Game toReturn = (Game) q.getSingleResult();
+
+		return toReturn;
+	}
 
 	@Override
 	public Game getGameForScorecard(int gameId) {
-		String sqlString = "Select g from Game g " + "join FETCH g.innings i "
-				+ "left join FETCH g.competition c " + "left join FETCH g.review r "
-				+ "left join FETCH g.ground gr " + "left join FETCH i.team "
-				+ "left join FETCH i.bowlings bo " + "left join FETCH bo.player "
-				+ "left join FETCH i.battings ba " + "left join FETCH ba.player "
-				+ "left join FETCH ba.howout " + "left join FETCH ba.wicketDetails wd "
-				+ "left join FETCH i.partnerships p " + "inner join FETCH p.partnershipPlayers pp "
-				+ "left join FETCH wd.player " + "where g.gameId = ?1 " + "and pp.outStatus = ?2";
+		String sqlString = GET_GAME_FETCH_BASE_JPQL + "and pp.outStatus = ?2";
 		Query q = em.createQuery(sqlString);
 		q.setParameter(1, gameId);
 		q.setParameter(2, true);
