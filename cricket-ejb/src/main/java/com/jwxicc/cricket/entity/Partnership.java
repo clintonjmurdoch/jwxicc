@@ -110,13 +110,4 @@ public class Partnership implements Serializable {
 		this.inning = inning;
 	}
 
-	public PartnershipPlayer getOutPartnershipPlayer() {
-		for (PartnershipPlayer pp : getPartnershipPlayers()) {
-			if (pp.isOutStatus()) {
-				return pp;
-			}
-		}
-		return null;
-	}
-
 }
