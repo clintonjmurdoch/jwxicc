@@ -1,11 +1,13 @@
 package com.jwxicc.cricket.records;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import com.jwxicc.cricket.interfaces.PlayerManager;
 
@@ -16,9 +18,11 @@ public abstract class RecordsManager<T, U> {
 
 	@PersistenceContext(unitName = "Jwxicc_JPA")
 	EntityManager em;
-	
+
 	@EJB
 	PlayerManager playerManager;
+
+	protected static final String MATCHES_PLAYED_SQL = "select count(*) as matches from BATTING b where b.playerid = :player";
 
 	protected static final String COMPETITION_QUALIFIER_END_SQL = "inner join INNINGS i natural join GAME g inner join COMPETITION c "
 			+ "on g.competitionid = c.competitionid and b.inningsid = i.inningsid "
@@ -41,4 +45,22 @@ public abstract class RecordsManager<T, U> {
 			return 0;
 		}
 	}
+
+	public int getMatchesPlayed(int playerId) {
+		Query query = em.createNativeQuery(MATCHES_PLAYED_SQL);
+		query.setParameter("player", playerId);
+		int matches = ((BigInteger) query.getSingleResult()).intValue();
+		return matches;
+	}
+
+	public int getMatchesPlayedInSeason(int playerId, int competitionId) {
+		Query query = em
+				.createNativeQuery(MATCHES_PLAYED_SQL
+						+ " and b.inningsId in (select i.inningsId from INNINGS i natural join GAME g where g.competitionId = :comp)");
+		query.setParameter("player", playerId);
+		query.setParameter("comp", competitionId);
+		int matches = ((BigInteger) query.getSingleResult()).intValue();
+		return matches;
+	}
+
 }
