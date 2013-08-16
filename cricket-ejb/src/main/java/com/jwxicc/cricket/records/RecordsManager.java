@@ -24,9 +24,9 @@ public abstract class RecordsManager<T, U> {
 
 	protected static final String MATCHES_PLAYED_SQL = "select count(*) as matches from BATTING b where b.playerid = :player";
 
-	protected static final String COMPETITION_QUALIFIER_END_SQL = "inner join INNINGS i natural join GAME g inner join COMPETITION c "
-			+ "on g.competitionid = c.competitionid and b.inningsid = i.inningsid "
-			+ "where c.competitionid = :comp ";
+	protected static final String COMPETITION_QUALIFIER_END_SQL = "inner join INNINGS i natural join GAME g "
+			+ "on b.inningsid = i.inningsid "
+			+ "where g.competitionid = :comp ";
 
 	public abstract List<T> getInningsBest();
 
