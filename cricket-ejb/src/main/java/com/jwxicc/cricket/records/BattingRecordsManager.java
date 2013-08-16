@@ -32,7 +32,7 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 
 	private static final String COMPETITION_QUALIFIER_SQL = "and b.battingid in "
 			+ "(select battingid from BATTING b " + COMPETITION_QUALIFIER_END_SQL
-			+ ") group by playerid ";
+			+ ") and bb.competitionId = :comp group by playerid ";
 
 	@Override
 	public List<Batting> getInningsBest() {
@@ -155,6 +155,7 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 	public List<BattingRecord> getBySeason(int competitionId) {
 		String sqlQuery = CAREER_BATTING_BASE_SQL + JWXI_TEAM_SQL + COMPETITION_QUALIFIER_SQL
 				+ "order by total desc";
+		sqlQuery = sqlQuery.replace("BEST_BATTING", "BEST_BATTING_SEASONS");
 
 		Query query = em.createNativeQuery(sqlQuery);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
