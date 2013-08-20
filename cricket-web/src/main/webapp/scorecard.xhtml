@@ -19,10 +19,9 @@
 			</h:outputText>
 		</p>
 		<p>
-			<h:outputText
-				value="#{matchBean.match.winner.teamName} won by " />
-			<h:outputText
-				value="#{matchBean.match.winMargin} #{matchBean.match.winType.winTypeName}" />
+			<h:outputText value="#{matchBean.match}">
+				<f:converter converterId="resultConverter"/>
+			</h:outputText>
 		</p>
 	</div>
 
