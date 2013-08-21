@@ -8,6 +8,8 @@
 	<rich:column styleClass="pship-runs">
 		<f:facet name="header">Runs</f:facet>
 		<h:outputText value="#{record.runsScored}" />
+		<h:outputText value="*"
+			rendered="#{record.outPartnershipPlayer == null}" />
 		<h:outputText value=" (#{record.overs})"
 			rendered="#{record.overs != 0}" />
 	</rich:column>
@@ -19,9 +21,9 @@
 				<h:outputText styleClass="sc-highlight"
 					value="#{pshipPlayer.player.scorecardName}" />
 				<h:outputText value="*" rendered="#{not pshipPlayer.outStatus}" />
-				<h:outputText value="(#{pshipPlayer.contribution})" rendered="#{pshipPlayer.contribution != 0}" />
-				<f:param name="playerId"
-					value="#{pshipPlayer.player.playerId}" />
+				<h:outputText value="(#{pshipPlayer.contribution})"
+					rendered="#{pshipPlayer.contribution != 0}" />
+				<f:param name="playerId" value="#{pshipPlayer.player.playerId}" />
 			</h:link>
 			<h:outputText value="/" rendered="#{cur.index == 0}" />
 		</ui:repeat>

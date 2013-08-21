@@ -92,7 +92,6 @@ CREATE  TABLE IF NOT EXISTS `GAME` (
   `toss` INT UNSIGNED NULL ,
   `winTypeId` INT UNSIGNED NULL ,
   `winMargin` INT UNSIGNED NULL ,
-  `marginType` ENUM('','wickets','runs') NULL ,
   `gameState` ENUM('Not Started', 'Incomplete', 'Completed') NULL ,
   `comment` TEXT NULL ,
   PRIMARY KEY (`gameId`) ,
@@ -491,12 +490,22 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Placeholder table for view `BEST_BOWLING`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BEST_BOWLING` (`scorecardname` INT, `playerid` INT, `wickets` INT, `runs` INT);
+CREATE TABLE IF NOT EXISTS `BEST_BOWLING` (`bowlingid` INT, `playerid` INT, `wickets` INT, `runs` INT);
 
 -- -----------------------------------------------------
 -- Placeholder table for view `BEST_BATTING`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `BEST_BATTING` (`battingid` INT, `playerid` INT, `score` INT, `balls` INT, `outstatus` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `BEST_BOWLING_SEASONS`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `BEST_BOWLING_SEASONS` (`bowlingId` INT, `competitionId` INT, `playerid` INT, `wickets` INT, `runs` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `BEST_BATTING_SEASONS`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `BEST_BATTING_SEASONS` (`battingid` INT, `competitionId` INT, `playerid` INT, `score` INT, `balls` INT, `outstatus` INT);
 
 -- -----------------------------------------------------
 -- View `BEST_BOWLING`
@@ -505,8 +514,8 @@ DROP VIEW IF EXISTS `BEST_BOWLING` ;
 DROP TABLE IF EXISTS `BEST_BOWLING`;
 
 CREATE  OR REPLACE VIEW `BEST_BOWLING` AS 
-select scorecardname, playerid, wickets, runs from BOWLING b natural join PLAYER p where wickets = 
-(select max(wickets) from BOWLING x where x.playerid = p.playerid) and runs = (select min(runs) from BOWLING y where y.playerid = p.playerid and y.wickets = b.wickets) 
+select bowlingid, playerid, wickets, runs from BOWLING b where wickets = 
+(select max(wickets) from BOWLING x where x.playerid = b.playerid) and runs = (select min(runs) from BOWLING y where y.playerid = b.playerid and y.wickets = b.wickets) 
 group by playerid order by wickets desc, runs asc;
 
 -- -----------------------------------------------------
@@ -517,9 +526,45 @@ DROP TABLE IF EXISTS `BEST_BATTING`;
 
 CREATE  OR REPLACE VIEW `BEST_BATTING` AS
 select b.battingid, b.playerid, b.score, b.balls, if(b.howoutid in (1, 7, 13),0,1) as outstatus 
-from BATTING b natural join PLAYER p where b.score = 
-(select score from BATTING ba where ba.playerid = p.playerid order by ba.score desc, ba.balls asc limit 1) 
-group by p.playerid;
+from BATTING b where b.score = 
+(select max(score) from BATTING ba where ba.playerid = b.playerid) 
+and b.balls = (select min(balls) from BATTING ba where ba.playerid = b.playerid and ba.score = b.score)
+group by b.playerid;
+
+-- -----------------------------------------------------
+-- View `BEST_BOWLING_SEASONS`
+-- -----------------------------------------------------
+DROP VIEW IF EXISTS `BEST_BOWLING_SEASONS` ;
+DROP TABLE IF EXISTS `BEST_BOWLING_SEASONS`;
+
+CREATE  OR REPLACE VIEW `BEST_BOWLING_SEASONS` AS
+select b.bowlingId, g.competitionId, b.playerid, wickets, runs from BOWLING b inner join INNINGS i natural join GAME g on b.inningsId = i.inningsId
+where wickets = 
+    (select max(wickets) from BOWLING bo inner join INNINGS inns natural join GAME ga 
+    on bo.inningsId = inns.inningsId
+    where bo.playerid = b.playerid and g.competitionId = ga.competitionId) 
+and runs = 
+    (select min(runs) from BOWLING bo inner join INNINGS inns natural join GAME ga 
+    on bo.inningsId = inns.inningsId
+    where bo.playerid = b.playerid and bo.wickets = b.wickets and g.competitionId = ga.competitionId) 
+group by competitionid, playerid;
+
+-- -----------------------------------------------------
+-- View `BEST_BATTING_SEASONS`
+-- -----------------------------------------------------
+DROP VIEW IF EXISTS `BEST_BATTING_SEASONS` ;
+DROP TABLE IF EXISTS `BEST_BATTING_SEASONS`;
+
+CREATE  OR REPLACE VIEW `BEST_BATTING_SEASONS` AS
+select b.battingid, g.competitionId, b.playerid, b.score as score, b.balls as balls, 
+if(b.howoutid in (1, 7, 13),0,1) as outstatus 
+from BATTING b natural join INNINGS i natural join GAME g where b.score = 
+    (select max(score) from BATTING ba natural join INNINGS inns natural join GAME ga 
+    where ba.playerid = b.playerId and ga.competitionId = g.competitionId group by ga.competitionId)
+and b.balls = 
+    (select min(balls) from BATTING ba natural join INNINGS inns natural join GAME ga 
+    where ba.playerid = b.playerId and b.score = ba.score and ga.competitionId = g.competitionId group by ga.competitionId)
+group by competitionId, playerId;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

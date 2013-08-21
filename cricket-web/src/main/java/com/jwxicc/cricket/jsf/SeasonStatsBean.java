@@ -38,10 +38,8 @@ public class SeasonStatsBean implements Serializable {
 	private List<BattingRecord> battingRecords;
 	private List<BowlingRecord> bowlingRecords;
 	private List<FieldingRecord> fieldingRecords;
-
-	private Competition selectedComp;
-
-	// sorting
+	
+	private int selectedCompId;
 
 	@PostConstruct
 	public void loadCompetitions() {
@@ -50,7 +48,7 @@ public class SeasonStatsBean implements Serializable {
 		Collections.sort(competitions);
 		Collections.reverse(competitions);
 		// set the first one selected
-		this.selectedComp = competitions.get(0);
+		this.setSelectedCompId(competitions.get(0).getCompetitionId());
 	}
 
 	public List<Competition> getCompetitions() {
@@ -85,22 +83,14 @@ public class SeasonStatsBean implements Serializable {
 		this.fieldingRecords = fieldingRecords;
 	}
 
-	public Competition getSelectedComp() {
-		return selectedComp;
-	}
-
-	public void setSelectedComp(Competition selectedComp) {
-		this.selectedComp = selectedComp;
-	}
-
 	public int getSelectedCompId() {
-		return selectedComp.getCompetitionId();
+		return this.selectedCompId;
 	}
 
 	public void setSelectedCompId(int selectedCompId) {
 		for (Competition c : competitions) {
 			if (c.getCompetitionId() == selectedCompId) {
-				this.selectedComp = c;
+				this.selectedCompId = c.getCompetitionId();
 				break;
 			}
 		}

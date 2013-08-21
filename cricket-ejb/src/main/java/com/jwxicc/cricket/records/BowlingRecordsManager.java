@@ -22,7 +22,6 @@ import com.jwxicc.cricket.util.JwxiccUtils;
 public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord> {
 
 	private static final String CAREER_BOWLING_BASE_SQL = "select p.playerid, "
-			+ "(select count(*) as matches from BATTING natural	join PLAYER z where z.playerid = p.playerid) as matches, "
 			+ "sum(b.overs) as overs, sum(b.overs-floor(b.overs)) as o_parts, "
 			+ "sum(b.maidens) as maidens, sum(b.runs) as runs, "
 			+ "sum(b.wickets) as wickets, sum(b.runs)/sum(b.wickets) as avg, "
@@ -32,7 +31,7 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 
 	private static final String COMPETITION_QUALIFIER_SQL = "and b.bowlingid in "
 			+ "(select bowlingid from BOWLING b " + COMPETITION_QUALIFIER_END_SQL
-			+ ") group by playerid ";
+			+ ") and bb.competitionId = :comp group by playerid ";
 
 	@Override
 	public List<Bowling> getInningsBest() {
@@ -71,40 +70,39 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 		List<BowlingRecord> bowlingRecords = new ArrayList<BowlingRecord>(10);
 
 		for (Object[] rs : results) {
-			bowlingRecords.add(this.getRecordFromResult(rs));
+			bowlingRecords.add(this.getRecordFromResult(rs, getMatchesPlayed(objToInt(rs[0]))));
 		}
 
 		return bowlingRecords;
 	}
 
-	private BowlingRecord getRecordFromResult(Object[] rs) {
+	private BowlingRecord getRecordFromResult(Object[] rs, int matches) {
 		BowlingRecord bowlingRecord = new BowlingRecord();
+		bowlingRecord.setMatchesPlayed(matches);
 		// 0: playerid
 		bowlingRecord.setPlayer(playerManager.findLazy(rs[0]));
-		// 1: matches
-		bowlingRecord.setMatchesPlayed(objToInt(rs[1]));
-		// 2-3: overs, over parts
-		BigDecimal overs = buildAggregateOvers(Double.valueOf(rs[2].toString()),
-				Double.valueOf(rs[3].toString()));
+		// 1-2: overs, over parts
+		BigDecimal overs = buildAggregateOvers(Double.valueOf(rs[1].toString()),
+				Double.valueOf(rs[2].toString()));
 		bowlingRecord.setOvers(overs);
-		// 4: maidens
-		bowlingRecord.setMaidens(objToInt(rs[4]));
-		// 5: runs
-		int runs = objToInt(rs[5]);
+		// 3: maidens
+		bowlingRecord.setMaidens(objToInt(rs[3]));
+		// 4: runs
+		int runs = objToInt(rs[4]);
 		bowlingRecord.setRunsConceded(runs);
-		// 6: wickets
-		bowlingRecord.setWickets(objToInt(rs[6]));
-		// 7: average
+		// 5: wickets
+		bowlingRecord.setWickets(objToInt(rs[5]));
+		// 6: average
 		// was getting null pointer for players with no wickets
-		if (rs[7] != null) {
-			bowlingRecord.setAverage(BigDecimal.valueOf(Double.valueOf(rs[7].toString())));
+		if (rs[6] != null) {
+			bowlingRecord.setAverage(BigDecimal.valueOf(Double.valueOf(rs[6].toString())));
 		}
-		// 8: best bowling wickets
-		bowlingRecord.setBestBowlingWickets(objToInt(rs[8]));
-		// 9: best bowling runs
-		bowlingRecord.setBestBowlingRuns(objToInt(rs[9]));
-		// 10: 5 wkt innings
-		bowlingRecord.setFiveWktInns(objToInt(rs[10]));
+		// 7: best bowling wickets
+		bowlingRecord.setBestBowlingWickets(objToInt(rs[7]));
+		// 8: best bowling runs
+		bowlingRecord.setBestBowlingRuns(objToInt(rs[8]));
+		// 9: 5 wkt innings
+		bowlingRecord.setFiveWktInns(objToInt(rs[9]));
 		// extra: economy
 		BigDecimal economy = EntityMethods.calculateEconomy(runs, overs);
 		bowlingRecord.setEconomy(economy);
@@ -155,13 +153,14 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 			return null;
 		}
 
-		return getRecordFromResult(results.get(0));
+		return getRecordFromResult(results.get(0), getMatchesPlayed(playerId));
 	}
 
 	@Override
 	public List<BowlingRecord> getBySeason(int competitionId) {
 		String sqlQuery = CAREER_BOWLING_BASE_SQL + JWXI_TEAM_SQL + COMPETITION_QUALIFIER_SQL
 				+ "order by wickets desc";
+		sqlQuery = sqlQuery.replace("BEST_BOWLING", "BEST_BOWLING_SEASONS");
 
 		Query query = em.createNativeQuery(sqlQuery);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
@@ -171,10 +170,10 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 		List<BowlingRecord> bowlingRecords = new ArrayList<BowlingRecord>(10);
 
 		for (Object[] rs : results) {
-			bowlingRecords.add(this.getRecordFromResult(rs));
+			bowlingRecords.add(this.getRecordFromResult(rs,
+					getMatchesPlayedInSeason(objToInt(rs[0]), competitionId)));
 		}
 
 		return bowlingRecords;
 	}
-
 }
