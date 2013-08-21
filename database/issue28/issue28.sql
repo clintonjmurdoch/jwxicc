@@ -59,6 +59,3 @@ group by competitionId, playerId;
 
 UPDATE WIN_TYPE SET winTypeName = 'Runs' where winTypeId = 1;
 UPDATE WIN_TYPE SET winTypeName = 'Wickets' where winTypeId = 2;
-
-INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (1, 'Runs on First Innings');
-INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (2, 'Wickets on First Innings');
