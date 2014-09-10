@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>cricket</artifactId>
 		<groupId>com.jwxicc</groupId>
-		<version>0.0.20130728</version>
+		<version>0.0.20140910</version>
 	</parent>
 
 	<artifactId>cricket-ear</artifactId>
