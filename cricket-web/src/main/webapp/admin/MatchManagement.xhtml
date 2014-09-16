@@ -32,10 +32,7 @@
 			}
 		</script>
 	</ui:define>
-	<ui:define name="rightside">
-
-	</ui:define>
-	<ui:define name="main">
+	<ui:define name="body">
 		<h:form>
 			<a4j:jsFunction name="selectInnings"
 				action="#{matchManBean.expandInnings}" render="mainpanel"
@@ -122,18 +119,23 @@
 					<a4j:region>
 						<div class="ym-form ym-columnar">
 							<div class="ym-fbox-text">
-								<h:outputLabel for="score">Score</h:outputLabel>
-								<h:inputText value="#{matchManBean.selectedInnings.wicketsLost}"
-									style="width: 15%" />
-								<label style="width: inherit; margin: 5px 10px">wickets
-									for</label>
-								<h:inputText value="#{matchManBean.selectedInnings.runsScored}"
-									style="width: 15%; margin-right: 10px" />
-								<h:selectOneMenu style="width: 15%;"
-									value="#{matchManBean.selectedInnings.closureType }">
-									<f:selectItems value="#{matchManBean.inningsClosureTypes}"
-										var="closure" itemValue="#{closure }" />
-								</h:selectOneMenu>
+								<a4j:region>
+									<h:outputLabel for="score">Score</h:outputLabel>
+									<h:inputText
+										value="#{matchManBean.selectedInnings.wicketsLost}"
+										style="width: 15%" />
+									<label style="width: inherit; margin: 5px 10px">wickets
+										for</label>
+									<h:inputText value="#{matchManBean.selectedInnings.runsScored}"
+										style="width: 15%; margin-right: 10px" />
+									<h:selectOneMenu style="width: 15%;"
+										value="#{matchManBean.selectedInnings.closureType }">
+										<f:selectItems value="#{matchManBean.inningsClosureTypes}"
+											var="closure" itemValue="#{closure }" />
+									</h:selectOneMenu>
+									<a4j:commandButton value="Update Score" execute="region"
+										type="submit" action="#{matchManBean.updateScore}" />
+								</a4j:region>
 							</div>
 							<rich:dataTable
 								value="#{matchManBean.selectedInnings.battings.setToList}"

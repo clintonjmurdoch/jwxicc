@@ -30,6 +30,9 @@ public class MatchManagementBean implements Serializable {
 
 	@EJB
 	TeamManager teamManager;
+	
+	@EJB
+	InningsManagerLocal innsManager;
 
 	private int selectedMatchId;
 	private Game match;
@@ -46,6 +49,10 @@ public class MatchManagementBean implements Serializable {
 
 	public void saveMatch() {
 		gameManager.merge(match);
+	}
+	
+	public void updateScore() {
+		innsManager.merge(selectedInnings);
 	}
 
 	public void expandInnings() {
