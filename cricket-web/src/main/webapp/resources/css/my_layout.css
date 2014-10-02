@@ -681,3 +681,8 @@ div.rf-tab-cnt,.floatingnav {
 	border: 1px solid gray;
 	width: 600px;
 }
+
+/* font-size for hall of fame */
+li a {
+	font-size: 14px;
+}

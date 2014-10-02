@@ -21,6 +21,11 @@
 				<h:outputText value="Home" />
 			</h:outputLink>
 		</rich:menuItem>
+		<rich:menuItem submitMode="client">
+			<h:outputLink value="#{request.contextPath}/players.xhtml">
+				<h:outputText value="Players" />
+			</h:outputLink>
+		</rich:menuItem>
 		<rich:dropDownMenu>
 			<f:facet name="label">
 				<h:outputText value="Willowfest" />
@@ -96,6 +101,11 @@
 				</h:outputLink>
 			</rich:menuItem>
 		</rich:dropDownMenu>
+		<rich:menuItem submitMode="client">
+			<h:outputLink value="#{request.contextPath}/halloffame.xhtml">
+				<h:outputText value="Hall Of Fame" />
+			</h:outputLink>
+		</rich:menuItem>
 		<rich:toolbarGroup location="right">
 			<rich:dropDownMenu direction="bottomLeft" jointPoint="bottomRight" >
 				<f:facet name="label">

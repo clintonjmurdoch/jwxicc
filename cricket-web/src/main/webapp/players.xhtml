@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+<ui:composition template="/resources/templates/template.xhtml">
+	<ui:define name="title">Players - Johnnie Walker XI</ui:define>
+	<ui:define name="main">
+		<h:outputScript library="js" name="jquery.tablesorter.min.js" />
+		<script type="text/javascript">
+			$(document).ready(function() {
+				addTableSort();
+			});
+			function addTableSort() {
+				$('.sortable thead')
+						.attr('title', 'Click each heading to sort');
+				$("#players\\:players-table").tablesorter({
+					sortInitialOrder : 'asc',
+					emptyTo: 'bottom'
+				});
+			}
+		</script>
+		<h2>Players</h2>
+		<h:form id="players">
+			<a4j:outputPanel id="players-wrapper">
+				<a4j:outputPanel id="players-panel">
+					<rich:dataTable styleClass="objectTable sortable" var="player"
+						value="#{playerBean.allPlayersWithDetail}" id="players-table">
+						<rich:column styleClass="player-row">
+							<f:facet name="header">Name</f:facet>
+							<h:link styleClass="sc-highlight" outcome="player"
+								value="#{player.playerName}">
+								<f:param name="playerId" value="#{player.playerId}" />
+							</h:link>
+						</rich:column>
+						<rich:column sortBy="#{player.playerDetail.capNumber}"
+							sortOrder="ascending">
+							<f:facet name="header">Cap Number</f:facet>
+							<h:outputText value="#{player.playerDetail.capNumber}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Shirt Number</f:facet>
+							<h:outputText value="#{player.playerDetail.shirtNumber}"
+								rendered="#{player.playerDetail.shirtNumber != 0}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Teams</f:facet>
+							<h:outputText value="#{player.playerDetail.teams}" />
+						</rich:column>
+					</rich:dataTable>
+				</a4j:outputPanel>
+			</a4j:outputPanel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

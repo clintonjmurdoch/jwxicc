@@ -37,6 +37,14 @@ public class PlayerManagerImpl extends BaseManager<Player> implements PlayerMana
 
 		return query.getResultList();
 	}
+	
+	@Override
+	public List<Player> getPlayersWithDetailFromTeam(int teamId) {
+		Query query = em.createQuery("select p from Player p left join fetch p.playerDetail where p.team.teamId = :teamId");
+		query.setParameter("teamId", teamId);
+
+		return query.getResultList();
+	}
 
 	@Override
 	public PlayerDetail savePlayerDetail(PlayerDetail playerDetail) {
