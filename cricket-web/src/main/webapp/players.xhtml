@@ -16,6 +16,15 @@
 			function addTableSort() {
 				$('.sortable thead')
 						.attr('title', 'Click each heading to sort');
+				// http://stackoverflow.com/a/9327342/2614624
+				$.tablesorter.formatInt = function (s) {
+		            var i = parseInt(s);
+		            return (isNaN(i)) ? null : i;
+		        };
+		        $.tablesorter.formatFloat = function (s) {
+		            var i = parseFloat(s);
+		            return (isNaN(i)) ? null : i;
+		        };
 				$("#players\\:players-table").tablesorter({
 					sortInitialOrder : 'asc',
 					emptyTo: 'bottom'
