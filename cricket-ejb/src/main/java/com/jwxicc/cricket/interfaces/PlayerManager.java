@@ -17,4 +17,6 @@ public interface PlayerManager extends CricketDataManager<Player> {
 	public List<Player> getPlayersWithDetailFromTeam(int teamId);
 
 	public PlayerDetail savePlayerDetail(PlayerDetail playerDetail);
+	
+	public Player getPlayerForCapNumber(int capNumber);
 }
