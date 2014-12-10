@@ -1,6 +1,8 @@
 package com.jwxicc.cricket.records;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -8,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.apache.commons.collections.CollectionUtils;
 
@@ -29,22 +32,26 @@ public class PartnershipRecordsManager {
 	private static final String PARTNERSHIP_ORDER_BY = "order by p.runsScored desc";
 
 	public List<Partnership> getTopPartnerships() {
-		Query query = em.createQuery(BASE_PARTNERSHIP_JPQL + PARTNERSHIP_ORDER_BY);
+		TypedQuery<Partnership> query = em.createQuery(BASE_PARTNERSHIP_JPQL + PARTNERSHIP_ORDER_BY, Partnership.class);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
 		query.setParameter("minscore", this.getMinScoreForPartnership());
 
-		return query.getResultList();
+		List<Partnership> resultList = query.getResultList();
+		this.sortPartnerships(resultList);
+		return resultList;
 
 	}
 
 	public List<Partnership> getTopPartnershipsByWicket(int wicket) {
 		String jpql = BASE_PARTNERSHIP_JPQL + "and p.wicket = :wicket " + PARTNERSHIP_ORDER_BY;
-		Query query = em.createQuery(jpql);
+		TypedQuery<Partnership> query = em.createQuery(jpql, Partnership.class);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
 		query.setParameter("minscore", this.getMinScoreForPartnership(wicket));
 		query.setParameter("wicket", wicket);
 
-		return query.getResultList();
+		List<Partnership> resultList = query.getResultList();
+		this.sortPartnerships(resultList);
+		return resultList;
 
 	}
 
@@ -84,5 +91,31 @@ public class PartnershipRecordsManager {
 		}
 
 		return minScore;
+	}
+
+	private void sortPartnerships(List<Partnership> partnerships) {
+		Collections.sort(partnerships, new Comparator<Partnership>() {
+			@Override
+			// partnerships are already sorted by runs, only sort further if runs are the same
+			public int compare(Partnership o1, Partnership o2) {
+				if (o1.getRunsScored() == o2.getRunsScored()) {
+					// compare for not out
+					if (o1.isUnbeaten() && !o2.isUnbeaten()) {
+						// o1 comes first
+						return -1;
+					} else if (!o1.isUnbeaten() && o2.isUnbeaten()) {
+						// o2 comes first
+						return 1;
+					} else {
+						// the first one to happen comes first
+						return o1.getInning().getGame().getDate()
+								.compareTo(o1.getInning().getGame().getDate());
+					}
+				}
+				// compare o2 first as we want them in reverse order
+				return Integer.valueOf(o2.getRunsScored()).compareTo(
+						Integer.valueOf(o1.getRunsScored()));
+			}
+		});
 	}
 }
