@@ -9,6 +9,7 @@ import com.jwxicc.cricket.entity.PlayerDetail;
 import com.jwxicc.cricket.entity.Player;
 import com.jwxicc.cricket.interfaces.PlayerManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 @Stateless(name = "playerManager")
 @Local(PlayerManager.class)
@@ -37,6 +38,14 @@ public class PlayerManagerImpl extends BaseManager<Player> implements PlayerMana
 
 		return query.getResultList();
 	}
+	
+	@Override
+	public List<Player> getPlayersWithDetailFromTeam(int teamId) {
+		Query query = em.createQuery("select p from Player p left join fetch p.playerDetail where p.team.teamId = :teamId");
+		query.setParameter("teamId", teamId);
+
+		return query.getResultList();
+	}
 
 	@Override
 	public PlayerDetail savePlayerDetail(PlayerDetail playerDetail) {
@@ -49,5 +58,13 @@ public class PlayerManagerImpl extends BaseManager<Player> implements PlayerMana
 		}
 		return playerDetail;
 
+	}
+
+	@Override
+	public Player getPlayerForCapNumber(int capNumber) {
+		TypedQuery<Player> query = em.createQuery("from Player p where p.playerDetail.capNumber = :capNumber", Player.class);
+		query.setParameter("capNumber", capNumber);
+
+		return query.getSingleResult();
 	}
 }

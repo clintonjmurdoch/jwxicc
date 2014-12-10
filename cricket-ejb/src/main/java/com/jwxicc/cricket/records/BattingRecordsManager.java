@@ -46,7 +46,7 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 		System.out.println("min score for top 10: " + score);
 
 		// now get all scores for jwxi greater than or equal to this score
-		String queryString = "from Batting b left join fetch b.player p left join fetch b.inning.game g left join fetch g.ground where b.score >= :score and p.team.teamId = :jwxi order by b.score desc, g.date desc";
+		String queryString = "from Batting b left join fetch b.player p left join fetch b.inning.game g left join fetch g.ground where b.score >= :score and p.team.teamId = :jwxi order by b.score desc, b.balls asc, g.date asc";
 		Query query = em.createQuery(queryString);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
 		query.setParameter("score", score);

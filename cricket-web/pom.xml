@@ -4,14 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jwxicc</groupId>
 	<artifactId>cricket-web</artifactId>
-	<version>0.0.20140910</version>
+	<version>0.9.2</version>
 	<packaging>war</packaging>
 	<name>cricket Web module</name>
 
 	<parent>
 		<artifactId>cricket</artifactId>
 		<groupId>com.jwxicc</groupId>
-		<version>0.0.20140910</version>
+		<version>0.9.2</version>
 	</parent>
 
 	<properties>
@@ -74,6 +74,12 @@
 				<configuration>
 					<!-- Java EE 6 doesn't require web.xml, Maven needs to catch up! -->
 					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
 			<plugin>

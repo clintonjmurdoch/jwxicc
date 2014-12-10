@@ -40,6 +40,7 @@ public class PlayerDetail implements Serializable {
 	@Column(length = 45)
 	private String fullname;
 
+	@Basic(fetch = FetchType.LAZY)
 	@Lob
 	private byte[] image;
 

@@ -8,6 +8,7 @@
 <ui:composition template="/resources/templates/template.xhtml">
 	<ui:define name="title">#{(empty playerBean.player.playerName) ? playerBean.player.scorecardName : playerBean.player.playerName} - Johnnie Walker XI</ui:define>
 	<ui:define name="head">
+		<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW" />
 		<h:outputScript library="js" name="fb.js" />
 	</ui:define>
 	<f:metadata>

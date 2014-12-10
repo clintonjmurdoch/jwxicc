@@ -11,12 +11,11 @@
 		<div class="footer-content">
 			<div style="display: inline-block;" id="links">
 				<a href="http://yaml.de">Layout based on YAML</a> |
-				<h:outputLink value="#{request.contextPath}/contact.xhtml">
-					<h:outputText value="Contact Us" />
-				</h:outputLink>
-				|
-				<a4j:commandLink styleClass="no-popup" value="Suggestions" execute="@none" type="button"
-					onclick="callSuggestionForm();" />
+				<a href="https://www.openshift.com/">Hosted on Openshift</a> |
+				<a href="http://freedns.afraid.org/">Free DNS</a> | 
+				<a class="no-popup">
+					<h:outputText value="Version: #{app.version}" />
+				</a>
 			</div>
 			<rich:popupPanel autosized="true" id="suggest-popup">
 				<f:facet name="header">

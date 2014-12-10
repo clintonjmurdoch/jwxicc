@@ -82,4 +82,8 @@
 		<exception-type>com.sun.faces.context.FacesFileNotFoundException</exception-type>
 		<location>/error.xhtml</location>
 	</error-page>
+	<error-page>
+		<exception-type>com.jwxicc.cricket.servlet.PlayerLegacyUrlMapper$LegacyUrlNotResolvedException</exception-type>
+		<location>/error.xhtml</location>
+	</error-page>
 </web-app>

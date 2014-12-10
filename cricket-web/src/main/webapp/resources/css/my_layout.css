@@ -265,7 +265,6 @@ hr {
 th {
 	padding-right: 5px;
 	font-weight: normal;
-	color: white;
 }
 
 td {
@@ -704,4 +703,9 @@ div.rf-tab-cnt,.floatingnav {
 	overflow-x: hidden;
 	border: 1px solid gray;
 	width: 600px;
+}
+
+/* font-size for hall of fame */
+li a {
+	font-size: 14px;
 }

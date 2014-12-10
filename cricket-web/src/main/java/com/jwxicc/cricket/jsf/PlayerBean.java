@@ -133,8 +133,11 @@ public class PlayerBean implements Serializable {
 		return allPlayers;
 	}
 
-	public void setAllPlayers(List<Player> allPlayers) {
-		this.allPlayers = allPlayers;
+	public List<Player> getAllPlayersWithDetail() {
+		if (allPlayers == null) {
+			this.allPlayers = playerManager.getPlayersWithDetailFromTeam(teamId);
+		}
+		return allPlayers;
 	}
 
 	public int getCurrentRowId() {
