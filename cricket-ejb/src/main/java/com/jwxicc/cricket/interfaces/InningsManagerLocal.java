@@ -5,11 +5,19 @@ import javax.ejb.Local;
 import com.jwxicc.cricket.entity.Batting;
 import com.jwxicc.cricket.entity.Bowling;
 import com.jwxicc.cricket.entity.Inning;
+import com.jwxicc.cricket.entity.Partnership;
+import com.jwxicc.cricket.entity.PartnershipPlayer;
 
 @Local
 public interface InningsManagerLocal extends InningsFacade, CricketDataManager<Inning> {
-	public void mergeBatting(Batting bat);
+	public Batting mergeBatting(Batting bat);
 
-	public void mergeBowling(Bowling bowl);
+	public Bowling mergeBowling(Bowling bowl);
+	
+	public Partnership mergePartnership(Partnership partnership);
+	
+	public PartnershipPlayer mergePartnershipPlayer(PartnershipPlayer partnershipPlayer);
+	
+	public void removePartnership(int partnershipId);
 
 }

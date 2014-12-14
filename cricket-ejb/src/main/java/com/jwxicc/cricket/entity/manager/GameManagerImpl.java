@@ -24,7 +24,8 @@ public class GameManagerImpl extends BaseManager<Game> implements GameManagerLoc
 			+ "left join FETCH i.battings ba " + "left join FETCH ba.player "
 			+ "left join FETCH ba.howout " + "left join FETCH ba.wicketDetails wd "
 			+ "left join FETCH i.partnerships p " + "left join FETCH p.partnershipPlayers pp "
-			+ "left join FETCH wd.player " + "where g.gameId = ?1 "; 
+			+ "left join FETCH wd.player " + "where g.gameId = ?1 ";
+	private static final String GET_GAME_ORDER_BY = " order by g.date asc";
 
 	@Override
 	public Game findLazy(Object key) {
@@ -33,7 +34,7 @@ public class GameManagerImpl extends BaseManager<Game> implements GameManagerLoc
 	
 	@Override
 	public Game getGameForManagement(int gameId) {
-		String sqlString = GET_GAME_FETCH_BASE_JPQL;
+		String sqlString = GET_GAME_FETCH_BASE_JPQL + GET_GAME_ORDER_BY;
 		Query q = em.createQuery(sqlString);
 		q.setParameter(1, gameId);
 
@@ -44,7 +45,7 @@ public class GameManagerImpl extends BaseManager<Game> implements GameManagerLoc
 
 	@Override
 	public Game getGameForScorecard(int gameId) {
-		String sqlString = GET_GAME_FETCH_BASE_JPQL + "and pp.outStatus = ?2";
+		String sqlString = GET_GAME_FETCH_BASE_JPQL + "and pp.outStatus = ?2" + GET_GAME_ORDER_BY;
 		Query q = em.createQuery(sqlString);
 		q.setParameter(1, gameId);
 		q.setParameter(2, true);

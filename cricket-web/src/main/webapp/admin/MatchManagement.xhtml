@@ -34,11 +34,13 @@
 	</ui:define>
 	<ui:define name="body">
 		<h:form>
-			<a4j:jsFunction name="selectInnings"
-				action="#{matchManBean.expandInnings}" render="mainpanel"
-				oncomplete="bindPopup('a:not(a.no-popup)');">
-				<a4j:param name="inns" assignTo="#{matchManBean.selectedInningsId}"></a4j:param>
-			</a4j:jsFunction>
+			<a4j:region>
+				<a4j:jsFunction name="selectInnings" execute="@region"
+					action="#{matchManBean.expandInnings}" render="mainpanel"
+					oncomplete="bindPopup('a:not(a.no-popup)');">
+					<a4j:param name="inns" assignTo="#{matchManBean.selectedInningsId}"></a4j:param>
+				</a4j:jsFunction>
+			</a4j:region>
 			<a4j:outputPanel id="mainpanel" layout="block">
 				<div id="matchheader">
 					<p>
@@ -71,7 +73,7 @@
 							</div>
 							<div class="ym-fbox-text">
 								<h:outputLabel for="margin">Margin</h:outputLabel>
-								<h:inputText value="#{matchManBean.match.winMargin}"
+								<h:inputText id="margin" value="#{matchManBean.match.winMargin}"
 									style="width: 15%; margin-right: 15px;" />
 								<h:selectOneMenu id="margintype" value="#{matchManBean.winType}"
 									style="width: 15%">
@@ -93,8 +95,8 @@
 							</div>
 							<div class="ym-fbox-button">
 								<a4j:commandButton type="submit"
-									action="#{matchManBean.saveMatch}" execute="@region"
-									render="mainpanel" value="Save changes" />
+									action="#{matchManBean.saveMatch}" render="mainpanel"
+									value="Save changes" />
 							</div>
 							<div class="ym-fbox-text">
 								<label>Edit innings</label>
@@ -116,26 +118,33 @@
 				<rich:panel
 					header="Innings of #{matchManBean.selectedInnings.team.teamName}"
 					rendered="#{matchManBean.selectedInnings != null}">
-					<a4j:region>
-						<div class="ym-form ym-columnar">
+					<div class="ym-form ym-columnar">
+						<a4j:region>
 							<div class="ym-fbox-text">
-								<a4j:region>
-									<h:outputLabel for="score">Score</h:outputLabel>
-									<h:inputText
-										value="#{matchManBean.selectedInnings.wicketsLost}"
-										style="width: 15%" />
-									<label style="width: inherit; margin: 5px 10px">wickets
-										for</label>
-									<h:inputText value="#{matchManBean.selectedInnings.runsScored}"
-										style="width: 15%; margin-right: 10px" />
-									<h:selectOneMenu style="width: 15%;"
-										value="#{matchManBean.selectedInnings.closureType }">
-										<f:selectItems value="#{matchManBean.inningsClosureTypes}"
-											var="closure" itemValue="#{closure }" />
-									</h:selectOneMenu>
-									<a4j:commandButton value="Update Score" execute="region"
-										type="submit" action="#{matchManBean.updateScore}" />
-								</a4j:region>
+								<h:outputLabel for="score">Score</h:outputLabel>
+								<h:inputText id="score"
+									value="#{matchManBean.selectedInnings.wicketsLost}"
+									style="width: 15%" />
+								<label style="width: inherit; margin: 5px 10px">wickets
+									for</label>
+								<h:inputText value="#{matchManBean.selectedInnings.runsScored}"
+									style="width: 15%; margin-right: 10px" />
+								<h:selectOneMenu style="width: 15%;"
+									value="#{matchManBean.selectedInnings.closureType }">
+									<f:selectItems value="#{matchManBean.inningsClosureTypes}"
+										var="closure" itemValue="#{closure}" />
+								</h:selectOneMenu>
+							</div>
+							<div class="ym-fbox-button">
+								<a4j:commandButton value="Update Score" execute="@region"
+									action="#{matchManBean.updateScore}" />
+							</div>
+						</a4j:region>
+					</div>
+					<div class="ym-form ym-columnar">
+						<a4j:region>
+							<div class="ym-fbox-text">
+								<h:outputLabel>Batting</h:outputLabel>
 							</div>
 							<rich:dataTable
 								value="#{matchManBean.selectedInnings.battings.setToList}"
@@ -177,12 +186,23 @@
 									<h:inputText value="#{bat.sixes}" />
 								</rich:column>
 							</rich:dataTable>
-							<rich:dataTable
+							<div class="ym-fbox-button">
+								<a4j:commandButton value="Update Batting" execute="@region"
+									type="submit" action="#{matchManBean.updateBatting}" />
+							</div>
+						</a4j:region>
+					</div>
+					<div class="ym-form ym-columnar">
+						<a4j:region>
+							<div class="ym-fbox-text">
+								<h:outputLabel>Fall Of Wickets</h:outputLabel>
+							</div>
+							<rich:dataTable id="fow-table"
 								value="#{matchManBean.selectedInnings.partnerships.setToList}"
 								var="pship" styleClass="editTable smallEditsTable">
 								<rich:column>
 									<f:facet name="header">Wicket</f:facet>
-									<h:outputText value="#{pship.wicket }" />
+									<h:inputText value="#{pship.wicket }" />
 								</rich:column>
 								<rich:column>
 									<f:facet name="header">FOW score</f:facet>
@@ -191,10 +211,10 @@
 								<rich:column>
 									<f:facet name="header">Player</f:facet>
 									<h:selectOneMenu
-										value="#{pship.partnershipPlayers.setToList[0].player }"
+										value="#{pship.partnershipPlayers.setToList[0].player.playerId }"
 										style="width: 150px;">
 										<f:selectItems value="#{matchManBean.inningsPlayers }" var="p"
-											itemLabel="#{p.scorecardName }" />
+											itemLabel="#{p.scorecardName }" itemValue="#{p.playerId }" />
 									</h:selectOneMenu>
 								</rich:column>
 								<rich:column>
@@ -210,10 +230,10 @@
 								<rich:column>
 									<f:facet name="header">Player</f:facet>
 									<h:selectOneMenu
-										value="#{pship.partnershipPlayers.setToList[1].player }"
+										value="#{pship.partnershipPlayers.setToList[1].player.playerId }"
 										style="width: 150px;">
 										<f:selectItems value="#{matchManBean.inningsPlayers }" var="p"
-											itemLabel="#{p.scorecardName }" />
+											itemLabel="#{p.scorecardName }" itemValue="#{p.playerId}" />
 									</h:selectOneMenu>
 								</rich:column>
 								<rich:column>
@@ -226,7 +246,25 @@
 									<h:selectBooleanCheckbox
 										value="#{pship.partnershipPlayers.setToList[1].outStatus }" />
 								</rich:column>
+								<rich:column>
+									<a4j:commandLink value="Delete"
+										action="#{matchManBean.deleteFOW(pship.partnershipId)}"
+										execute="@this" render="fow-table" />
+								</rich:column>
 							</rich:dataTable>
+							<div class="ym-fbox-button">
+								<a4j:commandButton value="Update Fall Of Wicket" type="submit"
+									action="#{matchManBean.updateFOW}" execute="@region" />
+								<a4j:commandLink value="Add" action="#{matchManBean.addFOW}"
+									execute="@this" render="fow-table" />
+							</div>
+						</a4j:region>
+					</div>
+					<div class="ym-form ym-columnar">
+						<a4j:region>
+							<div class="ym-fbox-text">
+								<h:outputLabel>Bowling</h:outputLabel>
+							</div>
 							<rich:dataTable
 								value="#{matchManBean.selectedInnings.bowlings.setToList}"
 								var="bowl" styleClass="editTable smallEditsTable">
@@ -276,13 +314,12 @@
 								</rich:column>
 							</rich:dataTable>
 							<div class="ym-fbox-button">
-								<a4j:commandButton type="submit"
-									action="#{matchManBean.saveInnings}" execute="@region"
-									render="mainpanel" value="Save changes">
+								<a4j:commandButton action="#{matchManBean.updateBowling}"
+									execute="@region" type="submit" value="Update Bowling">
 								</a4j:commandButton>
 							</div>
-						</div>
-					</a4j:region>
+						</a4j:region>
+					</div>
 				</rich:panel>
 			</a4j:outputPanel>
 		</h:form>

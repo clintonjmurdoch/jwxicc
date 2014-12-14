@@ -5,9 +5,11 @@ import javax.ejb.Stateless;
 
 import com.jwxicc.cricket.entity.Batting;
 import com.jwxicc.cricket.entity.Bowling;
+import com.jwxicc.cricket.entity.Howout;
 import com.jwxicc.cricket.entity.Partnership;
 import com.jwxicc.cricket.entity.PartnershipPlayer;
 import com.jwxicc.cricket.entity.Inning;
+import com.jwxicc.cricket.entity.Player;
 import com.jwxicc.cricket.interfaces.InningsFacade;
 import com.jwxicc.cricket.interfaces.InningsManagerLocal;
 
@@ -52,13 +54,30 @@ public class InningsManagerImpl extends BaseManager<Inning> implements InningsMa
 	}
 
 	@Override
-	public void mergeBatting(Batting bat) {
-		em.merge(bat);
+	public Batting mergeBatting(Batting bat) {
+		bat.setHowout(em.getReference(Howout.class, bat.getHowout().getHowOutid()));
+		return em.merge(bat);
 	}
 
 	@Override
-	public void mergeBowling(Bowling bowl) {
-		em.merge(bowl);
+	public Bowling mergeBowling(Bowling bowl) {
+		return em.merge(bowl);
+	}
+
+	@Override
+	public Partnership mergePartnership(Partnership partnership) {
+		return em.merge(partnership);
+	}
+
+	@Override
+	public PartnershipPlayer mergePartnershipPlayer(PartnershipPlayer partnershipPlayer) {
+		partnershipPlayer.setPlayer(em.getReference(Player.class, partnershipPlayer.getPlayer().getPlayerId()));
+		return em.merge(partnershipPlayer);
+	}
+
+	@Override
+	public void removePartnership(int partnershipId) {
+		em.remove(em.getReference(Partnership.class, partnershipId));
 	}
 
 }
