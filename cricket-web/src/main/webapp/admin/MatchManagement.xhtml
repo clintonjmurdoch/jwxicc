@@ -209,6 +209,10 @@
 									<h:inputText value="#{pship.scoreAtEnd }" />
 								</rich:column>
 								<rich:column>
+									<f:facet name="header">Partnership Runs</f:facet>
+									<h:inputText value="#{pship.runsScored }" />
+								</rich:column>
+								<rich:column>
 									<f:facet name="header">Player</f:facet>
 									<h:selectOneMenu
 										value="#{pship.partnershipPlayers.setToList[0].player.playerId }"
