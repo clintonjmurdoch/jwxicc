@@ -58,10 +58,16 @@ public class HowoutDisplayConverter implements Converter {
 		case 2:
 		case 5:
 		case 6:
+			if (assisters == null) {
+				return batting.getHowout().getDismissalType();
+			}
 			return batting.getHowout().getDismissalShort() + " "
 					+ assisters.get(WicketDetailType.B).getPlayer().getScorecardName();
 			// run outs have to be done differently
 		case 8:
+			if (assisters == null) {
+				return batting.getHowout().getDismissalType();
+			}
 			toReturn = batting.getHowout().getDismissalType();
 			if (hasAssists) {
 				if (assistList.size() == 1) {
@@ -88,6 +94,9 @@ public class HowoutDisplayConverter implements Converter {
 		case 9:
 			if (toReturn == null) {
 				toReturn = "st †";
+			}
+			if (assisters == null) {
+				return batting.getHowout().getDismissalType();
 			}
 			if (assisters.get(WicketDetailType.CT) != null) {
 				toReturn += assisters.get(WicketDetailType.CT).getPlayer().getScorecardName() + " ";
