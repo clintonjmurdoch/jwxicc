@@ -17,17 +17,17 @@
 				$('.sortable thead')
 						.attr('title', 'Click each heading to sort');
 				// http://stackoverflow.com/a/9327342/2614624
-				$.tablesorter.formatInt = function (s) {
-		            var i = parseInt(s);
-		            return (isNaN(i)) ? null : i;
-		        };
-		        $.tablesorter.formatFloat = function (s) {
-		            var i = parseFloat(s);
-		            return (isNaN(i)) ? null : i;
-		        };
+				$.tablesorter.formatInt = function(s) {
+					var i = parseInt(s);
+					return (isNaN(i)) ? null : i;
+				};
+				$.tablesorter.formatFloat = function(s) {
+					var i = parseFloat(s);
+					return (isNaN(i)) ? null : i;
+				};
 				$("#players\\:players-table").tablesorter({
 					sortInitialOrder : 'asc',
-					emptyTo: 'bottom'
+					emptyTo : 'bottom'
 				});
 			}
 		</script>
@@ -37,10 +37,11 @@
 				<a4j:outputPanel id="players-panel">
 					<rich:dataTable styleClass="objectTable sortable" var="player"
 						value="#{playerBean.allPlayersWithDetail}" id="players-table">
-						<rich:column styleClass="player-row">
+						<rich:column styleClass="player-row" sortType="custom"
+							sortOrder="ascending" comparator="#{playerBean.capNumberComparator}">
 							<f:facet name="header">Name</f:facet>
 							<h:link styleClass="sc-highlight" outcome="player"
-								value="#{player.playerName}">
+								value="#{empty player.playerName ? player.scorecardName : player.playerName}">
 								<f:param name="playerId" value="#{player.playerId}" />
 							</h:link>
 						</rich:column>

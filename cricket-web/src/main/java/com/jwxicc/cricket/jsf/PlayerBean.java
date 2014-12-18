@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -192,11 +193,26 @@ public class PlayerBean implements Serializable {
 			}
 		} catch (CricketParseDataException e) {
 			e.printStackTrace();
-			this.parseResponse = "Failed to get the requested player information: " + e.getMessage();
+			this.parseResponse = "Failed to get the requested player information: "
+					+ e.getMessage();
 		}
 	}
 
 	public String getParseResponse() {
 		return parseResponse;
+	}
+
+	public Comparator<Player> getCapNumberComparator() {
+		return new Comparator<Player>() {
+			@Override
+			public int compare(Player o1, Player o2) {
+				int cap1 = (o1.getPlayerDetail() == null || o1.getPlayerDetail().getCapNumber() == 0) ? 9999
+						: o1.getPlayerDetail().getCapNumber();
+				int cap2 = (o2.getPlayerDetail() == null || o2.getPlayerDetail().getCapNumber() == 0) ? 9999
+						: o2.getPlayerDetail().getCapNumber();
+
+				return cap1-cap2;
+			}
+		};
 	}
 }

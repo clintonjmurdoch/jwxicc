@@ -4,8 +4,11 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import com.jwxicc.cricket.entity.dbenum.InningsClosureType;
+import com.jwxicc.cricket.entityutils.EntityMethods;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -151,6 +154,10 @@ public class Inning implements Serializable {
 	public void setRunsScored(int runsScored) {
 		this.runsScored = runsScored;
 	}
+	
+	public BigDecimal getRunRate() {
+		return EntityMethods.calculateEconomy(runsScored, oversFaced);
+	}
 
 	public int getWicketsLost() {
 		return this.wicketsLost;
@@ -174,6 +181,26 @@ public class Inning implements Serializable {
 
 	public void setBattings(Set<Batting> battings) {
 		this.battings = battings;
+	}
+	
+	public List<Batting> getBattingsExDnb() {
+		ArrayList<Batting> battingList = new ArrayList<Batting>();
+		for (Batting b : getBattings()) {
+			if (b.getHowout().getHowOutid() != 0) {
+				battingList.add(b);
+			}
+		}
+		return battingList;
+	}
+	
+	public List<Batting> getDnbBattings() {
+		ArrayList<Batting> battingList = new ArrayList<Batting>();
+		for (Batting b : getBattings()) {
+			if (b.getHowout().getHowOutid() == 0) {
+				battingList.add(b);
+			}
+		}
+		return battingList;
 	}
 
 	public Set<Bowling> getBowlings() {

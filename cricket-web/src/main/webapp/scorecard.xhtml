@@ -33,11 +33,12 @@
 		</rich:tab>
 		<c:forEach var="inns" items="#{matchBean.match.innings.setToList}">
 			<rich:tab header="#{inns.team.teamName} innings">
-				<rich:dataTable var="batter" value="#{inns.battings.setToList}"
+				<rich:dataTable var="batter" value="#{inns.battingsExDnb}"
 					styleClass="scorecard">
 					<f:facet name="header">
 						<rich:columnGroup>
 							<rich:column colspan="2" style="text-align: left">
+							Batting
 							</rich:column>
 							<rich:column styleClass="sc-numbers">R</rich:column>
 							<rich:column styleClass="sc-numbers">B</rich:column>
@@ -117,10 +118,29 @@
 							<rich:column styleClass="sc-numbers">
 								<h:outputText value="#{inns.runsScored}"></h:outputText>
 							</rich:column>
-							<rich:column colspan="3"></rich:column>
+							<rich:column colspan="4" styleClass="sc-innsDetail">
+								<h:outputText value="(" />
+								<h:outputText value="#{inns.runRate}">
+									<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+								<h:outputText value=" runs per over)" />
+							</rich:column>
 							<rich:column breakRowBefore="true" colspan="7"
-								styleClass="sc-innsDetail">
-								<h:outputText value="Fall of wickets: "></h:outputText>
+								styleClass="sc-howout" rendered="#{not empty inns.dnbBattings}">
+								<h:outputText style="font-weight: bold;" value="Did Not Bat: " />
+								<ui:repeat var="batter" value="#{inns.dnbBattings}"
+									varStatus="c">
+									<h:link styleClass="sc-highlight" outcome="player"
+										value="#{matchBean.allPlayerMap[batter.player.playerId].scorecardName}">
+										<f:param name="playerId" value="#{batter.player.playerId}" />
+									</h:link>
+									<h:outputText value="#{c.last ? '' : ', '}" />
+								</ui:repeat>
+							</rich:column>
+							<rich:column breakRowBefore="true" colspan="7"
+								styleClass="sc-howout">
+								<h:outputText style="font-weight: bold;"
+									value="Fall of wickets: " />
 								<ui:repeat var="partnership"
 									value="#{inns.partnerships.setToList}" varStatus="c">
 									<ui:fragment

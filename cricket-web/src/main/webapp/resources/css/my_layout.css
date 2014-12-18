@@ -49,8 +49,11 @@ table.ddmenu {
 }
 
 table.ddmenu td {
-	background-color: #322F32;
 	color: white;
+}
+
+table.ddmenu tr {
+	background-color: black;
 }
 
 table.ddmenu .rf-ddm-emptyIcon {
@@ -60,7 +63,6 @@ table.ddmenu .rf-ddm-emptyIcon {
 table.ddmenu .rf-ddm-itm,table.ddmenu .rf-ddm-itm-unsel,table.ddmenu .rf-ddm-itm-sel,table.ddmenu .rf-ddm-sel,table.ddmenu .rf-ddm-unsel
 	{
 	padding: 0;
-	background-color: #322F32;
 	background-repeat: no-repeat;
 	background-position: inherit;
 	background-image: none;
@@ -72,6 +74,7 @@ table.ddmenu .rf-ddm-itm-ic {
 }
 
 table.ddmenu .rf-ddm-itm,table.ddmenu .rf-ddm-lbl {
+	background-color: black;
 	padding: 0;
 }
 
@@ -111,8 +114,7 @@ html {
 
 body {
 	padding: 5px;
-	background-color: #322F32;
-	background: #322F32;
+	background-color: #e9eaed;
 	overflow-y: scroll;
 }
 
@@ -122,7 +124,6 @@ input[type="submit"],input[type="button"] {
 }
 
 td.rf-tb-itm {
-	background-color: white;
 	color: black
 }
 
@@ -404,6 +405,10 @@ table.scorecard,table.scorecard td,table.scorecard tr,table.scorecard th
 	background-color: transparent;
 }
 
+.scorecard thead tr {
+	background-color: #e9eaed;
+}
+
 table.scorecard td {
 	padding: 5px;
 }
@@ -596,8 +601,8 @@ div.rf-tab-cnt,.floatingnav {
 .ym-wrapper .objectTable th {
 	border: none;
 	background: none;
-	background-color: #322F32;
-	color: white;
+	background-color: #e9eaed;
+	color: black;
 	text-align: left;
 }
 
