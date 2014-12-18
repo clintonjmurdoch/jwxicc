@@ -45,7 +45,7 @@ public class GameManagerImpl extends BaseManager<Game> implements GameManagerLoc
 
 	@Override
 	public Game getGameForScorecard(int gameId) {
-		String sqlString = GET_GAME_FETCH_BASE_JPQL + "and pp.outStatus = ?2" + GET_GAME_ORDER_BY;
+		String sqlString = GET_GAME_FETCH_BASE_JPQL + "and (pp.outStatus = ?2 or pp.retiredNotOutStatus = ?2) " + GET_GAME_ORDER_BY;
 		Query q = em.createQuery(sqlString);
 		q.setParameter(1, gameId);
 		q.setParameter(2, true);

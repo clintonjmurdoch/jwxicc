@@ -20,7 +20,7 @@
 		</p>
 		<p>
 			<h:outputText value="#{matchBean.match}">
-				<f:converter converterId="resultConverter"/>
+				<f:converter converterId="resultConverter" />
 			</h:outputText>
 		</p>
 	</div>
@@ -121,11 +121,22 @@
 							<rich:column breakRowBefore="true" colspan="7"
 								styleClass="sc-innsDetail">
 								<h:outputText value="Fall of wickets: "></h:outputText>
-								<ui:repeat var="partnership" value="#{inns.partnerships.setToList}"
-									varStatus="c">
-									<h:outputText value="#{partnership.wicket}-#{partnership.scoreAtEnd} " />
-									<h:outputText
-										value="(#{matchBean.allPlayerMap[partnership.outPartnershipPlayer.player.playerId].scorecardName})"></h:outputText>
+								<ui:repeat var="partnership"
+									value="#{inns.partnerships.setToList}" varStatus="c">
+									<ui:fragment
+										rendered="#{partnership.outPartnershipPlayer != null}">
+										<h:outputText
+											value="#{partnership.wicket}-#{partnership.scoreAtEnd}" />
+										<h:outputText
+											value=" (#{matchBean.allPlayerMap[partnership.outPartnershipPlayer.player.playerId].scorecardName})" />
+									</ui:fragment>
+									<ui:fragment
+										rendered="#{partnership.outPartnershipPlayer == null and partnership.retiredNotOutPartnershipPlayer != null}">
+										<h:outputText
+											value="#{partnership.wicket-1}-#{partnership.scoreAtEnd}*" />
+										<h:outputText
+											value=" (#{matchBean.allPlayerMap[partnership.retiredNotOutPartnershipPlayer.player.playerId].scorecardName}, retired not out)" />
+									</ui:fragment>
 									<h:outputText value="#{c.last ? '' : ', '}" />
 								</ui:repeat>
 							</rich:column>

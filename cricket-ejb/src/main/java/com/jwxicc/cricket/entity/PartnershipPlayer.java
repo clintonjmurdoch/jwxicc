@@ -23,6 +23,9 @@ public class PartnershipPlayer implements Serializable {
 
 	@Column(nullable = false)
 	private boolean outStatus;
+	
+	@Column(nullable = false)
+	private boolean retiredNotOutStatus;
 
 	// bi-directional many-to-one association to Partnership
 	@ManyToOne
@@ -59,6 +62,14 @@ public class PartnershipPlayer implements Serializable {
 
 	public void setOutStatus(boolean outStatus) {
 		this.outStatus = outStatus;
+	}
+
+	public boolean isRetiredNotOutStatus() {
+		return retiredNotOutStatus;
+	}
+
+	public void setRetiredNotOutStatus(boolean retiredNotOutStatus) {
+		this.retiredNotOutStatus = retiredNotOutStatus;
 	}
 
 	public int getPartnershipPlayerId() {

@@ -119,6 +119,15 @@ public class Partnership implements Serializable {
 		return null;
 	}
 	
+	public PartnershipPlayer getRetiredNotOutPartnershipPlayer() {
+		for (PartnershipPlayer pp : getPartnershipPlayers()) {
+			if (pp.isRetiredNotOutStatus()) {
+				return pp;
+			}
+		}
+		return null;
+	}
+	
 	public boolean isUnbeaten() {
 		for (PartnershipPlayer pp : getPartnershipPlayers()) {
 			if (pp.isOutStatus()) {

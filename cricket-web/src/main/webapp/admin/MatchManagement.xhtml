@@ -232,6 +232,11 @@
 										value="#{pship.partnershipPlayers.setToList[0].outStatus }" />
 								</rich:column>
 								<rich:column>
+									<f:facet name="header">Retired NO</f:facet>
+									<h:selectBooleanCheckbox
+										value="#{pship.partnershipPlayers.setToList[0].retiredNotOutStatus }" />
+								</rich:column>
+								<rich:column>
 									<f:facet name="header">Player</f:facet>
 									<h:selectOneMenu
 										value="#{pship.partnershipPlayers.setToList[1].player.playerId }"
@@ -249,6 +254,11 @@
 									<f:facet name="header">Out</f:facet>
 									<h:selectBooleanCheckbox
 										value="#{pship.partnershipPlayers.setToList[1].outStatus }" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">Retired NO</f:facet>
+									<h:selectBooleanCheckbox
+										value="#{pship.partnershipPlayers.setToList[1].retiredNotOutStatus }" />
 								</rich:column>
 								<rich:column>
 									<a4j:commandLink value="Delete"
