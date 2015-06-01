@@ -1,19 +1,19 @@
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
 -- Table `GROUND`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `GROUND` ;
 
-CREATE  TABLE IF NOT EXISTS `GROUND` (
-  `groundId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `groundName` VARCHAR(45) NOT NULL ,
-  `streetAddress` VARCHAR(45) NULL ,
-  `suburb` VARCHAR(45) NULL ,
-  `mapRef` VARCHAR(45) NULL ,
-  PRIMARY KEY (`groundId`) )
+CREATE TABLE IF NOT EXISTS `GROUND` (
+  `groundId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `groundName` VARCHAR(45) NOT NULL,
+  `streetAddress` VARCHAR(45) NULL,
+  `suburb` VARCHAR(45) NULL,
+  `mapRef` VARCHAR(45) NULL,
+  PRIMARY KEY (`groundId`))
 ENGINE = InnoDB;
 
 
@@ -22,10 +22,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `REVIEW` ;
 
-CREATE  TABLE IF NOT EXISTS `REVIEW` (
-  `reviewId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `review_text` TEXT NOT NULL ,
-  PRIMARY KEY (`reviewId`) )
+CREATE TABLE IF NOT EXISTS `REVIEW` (
+  `reviewId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `review_text` TEXT NOT NULL,
+  PRIMARY KEY (`reviewId`))
 ENGINE = InnoDB;
 
 
@@ -34,17 +34,17 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `COMPETITION` ;
 
-CREATE  TABLE IF NOT EXISTS `COMPETITION` (
-  `competitionId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `associationName` VARCHAR(45) NOT NULL ,
-  `grade` VARCHAR(45) NOT NULL ,
-  `season` VARCHAR(9) NOT NULL ,
-  `reviewId` INT UNSIGNED NULL ,
-  PRIMARY KEY (`competitionId`) ,
-  INDEX `competition_review` (`reviewId` ASC) ,
+CREATE TABLE IF NOT EXISTS `COMPETITION` (
+  `competitionId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `associationName` VARCHAR(45) NOT NULL,
+  `grade` VARCHAR(45) NOT NULL,
+  `season` VARCHAR(9) NOT NULL,
+  `reviewId` INT UNSIGNED NULL,
+  PRIMARY KEY (`competitionId`),
+  INDEX `competition_review_idx` (`reviewId` ASC),
   CONSTRAINT `competition_review`
-    FOREIGN KEY (`reviewId` )
-    REFERENCES `REVIEW` (`reviewId` )
+    FOREIGN KEY (`reviewId`)
+    REFERENCES `REVIEW` (`reviewId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -55,10 +55,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `TEAM` ;
 
-CREATE  TABLE IF NOT EXISTS `TEAM` (
-  `teamId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `teamName` VARCHAR(45) NOT NULL ,
-  PRIMARY KEY (`teamId`) )
+CREATE TABLE IF NOT EXISTS `TEAM` (
+  `teamId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `teamName` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`teamId`))
 ENGINE = InnoDB;
 
 
@@ -67,10 +67,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `WIN_TYPE` ;
 
-CREATE  TABLE IF NOT EXISTS `WIN_TYPE` (
-  `winTypeId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `winTypeName` VARCHAR(45) NULL ,
-  PRIMARY KEY (`winTypeId`) )
+CREATE TABLE IF NOT EXISTS `WIN_TYPE` (
+  `winTypeId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `winTypeName` VARCHAR(45) NULL,
+  PRIMARY KEY (`winTypeId`))
 ENGINE = InnoDB;
 
 
@@ -79,68 +79,68 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `GAME` ;
 
-CREATE  TABLE IF NOT EXISTS `GAME` (
-  `gameId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `competitionId` INT UNSIGNED NOT NULL ,
-  `round` CHAR(3) NOT NULL ,
-  `groundId` INT UNSIGNED NOT NULL ,
-  `homeTeamId` INT UNSIGNED NOT NULL ,
-  `awayTeamId` INT UNSIGNED NOT NULL ,
-  `date` DATE NOT NULL ,
-  `reviewId` INT UNSIGNED NULL ,
-  `winner` INT UNSIGNED NULL ,
-  `toss` INT UNSIGNED NULL ,
-  `winTypeId` INT UNSIGNED NULL ,
-  `winMargin` INT UNSIGNED NULL ,
-  `gameState` ENUM('Not Started', 'Incomplete', 'Completed') NULL ,
-  `comment` TEXT NULL ,
-  PRIMARY KEY (`gameId`) ,
-  INDEX `game_ground` (`groundId` ASC) ,
-  INDEX `game_competition` (`competitionId` ASC) ,
-  INDEX `game_team_home` (`homeTeamId` ASC) ,
-  INDEX `game_team_away` (`awayTeamId` ASC) ,
-  INDEX `game_wintype` (`winTypeId` ASC) ,
-  INDEX `game_review` (`reviewId` ASC) ,
-  INDEX `game_winning_team` (`winner` ASC) ,
-  INDEX `game_toss_team` (`toss` ASC) ,
+CREATE TABLE IF NOT EXISTS `GAME` (
+  `gameId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `competitionId` INT UNSIGNED NOT NULL,
+  `round` CHAR(3) NOT NULL,
+  `groundId` INT UNSIGNED NOT NULL,
+  `homeTeamId` INT UNSIGNED NOT NULL,
+  `awayTeamId` INT UNSIGNED NOT NULL,
+  `date` DATE NOT NULL,
+  `reviewId` INT UNSIGNED NULL,
+  `winner` INT UNSIGNED NULL,
+  `toss` INT UNSIGNED NULL,
+  `winTypeId` INT UNSIGNED NULL,
+  `winMargin` INT UNSIGNED NULL,
+  `gameState` ENUM('Not Started', 'Incomplete', 'Completed') NULL,
+  `comment` TEXT NULL,
+  PRIMARY KEY (`gameId`),
+  INDEX `game_ground_idx` (`groundId` ASC),
+  INDEX `game_competition_idx` (`competitionId` ASC),
+  INDEX `game_team_home_idx` (`homeTeamId` ASC),
+  INDEX `game_team_away_idx` (`awayTeamId` ASC),
+  INDEX `game_wintype_idx` (`winTypeId` ASC),
+  INDEX `game_review_idx` (`reviewId` ASC),
+  INDEX `game_winning_team_idx` (`winner` ASC),
+  INDEX `game_toss_team_idx` (`toss` ASC),
   CONSTRAINT `game_ground`
-    FOREIGN KEY (`groundId` )
-    REFERENCES `GROUND` (`groundId` )
+    FOREIGN KEY (`groundId`)
+    REFERENCES `GROUND` (`groundId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_competition`
-    FOREIGN KEY (`competitionId` )
-    REFERENCES `COMPETITION` (`competitionId` )
+    FOREIGN KEY (`competitionId`)
+    REFERENCES `COMPETITION` (`competitionId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_team_home`
-    FOREIGN KEY (`homeTeamId` )
-    REFERENCES `TEAM` (`teamId` )
+    FOREIGN KEY (`homeTeamId`)
+    REFERENCES `TEAM` (`teamId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_team_away`
-    FOREIGN KEY (`awayTeamId` )
-    REFERENCES `TEAM` (`teamId` )
+    FOREIGN KEY (`awayTeamId`)
+    REFERENCES `TEAM` (`teamId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_wintype`
-    FOREIGN KEY (`winTypeId` )
-    REFERENCES `WIN_TYPE` (`winTypeId` )
+    FOREIGN KEY (`winTypeId`)
+    REFERENCES `WIN_TYPE` (`winTypeId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_review`
-    FOREIGN KEY (`reviewId` )
-    REFERENCES `REVIEW` (`reviewId` )
+    FOREIGN KEY (`reviewId`)
+    REFERENCES `REVIEW` (`reviewId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_winning_team`
-    FOREIGN KEY (`winner` )
-    REFERENCES `TEAM` (`teamId` )
+    FOREIGN KEY (`winner`)
+    REFERENCES `TEAM` (`teamId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `game_toss_team`
-    FOREIGN KEY (`toss` )
-    REFERENCES `TEAM` (`teamId` )
+    FOREIGN KEY (`toss`)
+    REFERENCES `TEAM` (`teamId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -151,32 +151,32 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `INNINGS` ;
 
-CREATE  TABLE IF NOT EXISTS `INNINGS` (
-  `inningsId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `gameId` INT UNSIGNED NOT NULL ,
-  `teamId` INT UNSIGNED NOT NULL ,
-  `wicketsLost` INT UNSIGNED NULL ,
-  `runsScored` INT UNSIGNED NULL ,
-  `oversFaced` DECIMAL(4,1) UNSIGNED NULL ,
-  `closureType` VARCHAR(12) NULL ,
-  `inningsOfMatch` INT UNSIGNED NULL ,
-  `no_balls` INT UNSIGNED NULL ,
-  `wides` INT UNSIGNED NULL ,
-  `leg_byes` INT UNSIGNED NULL ,
-  `byes` INT UNSIGNED NULL ,
-  `penalties` INT UNSIGNED NULL ,
-  PRIMARY KEY (`inningsId`) ,
-  INDEX `innings_team` (`teamId` ASC) ,
-  INDEX `innings_game` (`gameId` ASC) ,
-  INDEX `runs_index` (`runsScored` ASC, `wicketsLost` ASC) ,
+CREATE TABLE IF NOT EXISTS `INNINGS` (
+  `inningsId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `gameId` INT UNSIGNED NOT NULL,
+  `teamId` INT UNSIGNED NOT NULL,
+  `wicketsLost` INT UNSIGNED NULL,
+  `runsScored` INT UNSIGNED NULL,
+  `oversFaced` DECIMAL(4,1) UNSIGNED NULL,
+  `closureType` VARCHAR(12) NULL,
+  `inningsOfMatch` INT UNSIGNED NULL,
+  `no_balls` INT UNSIGNED NULL,
+  `wides` INT UNSIGNED NULL,
+  `leg_byes` INT UNSIGNED NULL,
+  `byes` INT UNSIGNED NULL,
+  `penalties` INT UNSIGNED NULL,
+  PRIMARY KEY (`inningsId`),
+  INDEX `innings_team_idx` (`teamId` ASC),
+  INDEX `innings_game_idx` (`gameId` ASC),
+  INDEX `runs_index` (`runsScored` ASC, `wicketsLost` ASC),
   CONSTRAINT `innings_team`
-    FOREIGN KEY (`teamId` )
-    REFERENCES `TEAM` (`teamId` )
+    FOREIGN KEY (`teamId`)
+    REFERENCES `TEAM` (`teamId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `innings_game`
-    FOREIGN KEY (`gameId` )
-    REFERENCES `GAME` (`gameId` )
+    FOREIGN KEY (`gameId`)
+    REFERENCES `GAME` (`gameId`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -187,22 +187,22 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `PLAYER_DETAIL` ;
 
-CREATE  TABLE IF NOT EXISTS `PLAYER_DETAIL` (
-  `playerDetailId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `fullname` VARCHAR(45) NULL ,
-  `birthdate` DATE NULL ,
-  `birthplace` VARCHAR(45) NULL ,
-  `nicknames` VARCHAR(90) NULL ,
-  `batting_style` VARCHAR(45) NULL ,
-  `bowling_style` VARCHAR(45) NULL ,
-  `fielding_positions` VARCHAR(45) NULL ,
-  `teams` VARCHAR(45) NULL ,
-  `shirt_number` INT UNSIGNED NULL ,
-  `cap_number` INT UNSIGNED NULL ,
-  `image` LONGBLOB NULL ,
-  `profile` TEXT NULL ,
-  PRIMARY KEY (`playerDetailId`) ,
-  UNIQUE INDEX `cap_number_UNIQUE` (`cap_number` ASC) )
+CREATE TABLE IF NOT EXISTS `PLAYER_DETAIL` (
+  `playerDetailId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `fullname` VARCHAR(45) NULL,
+  `birthdate` DATE NULL,
+  `birthplace` VARCHAR(45) NULL,
+  `nicknames` VARCHAR(90) NULL,
+  `batting_style` VARCHAR(45) NULL,
+  `bowling_style` VARCHAR(45) NULL,
+  `fielding_positions` VARCHAR(45) NULL,
+  `teams` VARCHAR(45) NULL,
+  `shirt_number` INT UNSIGNED NULL,
+  `cap_number` INT UNSIGNED NULL,
+  `image` LONGBLOB NULL,
+  `profile` TEXT NULL,
+  PRIMARY KEY (`playerDetailId`),
+  UNIQUE INDEX `cap_number_UNIQUE` (`cap_number` ASC))
 ENGINE = InnoDB;
 
 
@@ -211,25 +211,25 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `PLAYER` ;
 
-CREATE  TABLE IF NOT EXISTS `PLAYER` (
-  `playerId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `playerName` VARCHAR(45) NULL ,
-  `scorecardName` VARCHAR(45) NULL ,
-  `teamId` INT UNSIGNED NOT NULL ,
-  `status` TINYINT(1)  NOT NULL DEFAULT 1 ,
-  `playerDetailId` INT UNSIGNED NULL ,
-  PRIMARY KEY (`playerId`) ,
-  INDEX `player_team` (`teamId` ASC) ,
-  UNIQUE INDEX `playerDetailId_UNIQUE` (`playerDetailId` ASC) ,
-  INDEX `detailed_player` (`playerDetailId` ASC) ,
+CREATE TABLE IF NOT EXISTS `PLAYER` (
+  `playerId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `playerName` VARCHAR(45) NULL,
+  `scorecardName` VARCHAR(45) NULL,
+  `teamId` INT UNSIGNED NOT NULL,
+  `status` TINYINT(1) NOT NULL DEFAULT 1,
+  `playerDetailId` INT UNSIGNED NULL,
+  PRIMARY KEY (`playerId`),
+  INDEX `player_team_idx` (`teamId` ASC),
+  UNIQUE INDEX `playerDetailId_UNIQUE` (`playerDetailId` ASC),
+  INDEX `detailed_player_idx` (`playerDetailId` ASC),
   CONSTRAINT `player_team`
-    FOREIGN KEY (`teamId` )
-    REFERENCES `TEAM` (`teamId` )
+    FOREIGN KEY (`teamId`)
+    REFERENCES `TEAM` (`teamId`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `detailed_player`
-    FOREIGN KEY (`playerDetailId` )
-    REFERENCES `PLAYER_DETAIL` (`playerDetailId` )
+    FOREIGN KEY (`playerDetailId`)
+    REFERENCES `PLAYER_DETAIL` (`playerDetailId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -240,11 +240,11 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `HOWOUT` ;
 
-CREATE  TABLE IF NOT EXISTS `HOWOUT` (
-  `howOutid` INT UNSIGNED NOT NULL ,
-  `dismissalShort` VARCHAR(15) NOT NULL ,
-  `dismissalType` VARCHAR(45) NOT NULL ,
-  PRIMARY KEY (`howOutid`) )
+CREATE TABLE IF NOT EXISTS `HOWOUT` (
+  `howOutid` INT UNSIGNED NOT NULL,
+  `dismissalShort` VARCHAR(15) NOT NULL,
+  `dismissalType` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`howOutid`))
 ENGINE = InnoDB;
 
 
@@ -253,36 +253,36 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `BATTING` ;
 
-CREATE  TABLE IF NOT EXISTS `BATTING` (
-  `battingId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `playerId` INT UNSIGNED NOT NULL ,
-  `battingPos` INT UNSIGNED NULL ,
-  `score` INT UNSIGNED NULL ,
-  `balls` INT UNSIGNED NULL ,
-  `fours` INT UNSIGNED NULL ,
-  `sixes` INT UNSIGNED NULL ,
-  `howOutId` INT UNSIGNED NULL ,
-  `inningsId` INT UNSIGNED NOT NULL ,
-  PRIMARY KEY (`battingId`) ,
-  INDEX `batting_innings` (`inningsId` ASC) ,
-  INDEX `batting_player` (`playerId` ASC) ,
-  INDEX `batting_howout` (`howOutId` ASC) ,
-  INDEX `score_index` (`score` ASC, `balls` ASC) ,
-  INDEX `howout_index` (`howOutId` ASC) ,
-  INDEX `batpos_index` (`battingPos` ASC) ,
+CREATE TABLE IF NOT EXISTS `BATTING` (
+  `battingId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `playerId` INT UNSIGNED NOT NULL,
+  `battingPos` INT UNSIGNED NULL,
+  `score` INT UNSIGNED NULL,
+  `balls` INT UNSIGNED NULL,
+  `fours` INT UNSIGNED NULL,
+  `sixes` INT UNSIGNED NULL,
+  `howOutId` INT UNSIGNED NULL,
+  `inningsId` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`battingId`),
+  INDEX `batting_innings_idx` (`inningsId` ASC),
+  INDEX `batting_player_idx` (`playerId` ASC),
+  INDEX `batting_howout_idx` (`howOutId` ASC),
+  INDEX `score_index` (`score` ASC, `balls` ASC),
+  INDEX `howout_index` (`howOutId` ASC),
+  INDEX `batpos_index` (`battingPos` ASC),
   CONSTRAINT `batting_innings`
-    FOREIGN KEY (`inningsId` )
-    REFERENCES `INNINGS` (`inningsId` )
+    FOREIGN KEY (`inningsId`)
+    REFERENCES `INNINGS` (`inningsId`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `batting_player`
-    FOREIGN KEY (`playerId` )
-    REFERENCES `PLAYER` (`playerId` )
+    FOREIGN KEY (`playerId`)
+    REFERENCES `PLAYER` (`playerId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `batting_howout`
-    FOREIGN KEY (`howOutId` )
-    REFERENCES `HOWOUT` (`howOutid` )
+    FOREIGN KEY (`howOutId`)
+    REFERENCES `HOWOUT` (`howOutid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -293,23 +293,23 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `WICKET_DETAIL` ;
 
-CREATE  TABLE IF NOT EXISTS `WICKET_DETAIL` (
-  `wicketDetailId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `battingId` INT UNSIGNED NOT NULL ,
-  `wicketType` CHAR(5) NOT NULL ,
-  `playerId` INT UNSIGNED NOT NULL ,
-  PRIMARY KEY (`wicketDetailId`) ,
-  INDEX `wicketdetail_batting` (`battingId` ASC) ,
-  INDEX `wicketdetail_player` (`playerId` ASC) ,
-  INDEX `wickettype_index` (`wicketType` ASC) ,
+CREATE TABLE IF NOT EXISTS `WICKET_DETAIL` (
+  `wicketDetailId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `battingId` INT UNSIGNED NOT NULL,
+  `wicketType` CHAR(5) NOT NULL,
+  `playerId` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`wicketDetailId`),
+  INDEX `wicketdetail_batting_idx` (`battingId` ASC),
+  INDEX `wicketdetail_player_idx` (`playerId` ASC),
+  INDEX `wickettype_index` (`wicketType` ASC),
   CONSTRAINT `wicketdetail_batting`
-    FOREIGN KEY (`battingId` )
-    REFERENCES `BATTING` (`battingId` )
+    FOREIGN KEY (`battingId`)
+    REFERENCES `BATTING` (`battingId`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `wicketdetail_player`
-    FOREIGN KEY (`playerId` )
-    REFERENCES `PLAYER` (`playerId` )
+    FOREIGN KEY (`playerId`)
+    REFERENCES `PLAYER` (`playerId`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -320,29 +320,29 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `BOWLING` ;
 
-CREATE  TABLE IF NOT EXISTS `BOWLING` (
-  `bowlingId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `playerId` INT UNSIGNED NOT NULL ,
-  `bowlingPos` INT UNSIGNED NULL ,
-  `overs` DECIMAL(4,1) UNSIGNED NULL ,
-  `maidens` INT UNSIGNED NULL ,
-  `runs` INT UNSIGNED NULL ,
-  `wickets` INT UNSIGNED NULL ,
-  `noBalls` INT UNSIGNED NULL ,
-  `wides` INT UNSIGNED NULL ,
-  `inningsId` INT UNSIGNED NOT NULL ,
-  PRIMARY KEY (`bowlingId`) ,
-  INDEX `bowling_player` (`playerId` ASC) ,
-  INDEX `bowling_innings` (`inningsId` ASC) ,
-  INDEX `wickets_index` (`wickets` ASC, `runs` ASC) ,
+CREATE TABLE IF NOT EXISTS `BOWLING` (
+  `bowlingId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `playerId` INT UNSIGNED NOT NULL,
+  `bowlingPos` INT UNSIGNED NULL,
+  `overs` DECIMAL(4,1) UNSIGNED NULL,
+  `maidens` INT UNSIGNED NULL,
+  `runs` INT UNSIGNED NULL,
+  `wickets` INT UNSIGNED NULL,
+  `noBalls` INT UNSIGNED NULL,
+  `wides` INT UNSIGNED NULL,
+  `inningsId` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`bowlingId`),
+  INDEX `bowling_player_idx` (`playerId` ASC),
+  INDEX `bowling_innings_idx` (`inningsId` ASC),
+  INDEX `wickets_index` (`wickets` ASC, `runs` ASC),
   CONSTRAINT `bowling_player`
-    FOREIGN KEY (`playerId` )
-    REFERENCES `PLAYER` (`playerId` )
+    FOREIGN KEY (`playerId`)
+    REFERENCES `PLAYER` (`playerId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `bowling_innings`
-    FOREIGN KEY (`inningsId` )
-    REFERENCES `INNINGS` (`inningsId` )
+    FOREIGN KEY (`inningsId`)
+    REFERENCES `INNINGS` (`inningsId`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -353,21 +353,21 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `PARTNERSHIP` ;
 
-CREATE  TABLE IF NOT EXISTS `PARTNERSHIP` (
-  `partnershipId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `inningsId` INT UNSIGNED NOT NULL ,
-  `wicket` INT UNSIGNED NOT NULL ,
-  `scoreAtEnd` INT UNSIGNED NOT NULL ,
-  `oversAtEnd` FLOAT(3,1) NOT NULL ,
-  `runsScored` INT NULL ,
-  `overs` FLOAT(3,1) NULL ,
-  PRIMARY KEY (`partnershipId`) ,
-  INDEX `partnership_innings` (`inningsId` ASC) ,
-  INDEX `wicket_index` (`wicket` ASC) ,
-  INDEX `runs_index` (`runsScored` ASC) ,
+CREATE TABLE IF NOT EXISTS `PARTNERSHIP` (
+  `partnershipId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `inningsId` INT UNSIGNED NOT NULL,
+  `wicket` INT UNSIGNED NOT NULL,
+  `scoreAtEnd` INT UNSIGNED NOT NULL,
+  `oversAtEnd` FLOAT(3,1) NOT NULL,
+  `runsScored` INT NULL,
+  `overs` FLOAT(3,1) NULL,
+  PRIMARY KEY (`partnershipId`),
+  INDEX `partnership_innings_idx` (`inningsId` ASC),
+  INDEX `wicket_index` (`wicket` ASC),
+  INDEX `runs_index` (`runsScored` ASC),
   CONSTRAINT `partnership_innings`
-    FOREIGN KEY (`inningsId` )
-    REFERENCES `INNINGS` (`inningsId` )
+    FOREIGN KEY (`inningsId`)
+    REFERENCES `INNINGS` (`inningsId`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -378,24 +378,25 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `PARTNERSHIP_PLAYER` ;
 
-CREATE  TABLE IF NOT EXISTS `PARTNERSHIP_PLAYER` (
-  `partnershipPlayerId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `partnershipId` INT UNSIGNED NOT NULL ,
-  `playerId` INT UNSIGNED NOT NULL ,
-  `outStatus` TINYINT(1)  NOT NULL ,
-  `contribution` INT UNSIGNED NULL ,
-  `battingPosition` INT UNSIGNED NOT NULL ,
-  PRIMARY KEY (`partnershipPlayerId`) ,
-  INDEX `partnershipplayer_partnership_rel` (`partnershipId` ASC) ,
-  INDEX `partnershipplayer_player_rel` (`playerId` ASC) ,
+CREATE TABLE IF NOT EXISTS `PARTNERSHIP_PLAYER` (
+  `partnershipPlayerId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `partnershipId` INT UNSIGNED NOT NULL,
+  `playerId` INT UNSIGNED NOT NULL,
+  `outStatus` TINYINT(1) NOT NULL,
+  `retiredNotOutStatus` TINYINT(1) NOT NULL DEFAULT 0,
+  `contribution` INT UNSIGNED NULL,
+  `battingPosition` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`partnershipPlayerId`),
+  INDEX `partnershipplayer_partnership_rel_idx` (`partnershipId` ASC),
+  INDEX `partnershipplayer_player_rel_idx` (`playerId` ASC),
   CONSTRAINT `partnershipplayer_partnership_rel`
-    FOREIGN KEY (`partnershipId` )
-    REFERENCES `PARTNERSHIP` (`partnershipId` )
+    FOREIGN KEY (`partnershipId`)
+    REFERENCES `PARTNERSHIP` (`partnershipId`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `partnershipplayer_player_rel`
-    FOREIGN KEY (`playerId` )
-    REFERENCES `PLAYER` (`playerId` )
+    FOREIGN KEY (`playerId`)
+    REFERENCES `PLAYER` (`playerId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -406,12 +407,12 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `USER` ;
 
-CREATE  TABLE IF NOT EXISTS `USER` (
-  `username` VARCHAR(20) NOT NULL ,
-  `password` VARCHAR(20) NOT NULL ,
-  `email` VARCHAR(45) NULL ,
-  PRIMARY KEY (`username`) ,
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC) )
+CREATE TABLE IF NOT EXISTS `USER` (
+  `username` VARCHAR(20) NOT NULL,
+  `password` VARCHAR(20) NOT NULL,
+  `email` VARCHAR(45) NULL,
+  PRIMARY KEY (`username`),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC))
 ENGINE = InnoDB;
 
 
@@ -420,17 +421,17 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `NEWSITEM` ;
 
-CREATE  TABLE IF NOT EXISTS `NEWSITEM` (
-  `newsid` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `title` VARCHAR(100) NOT NULL ,
-  `content` TEXT NOT NULL ,
-  `timestamp` TIMESTAMP NOT NULL ,
-  `poster` VARCHAR(20) NOT NULL ,
-  PRIMARY KEY (`newsid`) ,
-  INDEX `poster` (`poster` ASC) ,
+CREATE TABLE IF NOT EXISTS `NEWSITEM` (
+  `newsid` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(100) NOT NULL,
+  `content` TEXT NOT NULL,
+  `timestamp` TIMESTAMP NOT NULL,
+  `poster` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`newsid`),
+  INDEX `poster` (`poster` ASC),
   CONSTRAINT `newsitem_user`
-    FOREIGN KEY (`poster` )
-    REFERENCES `USER` (`username` ))
+    FOREIGN KEY (`poster`)
+    REFERENCES `USER` (`username`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 45;
 
@@ -440,22 +441,22 @@ AUTO_INCREMENT = 45;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `GAME_PLAYER_DESIGNATION` ;
 
-CREATE  TABLE IF NOT EXISTS `GAME_PLAYER_DESIGNATION` (
-  `designationId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `designationType` VARCHAR(15) NOT NULL ,
-  `gameId` INT UNSIGNED NOT NULL ,
-  `playerId` INT UNSIGNED NOT NULL ,
-  PRIMARY KEY (`designationId`) ,
-  INDEX `gpd_game` (`gameId` ASC) ,
-  INDEX `gpd_player` (`playerId` ASC) ,
+CREATE TABLE IF NOT EXISTS `GAME_PLAYER_DESIGNATION` (
+  `designationId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `designationType` VARCHAR(15) NOT NULL,
+  `gameId` INT UNSIGNED NOT NULL,
+  `playerId` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`designationId`),
+  INDEX `gpd_game_idx` (`gameId` ASC),
+  INDEX `gpd_player_idx` (`playerId` ASC),
   CONSTRAINT `gpd_game`
-    FOREIGN KEY (`gameId` )
-    REFERENCES `GAME` (`gameId` )
+    FOREIGN KEY (`gameId`)
+    REFERENCES `GAME` (`gameId`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `gpd_player`
-    FOREIGN KEY (`playerId` )
-    REFERENCES `PLAYER` (`playerId` )
+    FOREIGN KEY (`playerId`)
+    REFERENCES `PLAYER` (`playerId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -466,26 +467,27 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `PLAYER_RELATIONSHIP` ;
 
-CREATE  TABLE IF NOT EXISTS `PLAYER_RELATIONSHIP` (
-  `relationshipId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `owningPlayerId` INT UNSIGNED NOT NULL ,
-  `otherPlayerId` INT UNSIGNED NOT NULL ,
-  `ownerViewOfRelationship` VARCHAR(15) NOT NULL ,
-  PRIMARY KEY (`relationshipId`) ,
-  INDEX `owning_player_relationship` (`owningPlayerId` ASC) ,
-  INDEX `other_player_reference` (`otherPlayerId` ASC) ,
+CREATE TABLE IF NOT EXISTS `PLAYER_RELATIONSHIP` (
+  `relationshipId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `owningPlayerId` INT UNSIGNED NOT NULL,
+  `otherPlayerId` INT UNSIGNED NOT NULL,
+  `ownerViewOfRelationship` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`relationshipId`),
+  INDEX `owning_player_relationship_idx` (`owningPlayerId` ASC),
+  INDEX `other_player_reference_idx` (`otherPlayerId` ASC),
   CONSTRAINT `owning_player_relationship`
-    FOREIGN KEY (`owningPlayerId` )
-    REFERENCES `PLAYER` (`playerId` )
+    FOREIGN KEY (`owningPlayerId`)
+    REFERENCES `PLAYER` (`playerId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `other_player_reference`
-    FOREIGN KEY (`otherPlayerId` )
-    REFERENCES `PLAYER` (`playerId` )
+    FOREIGN KEY (`otherPlayerId`)
+    REFERENCES `PLAYER` (`playerId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+USE `jwxiccco_cricket` ;
 
 -- -----------------------------------------------------
 -- Placeholder table for view `BEST_BOWLING`
@@ -566,7 +568,6 @@ and b.balls =
     where ba.playerid = b.playerId and b.score = ba.score and ga.competitionId = g.competitionId group by ga.competitionId)
 group by competitionId, playerId;
 
-
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
@@ -589,6 +590,7 @@ INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (10, 'Draw on Second 
 INSERT INTO `WIN_TYPE` (`winTypeId`, `winTypeName`) VALUES (11, 'Tie on Second Innings');
 
 COMMIT;
+
 
 -- -----------------------------------------------------
 -- Data for table `HOWOUT`
@@ -617,6 +619,7 @@ INSERT INTO `HOWOUT` (`howOutid`, `dismissalShort`, `dismissalType`) VALUES (17,
 
 COMMIT;
 
+
 -- -----------------------------------------------------
 -- Data for table `USER`
 -- -----------------------------------------------------
@@ -626,3 +629,4 @@ INSERT INTO `USER` (`username`, `password`, `email`) VALUES ('murdoch', 'cricket
 INSERT INTO `USER` (`username`, `password`, `email`) VALUES ('vorn', 'a1b2c3', 'vaughan_garner@hotmail.com');
 
 COMMIT;
+
