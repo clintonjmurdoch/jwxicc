@@ -35,6 +35,10 @@ public class FacebookBean implements Serializable {
 		}
 		renderLoading = false;
 	}
+	
+	public String getNextMatchInfo() {
+		return System.getenv("NEXT_MATCH_DETAILS");
+	}
 
 	public FacebookFeed getFeed() {
 		return feed;
