@@ -48,12 +48,17 @@ public class MatchManagementBean implements Serializable {
 			return;
 		}
 		if (match == null) {
-			match = gameManager.getGameForManagement(selectedMatchId);
+			reloadMatch();
 		}
+	}
+	
+	private void reloadMatch() {
+		match = gameManager.getGameForManagement(selectedMatchId);
 	}
 
 	public void saveMatch() {
 		gameManager.merge(match);
+		reloadMatch();
 	}
 
 	public void updateScore() {

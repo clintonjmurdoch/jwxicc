@@ -31,7 +31,7 @@ public class EntityMethods {
 
 	public static BigDecimal calculateEconomy(int runs, BigDecimal overs) {
 
-		if (overs.doubleValue() != 0d) {
+		if (overs != null && BigDecimal.ZERO.compareTo(overs) < 0) {
 			return BigDecimal.valueOf(runs).divide(calulateOverDecimal(overs), 3,
 					BigDecimal.ROUND_HALF_UP);
 		} else {

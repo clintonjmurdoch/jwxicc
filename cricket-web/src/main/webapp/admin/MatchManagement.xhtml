@@ -93,6 +93,13 @@
 										itemLabel="#{matchManBean.match.awayTeam.teamName }" />
 								</h:selectOneMenu>
 							</div>
+							<div class="ym-fbox-text">
+								<h:outputLabel for="review">Review</h:outputLabel>
+								<h:inputTextarea id="review" value="#{matchManBean.match.review}"
+									styleClass="reviewEntry">
+									<f:converter converterId="ReviewConverter" />
+								</h:inputTextarea>
+							</div>
 							<div class="ym-fbox-button">
 								<a4j:commandButton type="submit"
 									action="#{matchManBean.saveMatch}" render="mainpanel"

@@ -22,6 +22,9 @@ public class WicketDisplayConverter implements Converter {
 		String display = "";
 		Inning i = (Inning) value;
 		InningsClosureType closureType = i.getClosureType();
+		if (closureType == null) {
+			return display;
+		}
 
 		switch (closureType) {
 		case ALLOUT:

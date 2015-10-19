@@ -49,7 +49,8 @@ public class CompetitionManagerImpl extends BaseManager<Competition> implements 
 	@Override
 	public Competition getCompetitionByAssociationAndSeason(String assocName, String season) {
 		String jpql = "from Competition c left join FETCH c.games g "
-				+ "left join FETCH g.homeTeam left join FETCH g.awayTeam left join FETCH g.ground "
+				+ "left join FETCH g.homeTeam left join FETCH g.awayTeam " 
+				+ "left join FETCH g.ground left join FETCH c.review "
 				+ "where c.associationName = ? and c.season = ?";
 
 		Query query = em.createQuery(jpql);

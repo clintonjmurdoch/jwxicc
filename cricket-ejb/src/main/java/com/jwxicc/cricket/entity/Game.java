@@ -45,7 +45,7 @@ public class Game implements Serializable {
 	private Ground ground;
 
 	// bi-directional one-to-one association to Review
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "reviewId")
 	private Review review;
 

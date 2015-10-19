@@ -186,7 +186,7 @@ public class Inning implements Serializable {
 	public List<Batting> getBattingsExDnb() {
 		ArrayList<Batting> battingList = new ArrayList<Batting>();
 		for (Batting b : getBattings()) {
-			if (b.getHowout().getHowOutid() != 0) {
+			if (b.getHowout() != null && b.getHowout().getHowOutid() != 0) {
 				battingList.add(b);
 			}
 		}
@@ -196,7 +196,7 @@ public class Inning implements Serializable {
 	public List<Batting> getDnbBattings() {
 		ArrayList<Batting> battingList = new ArrayList<Batting>();
 		for (Batting b : getBattings()) {
-			if (b.getHowout().getHowOutid() == 0) {
+			if (b.getHowout() != null && b.getHowout().getHowOutid() == 0) {
 				battingList.add(b);
 			}
 		}

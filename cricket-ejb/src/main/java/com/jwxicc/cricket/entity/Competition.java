@@ -34,7 +34,7 @@ public class Competition implements Serializable, Comparable<Competition> {
 	private String season;
 
 	// bi-directional one-to-one association to Review
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "reviewId")
 	private Review review;
 

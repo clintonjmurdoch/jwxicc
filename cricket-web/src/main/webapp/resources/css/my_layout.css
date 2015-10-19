@@ -643,7 +643,8 @@ div.rf-tab-cnt,.floatingnav {
 }
 
 /* re-align text boxes in forms */
-.ym-wrapper .ym-columnar .ym-fbox-text input[type="text"] {
+.ym-wrapper .ym-columnar .ym-fbox-text input[type="text"],
+.ym-wrapper .ym-columnar .ym-fbox-text textarea {
 	margin: 5px -3px 5px 0;
 }
 

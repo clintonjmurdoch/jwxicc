@@ -23,13 +23,16 @@ public class ResultConverter implements Converter {
 			return game.getWinType().getWinTypeName();
 		}
 
-		String returnString = game.getWinner().getTeamName() + " won by " + game.getWinMargin()
+		String returnString = null;
+		if (game.getWinType() != null && game.getWinner() != null) {
+		returnString = game.getWinner().getTeamName() + " won by " + game.getWinMargin()
 				+ " ";
 		if (game.getWinMargin() == 1) {
 			returnString += game.getWinType().getWinTypeName().toLowerCase().replace("runs", "run")
 					.replace("wickets", "wicket");
 		} else {
 			returnString += game.getWinType().getWinTypeName().toLowerCase();
+		}
 		}
 		
 		return returnString;

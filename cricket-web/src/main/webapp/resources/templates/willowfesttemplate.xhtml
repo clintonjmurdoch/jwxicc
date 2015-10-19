@@ -18,10 +18,16 @@
 		<div class="contentbox">
 			<div style="text-align: center;">
 				<h2>Willowfest #{WFBean.comp.season}</h2>
-				<p>Mildura — December 27-30, #{WFBean.comp.season}</p>
+				<p>
+					<h:outputText
+						value="Mildura — December 27-30, #{WFBean.comp.season}" />
+					<br/>
+					<a href="squad.xhtml">Squad</a> - <a class="no-popup"
+						href="#matches">Matches</a>
+				</p>
 			</div>
 			<div>
-				<h:outputText value="#{WFBean.comp.review}">
+				<h:outputText styleClass="reviewText" value="#{WFBean.comp.review}">
 					<f:converter converterId="ReviewConverter" />
 				</h:outputText>
 			</div>
@@ -31,6 +37,7 @@
 					<a4j:param name="param1" assignTo="#{WFBean.selectedMatchToView}"></a4j:param>
 				</a4j:jsFunction>
 				<a4j:outputPanel rendered="#{not empty WFBean.comp.games}">
+					<a id="matches" />
 					<rich:dataTable onrowclick="showGame('#{game.gameId}')"
 						styleClass="clickTable objectTable" var="game"
 						value="#{WFBean.comp.games.setToList}">
