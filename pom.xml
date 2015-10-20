@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jwxicc</groupId>
 	<artifactId>cricket</artifactId>
-	<version>0.9.3</version>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>cricket application</name>
 
@@ -36,7 +36,7 @@
 			<dependency>
 				<groupId>com.jwxicc</groupId>
 				<artifactId>cricket-ejb</artifactId>
-				<version>0.9.3</version>
+				<version>1.0-SNAPSHOT</version>
 				<type>ejb</type>
 			</dependency>
 
@@ -45,7 +45,7 @@
 			<dependency>
 				<groupId>com.jwxicc</groupId>
 				<artifactId>cricket-web</artifactId>
-				<version>0.9.3</version>
+				<version>1.0-SNAPSHOT</version>
 				<type>war</type>
 				<scope>compile</scope>
 			</dependency>
