@@ -53,7 +53,7 @@
 						<rich:column>
 							<f:facet name="header">Shirt Number</f:facet>
 							<h:outputText value="#{player.playerDetail.shirtNumber}"
-								rendered="#{player.playerDetail.shirtNumber != 0}" />
+								rendered="#{not empty player.playerDetail.shirtNumber}" />
 						</rich:column>
 						<rich:column>
 							<f:facet name="header">Teams</f:facet>

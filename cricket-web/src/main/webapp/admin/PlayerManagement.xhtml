@@ -95,12 +95,12 @@
 										<div class="ym-fbox-text">
 											<h:outputLabel for="capnum" value="Cap Number" />
 											<h:inputText id="capnum" styleClass="smallinput"
-												value="#{(playerBean.player.playerDetail.capNumber == 0) ? '' : playerBean.player.playerDetail.capNumber }" />
+												value="#{playerBean.player.playerDetail.capNumber }" />
 										</div>
 										<div class="ym-fbox-text">
 											<h:outputLabel for="shirtnum" value="Shirt Number" />
-											<h:inputText id="shirtnum" styleClass="smallinput"
-												value="#{(playerBean.player.playerDetail.shirtNumber == 0) ? '' : playerBean.player.playerDetail.shirtNumber}" />
+											<h:inputText id="shirtnum" styleClass="smallinput" maxlength="3"
+												value="#{playerBean.player.playerDetail.shirtNumber}" />
 										</div>
 										<div class="ym-fbox-text">
 											<h:outputLabel for="uploader" value="Profile Image" />
@@ -118,11 +118,11 @@
 										</div>
 										<div class="ym-fbox-button">
 											<a4j:commandButton render="playerpanel"
-												action="#{playerBean.savePlayerDetail()}" id="searchButton"
+												action="#{playerBean.savePlayerDetail}" id="searchButton"
 												execute="@region" limitRender="true" type="submit"
 												value="Save" />
 											<a4j:commandButton render="playerpanel"
-												action="#{playerBean.resetPlayerDetail()}" id="resetButton"
+												action="#{playerBean.resetPlayerDetail}" id="resetButton"
 												execute="@region" limitRender="true" immediate="true"
 												value="Reset" />
 										</div>

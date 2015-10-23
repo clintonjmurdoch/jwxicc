@@ -32,7 +32,7 @@ public class PlayerDetail implements Serializable {
 	private String bowlingStyle;
 
 	@Column(name = "cap_number")
-	private int capNumber;
+	private Integer capNumber;
 
 	@Column(name = "fielding_positions", length = 45)
 	private String fieldingPositions;
@@ -51,7 +51,7 @@ public class PlayerDetail implements Serializable {
 	private String profile;
 
 	@Column(name = "shirt_number")
-	private int shirtNumber;
+	private String shirtNumber;
 
 	@Column(length = 45)
 	private String teams;
@@ -151,11 +151,11 @@ public class PlayerDetail implements Serializable {
 		this.profile = profile;
 	}
 
-	public int getShirtNumber() {
+	public String getShirtNumber() {
 		return shirtNumber;
 	}
 
-	public void setShirtNumber(int shirtNumber) {
+	public void setShirtNumber(String shirtNumber) {
 		this.shirtNumber = shirtNumber;
 	}
 

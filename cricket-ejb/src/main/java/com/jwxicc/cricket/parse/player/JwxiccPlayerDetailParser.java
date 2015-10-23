@@ -232,7 +232,7 @@ public class JwxiccPlayerDetailParser {
 			if (CollectionUtils.isNotEmpty(foundByText)) {
 				String shirt = foundByText.get(0).ownText().replaceAll("(?i)" + SHIRT, "").trim();
 				System.out.println(shirt);
-				playerDetail.setShirtNumber(Integer.parseInt(shirt));
+				playerDetail.setShirtNumber(shirt);
 			}
 
 			// get the image

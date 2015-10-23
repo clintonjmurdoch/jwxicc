@@ -61,7 +61,7 @@
 							rendered="#{playerBean.player.playerDetail.capNumber != 0}"
 							value="Cap Number: #{playerBean.player.playerDetail.capNumber}" />
 						<h:outputText styleClass="singleline"
-							rendered="#{playerBean.player.playerDetail.shirtNumber != 0}"
+							rendered="#{not empty playerBean.player.playerDetail.shirtNumber}"
 							value="Shirt Number: #{playerBean.player.playerDetail.shirtNumber}" />
 						<div id="fb-root"></div>
 						<div class="fb-like" data-send="true" data-width="450"
