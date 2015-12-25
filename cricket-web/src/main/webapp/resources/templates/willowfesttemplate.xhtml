@@ -27,7 +27,7 @@
 				</p>
 			</div>
 			<div>
-				<h:outputText styleClass="reviewText" value="#{WFBean.comp.review}">
+				<h:outputText styleClass="reviewText" value="#{WFBean.comp.review}" escape="false">
 					<f:converter converterId="ReviewConverter" />
 				</h:outputText>
 			</div>
