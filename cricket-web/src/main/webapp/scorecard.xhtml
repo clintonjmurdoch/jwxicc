@@ -31,8 +31,10 @@
 				<rich:tabPanel switchType="client">
 					<rich:tab header="Match Review"
 						rendered="#{matchBean.match.review != null}">
-						<h:outputText value="#{matchBean.match.review.reviewText}"
-							styleClass="reviewText" />
+						<h:outputText styleClass="reviewText"
+							value="#{matchBean.match.review}" escape="false">
+							<f:converter converterId="ReviewConverter" />
+						</h:outputText>
 					</rich:tab>
 					<c:forEach var="inns" items="#{matchBean.match.innings.setToList}">
 						<rich:tab header="#{inns.team.teamName} innings">
