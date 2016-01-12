@@ -10,7 +10,7 @@
 		</f:facet>
 		<h:outputText value="#{game.round}"></h:outputText>
 	</rich:column>
-	<rich:column>
+	<rich:column sortBy="#{game.round}" sortOrder="ascending">
 		<f:facet name="header">
 			<h:outputText value="Home Team"></h:outputText>
 		</f:facet>
