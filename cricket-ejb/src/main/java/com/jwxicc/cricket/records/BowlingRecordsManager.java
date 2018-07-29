@@ -32,7 +32,7 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 	private static final String WILLOWFEST_BEST_BOWLING_TABLE = "(select * from " 
 			+ "(select * from ((select * from best_bowling_seasons where competitionid in " 
 			+ "(select competitionid from competition where associationNAme = 'Willowfest') "
-			+ "order by wickets desc, runs asc) as dfjv) group by playerid) as dfgdg )";
+			+ "order by wickets desc, runs asc) as dfjv) group by playerid, bb.wickets, bb.runs) as dfgdg )";
 
 	private static final String COMPETITION_QUALIFIER_SQL = "and b.bowlingid in "
 			+ "(select bowlingid from BOWLING b " + COMPETITION_QUALIFIER_END_SQL

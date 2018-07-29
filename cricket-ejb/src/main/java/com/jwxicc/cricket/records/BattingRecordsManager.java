@@ -32,7 +32,7 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 
 	private static final String COMPETITION_QUALIFIER_SQL = "and b.battingid in "
 			+ "(select battingid from BATTING b " + COMPETITION_QUALIFIER_END_SQL
-			+ ") and bb.competitionId = :comp group by playerid ";
+			+ ") and bb.competitionId = :comp group by playerid, bb.score, bb.balls, bb.outstatus ";
 	
 	private static final String WILLOWFEST_BEST_BATTING_TABLE = "(select * from "
 			+ "(select * from ((select * from best_batting_seasons where competitionid in "
