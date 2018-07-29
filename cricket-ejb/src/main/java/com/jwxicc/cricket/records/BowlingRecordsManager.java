@@ -59,7 +59,7 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 		if (willowfestOnly) {
 			sqlQuery += WILLOWFEST_QUALIFIER_SQL;
 		}
-		sqlQuery += "group by p.playerid order by wickets desc, runs asc, overs asc";
+		sqlQuery += "group by p.playerid, bb.wickets, bb.runs order by wickets desc, runs asc, overs asc";
 
 		return this.getBowlingRecords(sqlQuery, willowfestOnly);
 	}
@@ -70,7 +70,7 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 		if (willowfestOnly) {
 			sqlQuery += WILLOWFEST_QUALIFIER_SQL;
 		}
-		sqlQuery += "group by p.playerid "
+		sqlQuery += "group by p.playerid, bb.wickets, bb.runs "
 				+ "having sum(b.wickets) >= " + JwxiccUtils.MIN_WICKETS_FOR_AVERAGE + " "
 				+ "order by (0 - sum(b.runs)/sum(b.wickets)) desc, wickets desc, overs asc";
 
