@@ -9,7 +9,7 @@ import java.util.Set;
  * 
  */
 @Entity
-@Table(name = "GROUND")
+@Table(name = "ground")
 public class Ground implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * 
  */
 @Entity
-@Table(name = "BOWLING")
+@Table(name = "bowling")
 public class Bowling implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -10,7 +10,7 @@ import com.jwxicc.cricket.entity.dbenum.DesignationType;
  * 
  */
 @Entity
-@Table(name = "GAME_PLAYER_DESIGNATION")
+@Table(name = "game_player_designation")
 public class GamePlayerDesignation implements Serializable {
 	private static final long serialVersionUID = 1L;
 

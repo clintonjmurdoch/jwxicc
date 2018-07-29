@@ -12,7 +12,7 @@ import java.util.Set;
  * 
  */
 @Entity
-@Table(name = "COMPETITION")
+@Table(name = "competition")
 public class Competition implements Serializable, Comparable<Competition> {
 	private static final long serialVersionUID = 1L;
 
@@ -40,6 +40,7 @@ public class Competition implements Serializable, Comparable<Competition> {
 
 	// bi-directional many-to-one association to Game
 	@OneToMany(mappedBy = "competition")
+	@OrderBy("date ASC, round ASC")
 	private Set<Game> games;
 
 	public Competition() {

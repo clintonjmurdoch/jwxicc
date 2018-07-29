@@ -10,7 +10,7 @@ import java.util.Set;
  * 
  */
 @Entity
-@Table(name = "GAME")
+@Table(name = "game")
 public class Game implements Serializable {
 	private static final long serialVersionUID = 1L;
 

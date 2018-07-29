@@ -25,18 +25,18 @@ public class FieldingRecordsManager extends RecordsManager<FieldingRecord, Field
 			+ "(select battingid from BATTING b " + COMPETITION_QUALIFIER_END_SQL + ") ";
 
 	@Override
-	public List<FieldingRecord> getInningsBest() {
+	public List<FieldingRecord> getInningsBest(boolean willowfestOnly) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<FieldingRecord> getByAggregate() {
+	public List<FieldingRecord> getByAggregate(boolean willowfestOnly) {
 		throw new NotImplementedException("getByAggregate not implemented for fielding");
 	}
 
 	@Override
-	public List<FieldingRecord> getByAverage() {
+	public List<FieldingRecord> getByAverage(boolean willowfestOnly) {
 		throw new NotImplementedException("getByAverage not implemented for fielding");
 	}
 
@@ -117,7 +117,7 @@ public class FieldingRecordsManager extends RecordsManager<FieldingRecord, Field
 	}
 
 	@Override
-	public FieldingRecord getPlayerCareerRecord(int playerId) {
+	public FieldingRecord getPlayerCareerRecord(int playerId, boolean willowfestOnly) {
 		// TODO Auto-generated method stub
 		return null;
 	}

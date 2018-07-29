@@ -9,7 +9,7 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name = "NEWSITEM")
+@Table(name = "newsitem")
 public class Newsitem implements Serializable {
 	private static final long serialVersionUID = 1L;
 

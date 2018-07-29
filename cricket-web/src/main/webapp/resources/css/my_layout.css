@@ -9,27 +9,11 @@
  *
  */
 
-/* import core styles | Basis-Stylesheets einbinden */
-@import url(css/yaml/core/base.css);
-
-@import url(css/yaml/core/iehacks.css);
-
-@import url(css/yaml/navigation/hlist.css);
-
-@import url(css/yaml/forms/gray-theme.css);
-
-/* import print layout | Druck-Layout einbinden */
-@import url(css/yaml/print/print.css);
-
-@import url(css/yaml/screen/screen-PAGE-layout.css);
-
 /* Add email to skinning.ecss for richfaces */
 input[type="email"] {
 	border-width: 1px;
 	border-style: solid;
 	border-color: #C4C0B9;
-	font-size: 12px;
-	font-family: Arial, Verdana, sans-serif;
 	color: #000000;
 	background-repeat: no-repeat;
 	background-position: 1px 1px;
@@ -92,6 +76,7 @@ table.ddmenu .rf-ddm-lst {
 table.ddmenu a,table.ddmenu div.rf-ddm-lbl-dec {
 	display: block;
 	padding: 4px 15px;
+	font-size: 12px;
 }
 
 table.ddmenu .rf-ddm-lst-bg a {
@@ -100,6 +85,7 @@ table.ddmenu .rf-ddm-lst-bg a {
 
 table.ddmenu .rf-ddm-lst a {
 	padding: 6px 15px;
+	font-size: 12px;
 }
 
 /* Richfaces collapsible panel fonts */
@@ -109,7 +95,8 @@ div.rf-cp-b {
 
 /* new html5 stuff */
 html {
-	font-family: 'Merriweather', Helvetica, Tahoma, Arial, sans-serif;
+	font-family: Arial, Helvetica, sans-serif !important;
+	font-size: 15px;
 }
 
 body {
@@ -546,7 +533,6 @@ div.rf-tab-cnt,.floatingnav {
 	padding: 10px 5px;
 	display: block;
 	clear: both;
-	font-size: 16px;
 }
 
 /* Review entry */
@@ -710,9 +696,4 @@ div.rf-tab-cnt,.floatingnav {
 	overflow-x: hidden;
 	border: 1px solid gray;
 	width: 600px;
-}
-
-/* font-size for hall of fame */
-li a {
-	font-size: 14px;
 }

@@ -27,18 +27,27 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 			+ "count(if(b.score >= 100,1,null)) as 100s, "
 			+ "sum(b.score)/count(if(b.howoutid not in (0,1,7,13,16,17),1,null)) as avg, "
 			+ "sum(if(b.balls > 0,b.score,0))/sum(b.balls) as strikerate "
-			+ "from BATTING b natural join PLAYER p left join BEST_BATTING bb on p.playerId = bb.playerId "
+			+ "from BATTING b natural join PLAYER p left join %s bb on p.playerId = bb.playerId "
 			+ "where ";
 
 	private static final String COMPETITION_QUALIFIER_SQL = "and b.battingid in "
 			+ "(select battingid from BATTING b " + COMPETITION_QUALIFIER_END_SQL
 			+ ") and bb.competitionId = :comp group by playerid ";
+	
+	private static final String WILLOWFEST_BEST_BATTING_TABLE = "(select * from "
+			+ "(select * from ((select * from best_batting_seasons where competitionid in "
+			+ "(select competitionid from competition where associationName = 'Willowfest') " 
+			+ "order by score desc, balls asc) as dfjv) group by playerid) as dfgdg )"; 
 
 	@Override
-	public List<Batting> getInningsBest() {
+	public List<Batting> getInningsBest(boolean willowfestOnly) {
 		// sql to get the lowest score in the top 10 scores for jwxi, to allow
 		// for duplicates
-		String sql = "select min(score) from (select b.score from BATTING b natural join PLAYER p where p.teamId = :jwxi order by b.score desc limit :limit) as T";
+		String sql = "select min(score) from (select b.score from BATTING b natural join PLAYER p where p.teamId = :jwxi ";
+		if (willowfestOnly) {
+			sql += WILLOWFEST_QUALIFIER_SQL;
+		}
+		sql += " order by b.score desc limit :limit) as T";
 		Query sqlQuery = em.createNativeQuery(sql);
 		sqlQuery.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
 		sqlQuery.setParameter("limit", JwxiccUtils.RECORDS_TO_SHOW);
@@ -46,7 +55,12 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 		System.out.println("min score for top 10: " + score);
 
 		// now get all scores for jwxi greater than or equal to this score
-		String queryString = "from Batting b left join fetch b.player p left join fetch b.inning.game g left join fetch g.ground where b.score >= :score and p.team.teamId = :jwxi order by b.score desc, b.balls asc, g.date asc";
+		String queryString = "from Batting b left join fetch b.player p left join fetch b.inning.game g left join fetch g.ground " 
+				+ "where b.score >= :score and p.team.teamId = :jwxi ";
+		if (willowfestOnly) {
+			queryString += "and g.competition.associationName = 'Willowfest' ";
+		}
+		queryString += "order by b.score desc, b.balls asc, g.date asc";
 		Query query = em.createQuery(queryString);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
 		query.setParameter("score", score);
@@ -55,26 +69,33 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 		return resultList;
 	}
 
-	public List<Batting> getInningsMostBallsFaced() {
+	public List<Batting> getInningsMostBallsFaced(boolean willowfestOnly) {
 		String sql = "";
 
 		return null;
 	}
 
 	@Override
-	public List<BattingRecord> getByAggregate() {
+	public List<BattingRecord> getByAggregate(boolean willowfestOnly) {
 		// Get the base_sql data ordered by most runs
-		String sql = CAREER_BATTING_BASE_SQL
-				+ JWXI_TEAM_SQL
-				+ "group by playerid order by total desc, avg desc, strikerate desc, ballsfaced asc";
+		String sql = getCareerBattingSql(willowfestOnly)
+				+ JWXI_TEAM_SQL;
+		if (willowfestOnly) {
+			sql += WILLOWFEST_QUALIFIER_SQL;
+		}
+		sql += "group by playerid order by total desc, avg desc, strikerate desc, ballsfaced asc";
 
 		return this.getBattingRecords(sql);
 	}
 
 	@Override
-	public List<BattingRecord> getByAverage() {
+	public List<BattingRecord> getByAverage(boolean willowfestOnly) {
 		// Get the base sql data ordered by average
-		String sql = CAREER_BATTING_BASE_SQL + JWXI_TEAM_SQL + "group by playerid "
+		String sql = getCareerBattingSql(willowfestOnly) + JWXI_TEAM_SQL;
+		if (willowfestOnly) {
+			sql += WILLOWFEST_QUALIFIER_SQL;
+		}
+		sql += "group by playerid "
 				+ "having count(if(b.howoutid not in (0, 16, 17),1,null)) >= "
 				+ JwxiccUtils.MIN_INNINGS_FOR_AVERAGE + " "
 				+ "order by avg desc, total desc, strikerate desc, ballsfaced asc";
@@ -136,8 +157,8 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 	}
 
 	@Override
-	public BattingRecord getPlayerCareerRecord(int playerId) {
-		String sqlQuery = CAREER_BATTING_BASE_SQL + "p.playerId = :pid group by playerid";
+	public BattingRecord getPlayerCareerRecord(int playerId, boolean willowfestOnly) {
+		String sqlQuery = getCareerBattingSql(willowfestOnly) + "p.playerId = :pid group by playerid";
 
 		Query query = em.createNativeQuery(sqlQuery);
 		query.setParameter("pid", playerId);
@@ -153,9 +174,9 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 
 	@Override
 	public List<BattingRecord> getBySeason(int competitionId) {
-		String sqlQuery = CAREER_BATTING_BASE_SQL + JWXI_TEAM_SQL + COMPETITION_QUALIFIER_SQL
+		String sqlQuery = String.format(CAREER_BATTING_BASE_SQL, "BEST_BATTING_SEASONS") 
+				+ JWXI_TEAM_SQL + COMPETITION_QUALIFIER_SQL
 				+ "order by total desc";
-		sqlQuery = sqlQuery.replace("BEST_BATTING", "BEST_BATTING_SEASONS");
 
 		Query query = em.createNativeQuery(sqlQuery);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
@@ -169,5 +190,18 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 		}
 
 		return battingRecords;
+	}
+	
+	private String getCareerBattingSql(boolean willowfestOnly) {
+		String sqlQuery = null;
+		if (willowfestOnly) {
+			sqlQuery = String.format(CAREER_BATTING_BASE_SQL, WILLOWFEST_BEST_BATTING_TABLE);
+			sqlQuery += " bb.competitionId in (select x.competitionid from COMPETITION x "
+					+ "where x.associationName = 'Willowfest') and ";
+		} else {
+			sqlQuery = String.format(CAREER_BATTING_BASE_SQL, "BEST_BATTING");
+		}
+		
+		return sqlQuery;
 	}
 }

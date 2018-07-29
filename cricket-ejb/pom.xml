@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>cricket</artifactId>
 		<groupId>com.jwxicc</groupId>
-		<version>1.0-SNAPSHOT</version>
+		<version>0.9.7</version>
 	</parent>
 
 	<artifactId>cricket-ejb</artifactId>
@@ -22,29 +22,29 @@
 			<type>pom</type>
 			<scope>provided</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.2.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
-		</dependency>
-
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+            <scope>provided</scope>
+        </dependency>
 		<dependency>
 			<groupId>commons-math</groupId>
 			<artifactId>commons-math</artifactId>
 			<version>1.2</version>
+            <scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>com.restfb</groupId>
 			<artifactId>restfb</artifactId>
-			<version>1.6.12</version>
+			<version>1.32.0</version>
 		</dependency>
 
 		<!-- JSR-303 (Bean Validation) Implementation -->
@@ -110,7 +110,8 @@
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.7.2</version>
+			<version>1.8.3</version>
+            <scope>provided</scope>
 		</dependency>
 
 		<dependency>

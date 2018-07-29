@@ -113,7 +113,7 @@
 						<a4j:outputPanel rendered="#{not empty compBean.pageComp.games}">
 							<rich:dataTable onrowclick="showGame('#{game.gameId}')"
 								styleClass="clickTable objectTable" var="game"
-								value="#{compBean.pageComp.games.setToList}">
+								value="#{compBean.pageComp.games}">
 								<ui:include src="/resources/include/gamestablecolumns.xhtml" />
 							</rich:dataTable>
 						</a4j:outputPanel>

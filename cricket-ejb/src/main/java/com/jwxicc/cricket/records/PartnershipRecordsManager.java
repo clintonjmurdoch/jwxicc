@@ -30,11 +30,17 @@ public class PartnershipRecordsManager {
 
 	private static final String BASE_PARTNERSHIP_JPQL = "from Partnership p where p.inning.team.teamId = :jwxi and p.runsScored >= :minscore ";
 	private static final String PARTNERSHIP_ORDER_BY = "order by p.runsScored desc";
+	private static final String WILLOWFEST_QUALIFIER_JPQL = "and p.inning.game.competition.associationName = 'Willowfest' ";
 
-	public List<Partnership> getTopPartnerships() {
-		TypedQuery<Partnership> query = em.createQuery(BASE_PARTNERSHIP_JPQL + PARTNERSHIP_ORDER_BY, Partnership.class);
+	public List<Partnership> getTopPartnerships(boolean willowfestOnly) {
+		String queryString = BASE_PARTNERSHIP_JPQL;
+		if (willowfestOnly) {
+			queryString += WILLOWFEST_QUALIFIER_JPQL;
+		}
+		queryString += PARTNERSHIP_ORDER_BY;
+		TypedQuery<Partnership> query = em.createQuery(queryString, Partnership.class);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
-		query.setParameter("minscore", this.getMinScoreForPartnership());
+		query.setParameter("minscore", this.getMinScoreForPartnership(willowfestOnly));
 
 		List<Partnership> resultList = query.getResultList();
 		this.sortPartnerships(resultList);
@@ -42,11 +48,15 @@ public class PartnershipRecordsManager {
 
 	}
 
-	public List<Partnership> getTopPartnershipsByWicket(int wicket) {
-		String jpql = BASE_PARTNERSHIP_JPQL + "and p.wicket = :wicket " + PARTNERSHIP_ORDER_BY;
+	public List<Partnership> getTopPartnershipsByWicket(int wicket, boolean willowfestOnly) {
+		String jpql = BASE_PARTNERSHIP_JPQL + "and p.wicket = :wicket ";
+		if (willowfestOnly) {
+			jpql += WILLOWFEST_QUALIFIER_JPQL;
+		}
+		jpql += PARTNERSHIP_ORDER_BY;
 		TypedQuery<Partnership> query = em.createQuery(jpql, Partnership.class);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
-		query.setParameter("minscore", this.getMinScoreForPartnership(wicket));
+		query.setParameter("minscore", this.getMinScoreForPartnership(wicket, willowfestOnly));
 		query.setParameter("wicket", wicket);
 
 		List<Partnership> resultList = query.getResultList();
@@ -55,10 +65,10 @@ public class PartnershipRecordsManager {
 
 	}
 
-	public List<List<Partnership>> getAllTopPartnershipsByWicket() {
+	public List<List<Partnership>> getAllTopPartnershipsByWicket(boolean willowfestOnly) {
 		List<List<Partnership>> allPartnershipsList = new ArrayList<List<Partnership>>(10);
 		for (int i = 1; i <= 10; i++) {
-			List<Partnership> partnershipsByWicket = this.getTopPartnershipsByWicket(i);
+			List<Partnership> partnershipsByWicket = this.getTopPartnershipsByWicket(i, willowfestOnly);
 			// dont add empty collections
 			if (CollectionUtils.isNotEmpty(partnershipsByWicket)) {
 				allPartnershipsList.add(partnershipsByWicket);
@@ -69,14 +79,18 @@ public class PartnershipRecordsManager {
 		return allPartnershipsList;
 	}
 
-	private int getMinScoreForPartnership() {
-		return getMinScoreForPartnership(0);
+	private int getMinScoreForPartnership(boolean willowfestOnly) {
+		return getMinScoreForPartnership(0, willowfestOnly);
 	}
 
-	private int getMinScoreForPartnership(int wicket) {
+	private int getMinScoreForPartnership(int wicket, boolean willowfestOnly) {
 		String sqlQuery = MIN_SCORE_SQL;
 		if (wicket != 0) {
 			sqlQuery += "and ps.wicket = " + wicket + " ";
+		}
+		if (willowfestOnly) {
+			sqlQuery += " and i.gameid in (select gameid from GAME g inner join COMPETITION c " 
+					+ "on g.competitionid = c.competitionid where c.associationName = 'Willowfest') ";
 		}
 		sqlQuery += MIN_SCORE_ORDER_BY;
 

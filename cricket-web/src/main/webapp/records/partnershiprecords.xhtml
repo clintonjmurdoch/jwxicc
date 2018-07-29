@@ -56,9 +56,23 @@
 	</ui:define>
 	<ui:define name="main">
 		<div class="contentbox">
-			<h:form>
+			<h:form id="pshiprecordsform">
 				<h2>Partnership Records</h2>
 				<p>Minimum qualification is 20 runs</p>
+				<div class="ym-form ym-columnar" id="comp-filter-div"
+					style="margin-bottom: 15px;">
+					<div class="ym-fbox-text">
+						<a4j:region>
+							<a4j:commandLink id="toggle-willowfest-only" action="#{pshipRecordsBean.toggleWillowfestOnly}"
+								execute="@this" type="submit" render="pshiprecordsform">
+								<h:outputText rendered="#{pshipRecordsBean.willowfestOnly}"
+									value="Show all"/>
+								<h:outputText rendered="#{!pshipRecordsBean.willowfestOnly}"
+									value="Show Willowfest only"/>
+							</a4j:commandLink> 
+						</a4j:region>
+					</div>
+				</div>
 				<h4>
 					<a id="allwickets" />All Wickets
 				</h4>

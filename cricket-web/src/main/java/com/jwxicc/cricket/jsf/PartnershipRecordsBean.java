@@ -23,7 +23,15 @@ public class PartnershipRecordsBean implements Serializable {
 
 	private List<Partnership> allWickets;
 	private List<PartnershipRecordsHolder> allWicketPartnerships;
+	private boolean willowfestOnly;
 
+	public void toggleWillowfestOnly() {
+		System.out.println("toggle willowfest only from " + willowfestOnly);
+		allWicketPartnerships = null;
+		allWickets = null;
+		this.willowfestOnly = !this.willowfestOnly;
+	}
+	
 	public int getJwTeamId() {
 		return jwTeamId;
 	}
@@ -34,7 +42,7 @@ public class PartnershipRecordsBean implements Serializable {
 
 	public List<Partnership> getAllWickets() {
 		if (allWickets == null) {
-			this.allWickets = recordsManager.getTopPartnerships();
+			this.allWickets = recordsManager.getTopPartnerships(willowfestOnly);
 		}
 		return allWickets;
 	}
@@ -47,7 +55,7 @@ public class PartnershipRecordsBean implements Serializable {
 		if (allWicketPartnerships == null) {
 			allWicketPartnerships = new ArrayList<PartnershipRecordsHolder>(10);
 			List<List<Partnership>> topPartnershipsByWicket = this.recordsManager
-					.getAllTopPartnershipsByWicket();
+					.getAllTopPartnershipsByWicket(willowfestOnly);
 			for (List<Partnership> pshipList : topPartnershipsByWicket) {
 				if (pshipList != null) {
 					allWicketPartnerships.add(new PartnershipRecordsHolder(pshipList));
@@ -78,6 +86,14 @@ public class PartnershipRecordsBean implements Serializable {
 			this.partnershipList = partnershipList;
 		}
 
+	}
+
+	public boolean isWillowfestOnly() {
+		return willowfestOnly;
+	}
+
+	public void setWillowfestOnly(boolean willowfestOnly) {
+		this.willowfestOnly = willowfestOnly;
 	}
 
 }

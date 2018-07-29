@@ -27,16 +27,19 @@ public abstract class RecordsManager<T, U> {
 	protected static final String COMPETITION_QUALIFIER_END_SQL = "inner join INNINGS i natural join GAME g "
 			+ "on b.inningsid = i.inningsid "
 			+ "where g.competitionid = :comp ";
+	
+	protected static final String WILLOWFEST_QUALIFIER_SQL = " and b.inningsid in (select inningsid from innings i inner join game g on i.gameid = g.gameid "
+			+ "inner join competition c on g.competitionid = c.competitionid where associationName = 'Willowfest') ";
+	
+	public abstract List<T> getInningsBest(boolean willowfestOnly);
 
-	public abstract List<T> getInningsBest();
+	public abstract List<U> getByAggregate(boolean willowfestOnly);
 
-	public abstract List<U> getByAggregate();
-
-	public abstract List<U> getByAverage();
+	public abstract List<U> getByAverage(boolean willowfestOnly);
 
 	public abstract List<U> getBySeason(int competitionId);
 
-	public abstract U getPlayerCareerRecord(int playerId);
+	public abstract U getPlayerCareerRecord(int playerId, boolean willowfestOnly);
 
 	public int objToInt(Object o) {
 		if (o != null) {
@@ -46,8 +49,12 @@ public abstract class RecordsManager<T, U> {
 		}
 	}
 
-	public int getMatchesPlayed(int playerId) {
-		Query query = em.createNativeQuery(MATCHES_PLAYED_SQL);
+	public int getMatchesPlayed(int playerId, boolean willowfestOnly) {
+		String queryString = MATCHES_PLAYED_SQL;
+		if (willowfestOnly) {
+			queryString += WILLOWFEST_QUALIFIER_SQL;
+		}
+		Query query = em.createNativeQuery(queryString);
 		query.setParameter("player", playerId);
 		int matches = ((BigInteger) query.getSingleResult()).intValue();
 		return matches;

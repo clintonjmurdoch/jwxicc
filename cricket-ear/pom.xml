@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>cricket</artifactId>
 		<groupId>com.jwxicc</groupId>
-		<version>1.0-SNAPSHOT</version>
+		<version>0.9.7</version>
 	</parent>
 
 	<artifactId>cricket-ear</artifactId>
@@ -31,11 +31,13 @@
 			<groupId>javax.ejb</groupId>
 			<artifactId>ejb-api</artifactId>
 			<version>3.0</version>
+            <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.6</version>
+            <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
@@ -82,6 +84,11 @@
 							<artifactId>cricket-ejb</artifactId>
 						</ejbModule>
 					</modules>
+                    <archive>
+                        <manifestEntries>
+                            <Dependencies>org.apache.commons.lang,org.apache.commons.collections,org.apache.commons.io,org.slf4j</Dependencies>
+                        </manifestEntries>
+                    </archive>
 				</configuration>
 			</plugin>
 			<!-- The JBoss AS plugin deploys your ear to a local JBoss AS container -->

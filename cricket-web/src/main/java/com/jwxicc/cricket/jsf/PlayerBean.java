@@ -151,7 +151,7 @@ public class PlayerBean implements Serializable {
 
 	public BattingRecord getCareerBatting() {
 		if (this.careerBatting == null) {
-			this.careerBatting = battingRecords.getPlayerCareerRecord(playerId);
+			this.careerBatting = battingRecords.getPlayerCareerRecord(playerId, false);
 		}
 		return careerBatting;
 	}
@@ -162,7 +162,7 @@ public class PlayerBean implements Serializable {
 
 	public BowlingRecord getCareerBowling() {
 		if (this.careerBowling == null) {
-			this.careerBowling = bowlingRecords.getPlayerCareerRecord(playerId);
+			this.careerBowling = bowlingRecords.getPlayerCareerRecord(playerId, false);
 		}
 		return careerBowling;
 	}

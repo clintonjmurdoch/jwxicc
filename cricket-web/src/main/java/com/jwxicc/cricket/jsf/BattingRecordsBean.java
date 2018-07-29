@@ -21,10 +21,19 @@ public class BattingRecordsBean implements Serializable {
 	private List<Batting> runsInInnings;
 	private List<BattingRecord> aggregateRuns;
 	private List<BattingRecord> averageRuns;
+	private boolean willowfestOnly;
+	
+	public void toggleWillowfestOnly() {
+		System.out.println("toggle willowfest only from " + willowfestOnly);
+		runsInInnings = null;
+		aggregateRuns = null;
+		averageRuns = null;
+		this.willowfestOnly = !this.willowfestOnly;
+	}
 
 	public List<Batting> getRunsInInnings() {
 		if (runsInInnings == null) {
-			runsInInnings = records.getInningsBest();
+			runsInInnings = records.getInningsBest(willowfestOnly);
 		}
 		return runsInInnings;
 	}
@@ -35,7 +44,7 @@ public class BattingRecordsBean implements Serializable {
 
 	public List<BattingRecord> getAggregateRuns() {
 		if (aggregateRuns == null) {
-			aggregateRuns = records.getByAggregate();
+			aggregateRuns = records.getByAggregate(willowfestOnly);
 		}
 		return aggregateRuns;
 	}
@@ -46,12 +55,20 @@ public class BattingRecordsBean implements Serializable {
 
 	public List<BattingRecord> getAverageRuns() {
 		if (averageRuns == null) {
-			averageRuns = records.getByAverage();
+			averageRuns = records.getByAverage(willowfestOnly);
 		}
 		return averageRuns;
 	}
 
 	public void setAverageRuns(List<BattingRecord> averageRuns) {
 		this.averageRuns = averageRuns;
+	}
+
+	public boolean isWillowfestOnly() {
+		return willowfestOnly;
+	}
+
+	public void setWillowfestOnly(boolean willowfestOnly) {
+		this.willowfestOnly = willowfestOnly;
 	}
 }

@@ -26,17 +26,26 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 			+ "sum(b.maidens) as maidens, sum(b.runs) as runs, "
 			+ "sum(b.wickets) as wickets, sum(b.runs)/sum(b.wickets) as avg, "
 			+ "bb.wickets as bb_wickets, bb.runs bb_runs, count(if(b.wickets>=5,1,null)) as 5I "
-			+ "from BOWLING b natural join PLAYER p left join BEST_BOWLING bb on p.playerid = bb.playerid "
+			+ "from BOWLING b natural join PLAYER p left join %s bb on p.playerid = bb.playerid "
 			+ "where ";
+	
+	private static final String WILLOWFEST_BEST_BOWLING_TABLE = "(select * from " 
+			+ "(select * from ((select * from best_bowling_seasons where competitionid in " 
+			+ "(select competitionid from competition where associationNAme = 'Willowfest') "
+			+ "order by wickets desc, runs asc) as dfjv) group by playerid) as dfgdg )";
 
 	private static final String COMPETITION_QUALIFIER_SQL = "and b.bowlingid in "
 			+ "(select bowlingid from BOWLING b " + COMPETITION_QUALIFIER_END_SQL
 			+ ") and bb.competitionId = :comp group by playerid ";
 
 	@Override
-	public List<Bowling> getInningsBest() {
+	public List<Bowling> getInningsBest(boolean willowfestOnly) {
 		// bowlings ordered by wickets, runs, overs
-		String queryString = "from Bowling b left join fetch b.player p left join fetch b.inning.game g left join fetch g.ground where p.team.teamId = :jwxi order by b.wickets desc, b.runs asc, b.overs asc";
+		String queryString = "from Bowling b left join fetch b.player p left join fetch b.inning.game g left join fetch g.ground where p.team.teamId = :jwxi ";
+		if (willowfestOnly) {
+			queryString += "and g.competition.associationName = 'Willowfest' ";
+		}
+		queryString += "order by b.wickets desc, b.runs asc, b.overs asc";
 		Query query = em.createQuery(queryString);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
 		query.setMaxResults(JwxiccUtils.RECORDS_TO_SHOW);
@@ -45,23 +54,30 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 	}
 
 	@Override
-	public List<BowlingRecord> getByAggregate() {
-		String sqlQuery = CAREER_BOWLING_BASE_SQL + JWXI_TEAM_SQL
-				+ "group by p.playerid order by wickets desc, runs asc, overs asc";
+	public List<BowlingRecord> getByAggregate(boolean willowfestOnly) {
+		String sqlQuery = getCareerBowlingSql(willowfestOnly) + JWXI_TEAM_SQL;
+		if (willowfestOnly) {
+			sqlQuery += WILLOWFEST_QUALIFIER_SQL;
+		}
+		sqlQuery += "group by p.playerid order by wickets desc, runs asc, overs asc";
 
-		return this.getBowlingRecords(sqlQuery);
+		return this.getBowlingRecords(sqlQuery, willowfestOnly);
 	}
 
 	@Override
-	public List<BowlingRecord> getByAverage() {
-		String sqlQuery = CAREER_BOWLING_BASE_SQL + JWXI_TEAM_SQL + "group by p.playerid "
+	public List<BowlingRecord> getByAverage(boolean willowfestOnly) {
+		String sqlQuery = getCareerBowlingSql(willowfestOnly) + JWXI_TEAM_SQL;
+		if (willowfestOnly) {
+			sqlQuery += WILLOWFEST_QUALIFIER_SQL;
+		}
+		sqlQuery += "group by p.playerid "
 				+ "having sum(b.wickets) >= " + JwxiccUtils.MIN_WICKETS_FOR_AVERAGE + " "
 				+ "order by (0 - sum(b.runs)/sum(b.wickets)) desc, wickets desc, overs asc";
 
-		return this.getBowlingRecords(sqlQuery);
+		return this.getBowlingRecords(sqlQuery, willowfestOnly);
 	}
 
-	private List<BowlingRecord> getBowlingRecords(String sqlQuery) {
+	private List<BowlingRecord> getBowlingRecords(String sqlQuery, boolean willowfestOnly) {
 		Query query = em.createNativeQuery(sqlQuery);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
 		query.setMaxResults(JwxiccUtils.RECORDS_TO_SHOW);
@@ -70,7 +86,7 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 		List<BowlingRecord> bowlingRecords = new ArrayList<BowlingRecord>(10);
 
 		for (Object[] rs : results) {
-			bowlingRecords.add(this.getRecordFromResult(rs, getMatchesPlayed(objToInt(rs[0]))));
+			bowlingRecords.add(this.getRecordFromResult(rs, getMatchesPlayed(objToInt(rs[0]), willowfestOnly)));
 		}
 
 		return bowlingRecords;
@@ -141,8 +157,9 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 	}
 
 	@Override
-	public BowlingRecord getPlayerCareerRecord(int playerId) {
-		String sqlQuery = CAREER_BOWLING_BASE_SQL + "p.playerid = :pid group by p.playerid";
+	public BowlingRecord getPlayerCareerRecord(int playerId, boolean willowfestOnly) {
+		String sqlQuery = getCareerBowlingSql(willowfestOnly) 
+				+ "p.playerid = :pid group by p.playerid";
 
 		Query query = em.createNativeQuery(sqlQuery);
 		query.setParameter("pid", playerId);
@@ -153,14 +170,14 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 			return null;
 		}
 
-		return getRecordFromResult(results.get(0), getMatchesPlayed(playerId));
+		return getRecordFromResult(results.get(0), getMatchesPlayed(playerId, willowfestOnly));
 	}
 
 	@Override
 	public List<BowlingRecord> getBySeason(int competitionId) {
-		String sqlQuery = CAREER_BOWLING_BASE_SQL + JWXI_TEAM_SQL + COMPETITION_QUALIFIER_SQL
+		String sqlQuery = String.format(CAREER_BOWLING_BASE_SQL, "BEST_BOWLING_SEASONS") 
+				+ JWXI_TEAM_SQL + COMPETITION_QUALIFIER_SQL
 				+ "order by wickets desc";
-		sqlQuery = sqlQuery.replace("BEST_BOWLING", "BEST_BOWLING_SEASONS");
 
 		Query query = em.createNativeQuery(sqlQuery);
 		query.setParameter("jwxi", JwxiccUtils.JWXICC_TEAM_ID);
@@ -175,5 +192,18 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 		}
 
 		return bowlingRecords;
+	}
+	
+	private String getCareerBowlingSql(boolean willowfestOnly) {
+		String sqlQuery = null;
+		if (willowfestOnly) {
+			sqlQuery = String.format(CAREER_BOWLING_BASE_SQL, WILLOWFEST_BEST_BOWLING_TABLE);
+			sqlQuery += " bb.competitionId in (select x.competitionid from COMPETITION x "
+					+ "where x.associationName = 'Willowfest') and ";
+		} else {
+			sqlQuery = String.format(CAREER_BOWLING_BASE_SQL, "BEST_BOWLING");
+		}
+		
+		return sqlQuery;
 	}
 }

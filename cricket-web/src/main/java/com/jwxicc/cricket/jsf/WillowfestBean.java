@@ -2,6 +2,7 @@ package com.jwxicc.cricket.jsf;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 
 import com.jwxicc.cricket.entity.Competition;
+import com.jwxicc.cricket.entity.Game;
 import com.jwxicc.cricket.interfaces.CompetitionManager;
 
 @ManagedBean(name = "WFBean")
@@ -91,6 +93,10 @@ public class WillowfestBean implements Serializable {
 	public void setSelectedMatchToView(int selectedMatchToView) {
 		System.out.println("setSelectedMatchToView: " + selectedMatchToView);
 		this.selectedMatchToView = selectedMatchToView;
+	}
+	
+	public ArrayList<Game> getGames() {
+		return new ArrayList<Game>(getComp().getGames());
 	}
 
 }

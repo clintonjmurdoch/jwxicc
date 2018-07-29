@@ -9,7 +9,7 @@ import java.util.Set;
  * 
  */
 @Entity
-@Table(name = "WIN_TYPE")
+@Table(name = "win_type")
 public class WinType implements Serializable {
 	private static final long serialVersionUID = 1L;
 

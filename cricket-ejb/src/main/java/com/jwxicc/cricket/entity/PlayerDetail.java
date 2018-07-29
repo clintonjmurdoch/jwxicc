@@ -10,7 +10,7 @@ import java.util.Date;
  * 
  */
 @Entity
-@Table(name = "PLAYER_DETAIL")
+@Table(name = "player_detail")
 public class PlayerDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -103,11 +103,11 @@ public class PlayerDetail implements Serializable {
 		this.bowlingStyle = bowlingStyle;
 	}
 
-	public int getCapNumber() {
+	public Integer getCapNumber() {
 		return capNumber;
 	}
 
-	public void setCapNumber(int capNumber) {
+	public void setCapNumber(Integer capNumber) {
 		this.capNumber = capNumber;
 	}
 

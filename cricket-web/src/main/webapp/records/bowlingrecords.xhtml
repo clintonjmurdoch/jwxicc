@@ -52,61 +52,79 @@
 	<ui:define name="main">
 		<div class="contentbox">
 			<h2>Bowling Records</h2>
-			<h4>
-				<a id="innsbowling" />Best bowling in an innings
-			</h4>
-			<rich:dataTable styleClass="objectTable" var="bowl"
-				value="#{bowlRecordsBean.bowlingFigures}">
-				<rich:column>
-					<f:facet name="header">Bowling</f:facet>
-					<h:outputText value="#{bowl.wickets}/#{bowl.runs}" />
-				</rich:column>
-				<rich:column>
-					<f:facet name="header">Overs</f:facet>
-					<h:outputText value="#{bowl.overs}">
-						<f:convertNumber maxFractionDigits="1" />
-					</h:outputText>
-				</rich:column>
-				<rich:column>
-					<f:facet name="header">Player</f:facet>
-					<h:link styleClass="sc-highlight" outcome="player"
-						value="#{bowl.player.scorecardName}">
-						<f:param name="playerId" value="#{bowl.player.playerId}" />
-					</h:link>
-				</rich:column>
-				<rich:column>
-					<f:facet name="header">Match</f:facet>
-					<h:link outcome="match"
-						value="v #{bowl.inning.game.awayTeam.teamId != 2 ? bowl.inning.game.awayTeam.teamName : bowl.inning.game.homeTeam.teamName} at #{bowl.inning.game.ground.groundName}">
-						<f:param name="matchId" value="#{bowl.inning.game.gameId}" />
-					</h:link>
-				</rich:column>
-				<rich:column>
-					<f:facet name="header">Date</f:facet>
-					<h:outputText value="#{bowl.inning.game.date}">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
-					</h:outputText>
-				</rich:column>
-			</rich:dataTable>
-
-			<h4>
-				<a id="careerwkts" />Most Career Wickets
-			</h4>
-			<rich:dataTable styleClass="objectTable" var="bowl"
-				value="#{bowlRecordsBean.aggregateWickets}">
-				<ui:include
-					src="/resources/include/careerbowlingrecordcolumns.xhtml" />
-			</rich:dataTable>
-
-			<h4>
-				<a id="careeravg" />Best Career Average
-			</h4>
-			<p>Minimum qualification is 10 wickets</p>
-			<rich:dataTable styleClass="objectTable" var="bowl"
-				value="#{bowlRecordsBean.bowlingAverage}">
-				<ui:include
-					src="/resources/include/careerbowlingrecordcolumns.xhtml" />
-			</rich:dataTable>
+			<h:form id="bowlingrecordsform">
+				<div class="ym-form ym-columnar" id="comp-filter-div"
+					style="margin-bottom: 15px;">
+					<div class="ym-fbox-text">
+						<a4j:region>
+							<a4j:commandLink id="toggle-willowfest-only" action="#{bowlRecordsBean.toggleWillowfestOnly}"
+								execute="@this" type="submit" render="bowlingrecordsform">
+								<h:outputText rendered="#{bowlRecordsBean.willowfestOnly}"
+									value="Show all"/>
+								<h:outputText rendered="#{!bowlRecordsBean.willowfestOnly}"
+									value="Show Willowfest only"/>
+							</a4j:commandLink> 
+						</a4j:region>
+					</div>
+				</div>
+				<a4j:outputPanel id="records-panel">
+					<h4>
+						<a id="innsbowling" />Best bowling in an innings
+					</h4>
+					<rich:dataTable styleClass="objectTable" var="bowl"
+						value="#{bowlRecordsBean.bowlingFigures}">
+						<rich:column>
+							<f:facet name="header">Bowling</f:facet>
+							<h:outputText value="#{bowl.wickets}/#{bowl.runs}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Overs</f:facet>
+							<h:outputText value="#{bowl.overs}">
+								<f:convertNumber maxFractionDigits="1" />
+							</h:outputText>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Player</f:facet>
+							<h:link styleClass="sc-highlight" outcome="player"
+								value="#{bowl.player.scorecardName}">
+								<f:param name="playerId" value="#{bowl.player.playerId}" />
+							</h:link>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Match</f:facet>
+							<h:link outcome="match"
+								value="v #{bowl.inning.game.awayTeam.teamId != 2 ? bowl.inning.game.awayTeam.teamName : bowl.inning.game.homeTeam.teamName} at #{bowl.inning.game.ground.groundName}">
+								<f:param name="matchId" value="#{bowl.inning.game.gameId}" />
+							</h:link>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">Date</f:facet>
+							<h:outputText value="#{bowl.inning.game.date}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</rich:column>
+					</rich:dataTable>
+		
+					<h4>
+						<a id="careerwkts" />Most Career Wickets
+					</h4>
+					<rich:dataTable styleClass="objectTable" var="bowl"
+						value="#{bowlRecordsBean.aggregateWickets}">
+						<ui:include
+							src="/resources/include/careerbowlingrecordcolumns.xhtml" />
+					</rich:dataTable>
+		
+					<h4>
+						<a id="careeravg" />Best Career Average
+					</h4>
+					<p>Minimum qualification is 10 wickets</p>
+					<rich:dataTable styleClass="objectTable" var="bowl"
+						value="#{bowlRecordsBean.bowlingAverage}">
+						<ui:include
+							src="/resources/include/careerbowlingrecordcolumns.xhtml" />
+					</rich:dataTable>
+				</a4j:outputPanel>
+			</h:form>
 		</div>
 	</ui:define>
 </ui:composition>

@@ -10,7 +10,7 @@ import com.jwxicc.cricket.entity.dbenum.WicketDetailType;
  * 
  */
 @Entity
-@Table(name = "WICKET_DETAIL")
+@Table(name = "wicket_detail")
 public class WicketDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 

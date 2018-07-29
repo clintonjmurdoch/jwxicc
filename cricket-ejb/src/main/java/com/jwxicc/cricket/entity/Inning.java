@@ -16,7 +16,7 @@ import java.util.Set;
  * 
  */
 @Entity
-@Table(name = "INNINGS")
+@Table(name = "innings")
 public class Inning implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -52,10 +52,12 @@ public class Inning implements Serializable {
 
 	// bi-directional many-to-one association to Batting
 	@OneToMany(mappedBy = "inning")
+	@OrderBy("battingPos ASC")
 	private Set<Batting> battings;
 
 	// bi-directional many-to-one association to Bowling
 	@OneToMany(mappedBy = "inning")
+	@OrderBy("bowlingPos ASC")
 	private Set<Bowling> bowlings;
 
 	// bi-directional many-to-one association to Partnership

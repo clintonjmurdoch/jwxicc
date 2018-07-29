@@ -23,10 +23,19 @@ public class BowlingRecordsBean implements Serializable {
 	private List<Bowling> bowlingFigures;
 	private List<BowlingRecord> aggregateWickets;
 	private List<BowlingRecord> bowlingAverage;
+	private boolean willowfestOnly;
+	
+	public void toggleWillowfestOnly() {
+		System.out.println("toggle willowfest only from " + willowfestOnly);
+		bowlingFigures = null;
+		aggregateWickets = null;
+		bowlingAverage = null;
+		this.willowfestOnly = !this.willowfestOnly;
+	}
 
 	public List<Bowling> getBowlingFigures() {
 		if (bowlingFigures == null) {
-			bowlingFigures = records.getInningsBest();
+			bowlingFigures = records.getInningsBest(willowfestOnly);
 		}
 		return bowlingFigures;
 	}
@@ -37,7 +46,7 @@ public class BowlingRecordsBean implements Serializable {
 
 	public List<BowlingRecord> getAggregateWickets() {
 		if (aggregateWickets == null) {
-			aggregateWickets = records.getByAggregate();
+			aggregateWickets = records.getByAggregate(willowfestOnly);
 		}
 		return aggregateWickets;
 	}
@@ -48,12 +57,20 @@ public class BowlingRecordsBean implements Serializable {
 
 	public List<BowlingRecord> getBowlingAverage() {
 		if (bowlingAverage == null) {
-			bowlingAverage = records.getByAverage();
+			bowlingAverage = records.getByAverage(willowfestOnly);
 		}
 		return bowlingAverage;
 	}
 
 	public void setBowlingAverage(List<BowlingRecord> bowlingAverage) {
 		this.bowlingAverage = bowlingAverage;
+	}
+
+	public boolean isWillowfestOnly() {
+		return willowfestOnly;
+	}
+
+	public void setWillowfestOnly(boolean willowfestOnly) {
+		this.willowfestOnly = willowfestOnly;
 	}
 }

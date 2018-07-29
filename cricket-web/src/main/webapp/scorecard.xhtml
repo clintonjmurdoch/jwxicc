@@ -42,9 +42,7 @@
 								styleClass="scorecard">
 								<f:facet name="header">
 									<rich:columnGroup>
-										<rich:column colspan="2" style="text-align: left">
-							Batting
-							</rich:column>
+										<rich:column colspan="2" style="text-align: left">Batting</rich:column>
 										<rich:column styleClass="sc-numbers">R</rich:column>
 										<rich:column styleClass="sc-numbers">B</rich:column>
 										<rich:column styleClass="sc-numbers">4s</rich:column>
@@ -52,8 +50,7 @@
 										<rich:column styleClass="sc-numbers">SR</rich:column>
 									</rich:columnGroup>
 								</f:facet>
-								<rich:column styleClass="sc-name" sortBy="#{batter.battingPos}"
-									sortOrder="ascending">
+								<rich:column styleClass="sc-name">
 									<h:link styleClass="sc-highlight" outcome="player"
 										value="#{matchBean.allPlayerMap[batter.player.playerId].scorecardName}">
 										<f:param name="playerId" value="#{batter.player.playerId}" />
@@ -184,8 +181,7 @@
 										<rich:column styleClass="sc-numbers">Econ</rich:column>
 									</rich:columnGroup>
 								</f:facet>
-								<rich:column styleClass="sc-name" sortBy="#{bowler.bowlingPos}"
-									sortOrder="ascending">
+								<rich:column styleClass="sc-name">
 									<h:link styleClass="sc-highlight" outcome="player"
 										value="#{bowler.player.scorecardName}">
 										<f:param name="playerId" value="#{bowler.player.playerId}" />

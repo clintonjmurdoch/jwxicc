@@ -9,7 +9,7 @@ import java.util.Set;
  * 
  */
 @Entity
-@Table(name = "HOWOUT")
+@Table(name = "howout")
 public class Howout implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -8,7 +8,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name = "PARTNERSHIP_PLAYER")
+@Table(name = "partnership_player")
 public class PartnershipPlayer implements Serializable {
 	private static final long serialVersionUID = 1L;
 

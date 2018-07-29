@@ -10,7 +10,7 @@ import com.jwxicc.cricket.entity.dbenum.RelationshipViewType;
  * 
  */
 @Entity
-@Table(name = "PLAYER_RELATIONSHIP")
+@Table(name = "player_relationship")
 public class PlayerRelationship implements Serializable {
 	private static final long serialVersionUID = 1L;
 

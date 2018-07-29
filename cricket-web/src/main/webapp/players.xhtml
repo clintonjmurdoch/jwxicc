@@ -37,16 +37,14 @@
 				<a4j:outputPanel id="players-panel">
 					<rich:dataTable styleClass="objectTable sortable" var="player"
 						value="#{playerBean.allPlayersWithDetail}" id="players-table">
-						<rich:column styleClass="player-row" sortType="custom"
-							sortOrder="ascending" comparator="#{playerBean.capNumberComparator}">
+						<rich:column styleClass="player-row">
 							<f:facet name="header">Name</f:facet>
 							<h:link styleClass="sc-highlight" outcome="player"
 								value="#{empty player.playerName ? player.scorecardName : player.playerName}">
 								<f:param name="playerId" value="#{player.playerId}" />
 							</h:link>
 						</rich:column>
-						<rich:column sortBy="#{player.playerDetail.capNumber}"
-							sortOrder="ascending">
+						<rich:column>
 							<f:facet name="header">Cap Number</f:facet>
 							<h:outputText value="#{player.playerDetail.capNumber}" />
 						</rich:column>
