@@ -37,7 +37,7 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 	private static final String WILLOWFEST_BEST_BATTING_TABLE = "(select * from "
 			+ "(select * from ((select * from best_batting_seasons where competitionid in "
 			+ "(select competitionid from competition where associationName = 'Willowfest') " 
-			+ "order by score desc, balls asc) as dfjv) group by playerid) as dfgdg )"; 
+			+ "order by score desc, balls asc) as dfjv) group by playerid, bb.score, bb.balls, bb.outstatus) as dfgdg )"; 
 
 	@Override
 	public List<Batting> getInningsBest(boolean willowfestOnly) {

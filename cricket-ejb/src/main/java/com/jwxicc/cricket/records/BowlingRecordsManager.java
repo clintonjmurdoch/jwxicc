@@ -36,7 +36,7 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 
 	private static final String COMPETITION_QUALIFIER_SQL = "and b.bowlingid in "
 			+ "(select bowlingid from BOWLING b " + COMPETITION_QUALIFIER_END_SQL
-			+ ") and bb.competitionId = :comp group by playerid ";
+			+ ") and bb.competitionId = :comp group by playerid, bb.wickets, bb.runs ";
 
 	@Override
 	public List<Bowling> getInningsBest(boolean willowfestOnly) {
