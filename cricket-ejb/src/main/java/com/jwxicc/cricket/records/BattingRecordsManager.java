@@ -159,7 +159,8 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 
 	@Override
 	public BattingRecord getPlayerCareerRecord(int playerId, boolean willowfestOnly) {
-		String sqlQuery = getCareerBattingSql(willowfestOnly) + "p.playerId = :pid group by playerid";
+		String sqlQuery = getCareerBattingSql(willowfestOnly) 
+				+ "p.playerId = :pid group by playerid, bb.score, bb.balls, bb.outstatus";
 
 		Query query = em.createNativeQuery(sqlQuery);
 		query.setParameter("pid", playerId);

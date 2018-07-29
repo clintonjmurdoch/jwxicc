@@ -159,7 +159,7 @@ public class BowlingRecordsManager extends RecordsManager<Bowling, BowlingRecord
 	@Override
 	public BowlingRecord getPlayerCareerRecord(int playerId, boolean willowfestOnly) {
 		String sqlQuery = getCareerBowlingSql(willowfestOnly) 
-				+ "p.playerid = :pid group by p.playerid";
+				+ "p.playerid = :pid group by p.playerid, bb.wickets, bb.runs";
 
 		Query query = em.createNativeQuery(sqlQuery);
 		query.setParameter("pid", playerId);
