@@ -33,6 +33,7 @@
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
 			<property name="hibernate.jdbc.batch_size" value="0"/>
+            <property name="sessionVariables" value="sql_mode='STRICT_TRANS_TABLES, NO_ZERO_IN_DATE, NO_ZERO_DATE, ERROR_FOR_DIVISION_BY_ZERO, NO_AUTO_CREATE_USER, NO_ENGINE_SUBSTITUTION'"/>
 		</properties>
 	</persistence-unit>
 </persistence>
