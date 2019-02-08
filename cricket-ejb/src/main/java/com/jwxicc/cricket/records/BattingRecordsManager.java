@@ -83,7 +83,7 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 		if (willowfestOnly) {
 			sql += WILLOWFEST_QUALIFIER_SQL;
 		}
-		sql += "group by playerid, b.battingId, bb.score, bb.balls, bb.outstatus "
+		sql += "group by playerid, bb.score, bb.balls, bb.outstatus "
 				+ "order by total desc, avg desc, strikerate desc, ballsfaced asc";
 
 		return this.getBattingRecords(sql);
@@ -96,7 +96,7 @@ public class BattingRecordsManager extends RecordsManager<Batting, BattingRecord
 		if (willowfestOnly) {
 			sql += WILLOWFEST_QUALIFIER_SQL;
 		}
-		sql += "group by playerid, b.battingId, bb.score, bb.balls, bb.outstatus "
+		sql += "group by playerid, bb.score, bb.balls, bb.outstatus "
 				+ "having count(if(b.howoutid not in (0, 16, 17),1,null)) >= "
 				+ JwxiccUtils.MIN_INNINGS_FOR_AVERAGE + " "
 				+ "order by avg desc, total desc, strikerate desc, ballsfaced asc";
