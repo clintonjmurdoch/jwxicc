@@ -625,4 +625,80 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+--
+-- Final view structure for view `best_batting`
+--
+
+/*!50001 DROP TABLE IF EXISTS `best_batting`*/;
+/*!50001 DROP VIEW IF EXISTS `best_batting`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = latin1 */;
+/*!50001 SET character_set_results     = latin1 */;
+/*!50001 SET collation_connection      = latin1_swedish_ci */;
+
+
+/*!50001 CREATE VIEW `best_batting` AS select `b`.`battingId` AS `battingid`,`b`.`playerId` AS `playerid`,`b`.`score` AS `score`,`b`.`balls` AS `balls`,if((`b`.`howOutId` in (1,7,13)),0,1) AS `outstatus` from `batting` `b` where ((`b`.`score` = (select max(`ba`.`score`) from `batting` `ba` where (`ba`.`playerId` = `b`.`playerId`))) and (`b`.`balls` = (select min(`ba`.`balls`) from `batting` `ba` where ((`ba`.`playerId` = `b`.`playerId`) and (`ba`.`score` = `b`.`score`))))) group by `b`.`playerId`, `b`.`battingId` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `best_batting_seasons`
+--
+
+/*!50001 DROP TABLE IF EXISTS `best_batting_seasons`*/;
+/*!50001 DROP VIEW IF EXISTS `best_batting_seasons`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = latin1 */;
+/*!50001 SET character_set_results     = latin1 */;
+/*!50001 SET collation_connection      = latin1_swedish_ci */;
+
+
+/*!50001 CREATE VIEW `best_batting_seasons` AS select `b`.`battingId` AS `battingid`,`g`.`competitionId` AS `competitionId`,`b`.`playerId` AS `playerid`,`b`.`score` AS `score`,`b`.`balls` AS `balls`,if((`b`.`howOutId` in (1,7,13)),0,1) AS `outstatus` from ((`batting` `b` join `innings` `i` on((`b`.`inningsId` = `i`.`inningsId`))) join `game` `g` on((`i`.`gameId` = `g`.`gameId`))) where ((`b`.`score` = (select max(`ba`.`score`) from ((`batting` `ba` join `innings` `inns` on((`ba`.`inningsId` = `inns`.`inningsId`))) join `game` `ga` on((`inns`.`gameId` = `ga`.`gameId`))) where ((`ba`.`playerId` = `b`.`playerId`) and (`ga`.`competitionId` = `g`.`competitionId`)) group by `ga`.`competitionId`)) and (`b`.`balls` = (select min(`ba`.`balls`) from ((`batting` `ba` join `innings` `inns` on((`ba`.`inningsId` = `inns`.`inningsId`))) join `game` `ga` on((`inns`.`gameId` = `ga`.`gameId`))) where ((`ba`.`playerId` = `b`.`playerId`) and (`b`.`score` = `ba`.`score`) and (`ga`.`competitionId` = `g`.`competitionId`)) group by `ga`.`competitionId`))) group by `g`.`competitionId`,`b`.`playerId`,`b`.`battingId` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `best_bowling`
+--
+
+/*!50001 DROP TABLE IF EXISTS `best_bowling`*/;
+/*!50001 DROP VIEW IF EXISTS `best_bowling`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = latin1 */;
+/*!50001 SET character_set_results     = latin1 */;
+/*!50001 SET collation_connection      = latin1_swedish_ci */;
+
+
+/*!50001 CREATE VIEW `best_bowling` AS select `b`.`bowlingId` AS `bowlingid`,`b`.`playerId` AS `playerid`,`b`.`wickets` AS `wickets`,`b`.`runs` AS `runs` from `bowling` `b` where ((`b`.`wickets` = (select max(`x`.`wickets`) from `bowling` `x` where (`x`.`playerId` = `b`.`playerId`))) and (`b`.`runs` = (select min(`y`.`runs`) from `bowling` `y` where ((`y`.`playerId` = `b`.`playerId`) and (`y`.`wickets` = `b`.`wickets`))))) group by `b`.`playerId`,`b`.`bowlingId` order by `b`.`wickets` desc,`b`.`runs` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `best_bowling_seasons`
+--
+
+/*!50001 DROP TABLE IF EXISTS `best_bowling_seasons`*/;
+/*!50001 DROP VIEW IF EXISTS `best_bowling_seasons`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = latin1 */;
+/*!50001 SET character_set_results     = latin1 */;
+/*!50001 SET collation_connection      = latin1_swedish_ci */;
+
+
+/*!50001 CREATE VIEW `best_bowling_seasons` AS select `b`.`bowlingId` AS `bowlingId`,`g`.`competitionId` AS `competitionId`,`b`.`playerId` AS `playerid`,`b`.`wickets` AS `wickets`,`b`.`runs` AS `runs` from (`bowling` `b` join (`innings` `i` join `game` `g` on((`i`.`gameId` = `g`.`gameId`))) on((`b`.`inningsId` = `i`.`inningsId`))) where ((`b`.`wickets` = (select max(`bo`.`wickets`) from (`bowling` `bo` join (`innings` `inns` join `game` `ga` on((`inns`.`gameId` = `ga`.`gameId`))) on((`bo`.`inningsId` = `inns`.`inningsId`))) where ((`bo`.`playerId` = `b`.`playerId`) and (`g`.`competitionId` = `ga`.`competitionId`)))) and (`b`.`runs` = (select min(`bo`.`runs`) from (`bowling` `bo` join (`innings` `inns` join `game` `ga` on((`inns`.`gameId` = `ga`.`gameId`))) on((`bo`.`inningsId` = `inns`.`inningsId`))) where ((`bo`.`playerId` = `b`.`playerId`) and (`bo`.`wickets` = `b`.`wickets`) and (`g`.`competitionId` = `ga`.`competitionId`))))) group by `g`.`competitionId`,`b`.`playerId`,`b`.`bowlingId` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
 -- Dump completed on 2017-10-18 21:02:26
