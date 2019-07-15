@@ -51,7 +51,7 @@ public class CompetitionManagerImpl extends BaseManager<Competition> implements 
 		String jpql = "from Competition c left join FETCH c.games g "
 				+ "left join FETCH g.homeTeam left join FETCH g.awayTeam " 
 				+ "left join FETCH g.ground left join FETCH c.review "
-				+ "where c.associationName = ? and c.season = ?";
+				+ "where c.associationName = ?1 and c.season = ?2";
 
 		Query query = em.createQuery(jpql);
 
